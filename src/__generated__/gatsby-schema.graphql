@@ -332,12 +332,17 @@ type Site implements Node {
   siteMetadata: SiteSiteMetadata
   port: Int
   host: String
+  flags: SiteFlags
   polyfill: Boolean
   pathPrefix: String
   id: ID!
   parent: Node
   children: [Node!]!
   internal: Internal!
+}
+
+type SiteFlags {
+  FAST_DEV: Boolean
 }
 
 type SiteSiteMetadata {
@@ -643,6 +648,38 @@ interface ContentfulReference {
 type ContentfulAsset implements ContentfulReference & Node {
   contentful_id: String!
   id: ID!
+  spaceId: String
+  createdAt(
+    # Format the date using Moment.js' date tokens, e.g. `date(formatString: "YYYY MMMM DD")`. See https://momentjs.com/docs/#/displaying/format/ for documentation for different tokens.
+    formatString: String
+
+    # Returns a string generated with Moment.js' `fromNow` function
+    fromNow: Boolean
+
+    # Returns the difference between this date and the current time. Defaults to "milliseconds" but you can also pass in as the measurement "years", "months", "weeks", "days", "hours", "minutes", and "seconds".
+    difference: String
+
+    # Configures the locale Moment.js will use to format the date.
+    locale: String
+  ): Date
+  updatedAt(
+    # Format the date using Moment.js' date tokens, e.g. `date(formatString: "YYYY MMMM DD")`. See https://momentjs.com/docs/#/displaying/format/ for documentation for different tokens.
+    formatString: String
+
+    # Returns a string generated with Moment.js' `fromNow` function
+    fromNow: Boolean
+
+    # Returns the difference between this date and the current time. Defaults to "milliseconds" but you can also pass in as the measurement "years", "months", "weeks", "days", "hours", "minutes", and "seconds".
+    difference: String
+
+    # Configures the locale Moment.js will use to format the date.
+    locale: String
+  ): Date
+  file: ContentfulAssetFile
+  title: String
+  description: String
+  node_locale: String
+  sys: ContentfulAssetSys
   fixed(width: Int, height: Int, quality: Int = 50, toFormat: ContentfulImageFormat = AUTO, resizingBehavior: ImageResizingBehavior, cropFocus: ContentfulImageCropFocus = null, background: String = null): ContentfulFixed
   fluid(maxWidth: Int, maxHeight: Int, quality: Int = 50, toFormat: ContentfulImageFormat = AUTO, resizingBehavior: ImageResizingBehavior, cropFocus: ContentfulImageCropFocus = null, background: String = null, sizes: String): ContentfulFluid
   gatsbyImageData(
@@ -703,6 +740,28 @@ type ContentfulAsset implements ContentfulReference & Node {
   parent: Node
   children: [Node!]!
   internal: Internal!
+}
+
+type ContentfulAssetFile {
+  url: String
+  details: ContentfulAssetFileDetails
+  fileName: String
+  contentType: String
+}
+
+type ContentfulAssetFileDetails {
+  size: Int
+  image: ContentfulAssetFileDetailsImage
+}
+
+type ContentfulAssetFileDetailsImage {
+  width: Int
+  height: Int
+}
+
+type ContentfulAssetSys {
+  type: String
+  revision: Int
 }
 
 type ContentfulFixed {
@@ -795,6 +854,8 @@ type ContentfulCategory implements ContentfulReference & ContentfulEntry & Node 
   contentful_id: String!
   id: ID!
   node_locale: String!
+  icon: ContentfulAsset
+  heroImage: ContentfulAsset
   product: [ContentfulProduct]
   title: contentfulCategoryTitleTextNode
   categoryDescription: contentfulCategoryCategoryDescriptionTextNode
@@ -1007,6 +1068,80 @@ type ContentfulProductSysContentTypeSys {
   id: String
 }
 
+type ContentfulPage implements ContentfulReference & ContentfulEntry & Node {
+  contentful_id: String!
+  id: ID!
+  node_locale: String!
+  title: String
+  subheading: contentfulPageSubheadingTextNode
+  spaceId: String
+  createdAt(
+    # Format the date using Moment.js' date tokens, e.g. `date(formatString: "YYYY MMMM DD")`. See https://momentjs.com/docs/#/displaying/format/ for documentation for different tokens.
+    formatString: String
+
+    # Returns a string generated with Moment.js' `fromNow` function
+    fromNow: Boolean
+
+    # Returns the difference between this date and the current time. Defaults to "milliseconds" but you can also pass in as the measurement "years", "months", "weeks", "days", "hours", "minutes", and "seconds".
+    difference: String
+
+    # Configures the locale Moment.js will use to format the date.
+    locale: String
+  ): Date
+  updatedAt(
+    # Format the date using Moment.js' date tokens, e.g. `date(formatString: "YYYY MMMM DD")`. See https://momentjs.com/docs/#/displaying/format/ for documentation for different tokens.
+    formatString: String
+
+    # Returns a string generated with Moment.js' `fromNow` function
+    fromNow: Boolean
+
+    # Returns the difference between this date and the current time. Defaults to "milliseconds" but you can also pass in as the measurement "years", "months", "weeks", "days", "hours", "minutes", and "seconds".
+    difference: String
+
+    # Configures the locale Moment.js will use to format the date.
+    locale: String
+  ): Date
+  sys: ContentfulPageSys
+
+  # Returns all children nodes filtered by type contentfulPageSubheadingTextNode
+  childrenContentfulPageSubheadingTextNode: [contentfulPageSubheadingTextNode]
+
+  # Returns the first child node of type contentfulPageSubheadingTextNode or null if there are no children of given type on this node
+  childContentfulPageSubheadingTextNode: contentfulPageSubheadingTextNode
+  parent: Node
+  children: [Node!]!
+  internal: Internal!
+}
+
+type ContentfulPageSys {
+  type: String
+  revision: Int
+  contentType: ContentfulPageSysContentType
+}
+
+type ContentfulPageSysContentType {
+  sys: ContentfulPageSysContentTypeSys
+}
+
+type ContentfulPageSysContentTypeSys {
+  type: String
+  linkType: String
+  id: String
+}
+
+type contentfulPageSubheadingTextNode implements Node {
+  id: ID!
+  parent: Node
+  children: [Node!]!
+  internal: Internal!
+  subheading: String
+  sys: contentfulPageSubheadingTextNodeSys
+}
+
+type contentfulPageSubheadingTextNodeSys {
+  type: String
+}
+
 type contentfulProductProductDescriptionTextNode implements Node {
   id: ID!
   parent: Node
@@ -1092,6 +1227,7 @@ type ContentfulContentType implements Node {
   internal: Internal!
   name: String
   displayField: String
+  description: String
   sys: ContentfulContentTypeSys
 }
 
@@ -1145,8 +1281,6 @@ type SitePluginPluginOptions {
   pageLimit: Int
   assetDownloadWorkers: Int
   useNameForId: Boolean
-  output: String
-  createLinkInHead: Boolean
   icon: String
   legacy: Boolean
   theme_color_in_head: Boolean
@@ -1160,6 +1294,7 @@ type SitePluginPluginOptions {
   failOnError: Boolean
   name: String
   path: String
+  outputPath: String
   emitSchema: SitePluginPluginOptionsEmitSchema
   pathCheck: Boolean
   allExtensions: Boolean
@@ -1203,7 +1338,7 @@ type Query {
   allFile(filter: FileFilterInput, sort: FileSortInput, skip: Int, limit: Int): FileConnection!
   directory(sourceInstanceName: StringQueryOperatorInput, absolutePath: StringQueryOperatorInput, relativePath: StringQueryOperatorInput, extension: StringQueryOperatorInput, size: IntQueryOperatorInput, prettySize: StringQueryOperatorInput, modifiedTime: DateQueryOperatorInput, accessTime: DateQueryOperatorInput, changeTime: DateQueryOperatorInput, birthTime: DateQueryOperatorInput, root: StringQueryOperatorInput, dir: StringQueryOperatorInput, base: StringQueryOperatorInput, ext: StringQueryOperatorInput, name: StringQueryOperatorInput, relativeDirectory: StringQueryOperatorInput, dev: IntQueryOperatorInput, mode: IntQueryOperatorInput, nlink: IntQueryOperatorInput, uid: IntQueryOperatorInput, gid: IntQueryOperatorInput, rdev: IntQueryOperatorInput, ino: FloatQueryOperatorInput, atimeMs: FloatQueryOperatorInput, mtimeMs: FloatQueryOperatorInput, ctimeMs: FloatQueryOperatorInput, atime: DateQueryOperatorInput, mtime: DateQueryOperatorInput, ctime: DateQueryOperatorInput, birthtime: DateQueryOperatorInput, birthtimeMs: FloatQueryOperatorInput, blksize: IntQueryOperatorInput, blocks: IntQueryOperatorInput, id: StringQueryOperatorInput, parent: NodeFilterInput, children: NodeFilterListInput, internal: InternalFilterInput): Directory
   allDirectory(filter: DirectoryFilterInput, sort: DirectorySortInput, skip: Int, limit: Int): DirectoryConnection!
-  site(buildTime: DateQueryOperatorInput, siteMetadata: SiteSiteMetadataFilterInput, port: IntQueryOperatorInput, host: StringQueryOperatorInput, polyfill: BooleanQueryOperatorInput, pathPrefix: StringQueryOperatorInput, id: StringQueryOperatorInput, parent: NodeFilterInput, children: NodeFilterListInput, internal: InternalFilterInput): Site
+  site(buildTime: DateQueryOperatorInput, siteMetadata: SiteSiteMetadataFilterInput, port: IntQueryOperatorInput, host: StringQueryOperatorInput, flags: SiteFlagsFilterInput, polyfill: BooleanQueryOperatorInput, pathPrefix: StringQueryOperatorInput, id: StringQueryOperatorInput, parent: NodeFilterInput, children: NodeFilterListInput, internal: InternalFilterInput): Site
   allSite(filter: SiteFilterInput, sort: SiteSortInput, skip: Int, limit: Int): SiteConnection!
   sitePage(path: StringQueryOperatorInput, component: StringQueryOperatorInput, internalComponentName: StringQueryOperatorInput, componentChunkName: StringQueryOperatorInput, matchPath: StringQueryOperatorInput, id: StringQueryOperatorInput, parent: NodeFilterInput, children: NodeFilterListInput, internal: InternalFilterInput, isCreatedByStatefulCreatePages: BooleanQueryOperatorInput, pluginCreator: SitePluginFilterInput, pluginCreatorId: StringQueryOperatorInput, componentPath: StringQueryOperatorInput): SitePage
   allSitePage(filter: SitePageFilterInput, sort: SitePageSortInput, skip: Int, limit: Int): SitePageConnection!
@@ -1211,14 +1346,18 @@ type Query {
   allImageSharp(filter: ImageSharpFilterInput, sort: ImageSharpSortInput, skip: Int, limit: Int): ImageSharpConnection!
   contentfulEntry(contentful_id: StringQueryOperatorInput, id: StringQueryOperatorInput, node_locale: StringQueryOperatorInput, parent: NodeFilterInput, children: NodeFilterListInput, internal: InternalFilterInput): ContentfulEntry
   allContentfulEntry(filter: ContentfulEntryFilterInput, sort: ContentfulEntrySortInput, skip: Int, limit: Int): ContentfulEntryConnection!
-  contentfulAsset(contentful_id: StringQueryOperatorInput, id: StringQueryOperatorInput, fixed: ContentfulFixedFilterInput, fluid: ContentfulFluidFilterInput, gatsbyImageData: JSONQueryOperatorInput, resize: ContentfulResizeFilterInput, parent: NodeFilterInput, children: NodeFilterListInput, internal: InternalFilterInput): ContentfulAsset
+  contentfulAsset(contentful_id: StringQueryOperatorInput, id: StringQueryOperatorInput, spaceId: StringQueryOperatorInput, createdAt: DateQueryOperatorInput, updatedAt: DateQueryOperatorInput, file: ContentfulAssetFileFilterInput, title: StringQueryOperatorInput, description: StringQueryOperatorInput, node_locale: StringQueryOperatorInput, sys: ContentfulAssetSysFilterInput, fixed: ContentfulFixedFilterInput, fluid: ContentfulFluidFilterInput, gatsbyImageData: JSONQueryOperatorInput, resize: ContentfulResizeFilterInput, parent: NodeFilterInput, children: NodeFilterListInput, internal: InternalFilterInput): ContentfulAsset
   allContentfulAsset(filter: ContentfulAssetFilterInput, sort: ContentfulAssetSortInput, skip: Int, limit: Int): ContentfulAssetConnection!
-  contentfulCategory(contentful_id: StringQueryOperatorInput, id: StringQueryOperatorInput, node_locale: StringQueryOperatorInput, product: ContentfulProductFilterListInput, title: contentfulCategoryTitleTextNodeFilterInput, categoryDescription: contentfulCategoryCategoryDescriptionTextNodeFilterInput, spaceId: StringQueryOperatorInput, createdAt: DateQueryOperatorInput, updatedAt: DateQueryOperatorInput, sys: ContentfulCategorySysFilterInput, childrenContentfulCategoryCategoryDescriptionTextNode: contentfulCategoryCategoryDescriptionTextNodeFilterListInput, childContentfulCategoryCategoryDescriptionTextNode: contentfulCategoryCategoryDescriptionTextNodeFilterInput, childrenContentfulCategoryTitleTextNode: contentfulCategoryTitleTextNodeFilterListInput, childContentfulCategoryTitleTextNode: contentfulCategoryTitleTextNodeFilterInput, parent: NodeFilterInput, children: NodeFilterListInput, internal: InternalFilterInput): ContentfulCategory
+  contentfulCategory(contentful_id: StringQueryOperatorInput, id: StringQueryOperatorInput, node_locale: StringQueryOperatorInput, icon: ContentfulAssetFilterInput, heroImage: ContentfulAssetFilterInput, product: ContentfulProductFilterListInput, title: contentfulCategoryTitleTextNodeFilterInput, categoryDescription: contentfulCategoryCategoryDescriptionTextNodeFilterInput, spaceId: StringQueryOperatorInput, createdAt: DateQueryOperatorInput, updatedAt: DateQueryOperatorInput, sys: ContentfulCategorySysFilterInput, childrenContentfulCategoryCategoryDescriptionTextNode: contentfulCategoryCategoryDescriptionTextNodeFilterListInput, childContentfulCategoryCategoryDescriptionTextNode: contentfulCategoryCategoryDescriptionTextNodeFilterInput, childrenContentfulCategoryTitleTextNode: contentfulCategoryTitleTextNodeFilterListInput, childContentfulCategoryTitleTextNode: contentfulCategoryTitleTextNodeFilterInput, parent: NodeFilterInput, children: NodeFilterListInput, internal: InternalFilterInput): ContentfulCategory
   allContentfulCategory(filter: ContentfulCategoryFilterInput, sort: ContentfulCategorySortInput, skip: Int, limit: Int): ContentfulCategoryConnection!
   contentfulBrand(contentful_id: StringQueryOperatorInput, id: StringQueryOperatorInput, node_locale: StringQueryOperatorInput, website: StringQueryOperatorInput, product: ContentfulProductFilterListInput, companyName: contentfulBrandCompanyNameTextNodeFilterInput, companyDescription: contentfulBrandCompanyDescriptionTextNodeFilterInput, spaceId: StringQueryOperatorInput, createdAt: DateQueryOperatorInput, updatedAt: DateQueryOperatorInput, sys: ContentfulBrandSysFilterInput, email: StringQueryOperatorInput, phone: StringQueryOperatorInput, twitter: StringQueryOperatorInput, childrenContentfulBrandCompanyDescriptionTextNode: contentfulBrandCompanyDescriptionTextNodeFilterListInput, childContentfulBrandCompanyDescriptionTextNode: contentfulBrandCompanyDescriptionTextNodeFilterInput, childrenContentfulBrandCompanyNameTextNode: contentfulBrandCompanyNameTextNodeFilterListInput, childContentfulBrandCompanyNameTextNode: contentfulBrandCompanyNameTextNodeFilterInput, parent: NodeFilterInput, children: NodeFilterListInput, internal: InternalFilterInput): ContentfulBrand
   allContentfulBrand(filter: ContentfulBrandFilterInput, sort: ContentfulBrandSortInput, skip: Int, limit: Int): ContentfulBrandConnection!
   contentfulProduct(contentful_id: StringQueryOperatorInput, id: StringQueryOperatorInput, node_locale: StringQueryOperatorInput, slug: StringQueryOperatorInput, sizetypecolor: StringQueryOperatorInput, tags: StringQueryOperatorInput, price: IntQueryOperatorInput, quantity: IntQueryOperatorInput, sku: StringQueryOperatorInput, website: StringQueryOperatorInput, categories: ContentfulCategoryFilterListInput, brand: ContentfulBrandFilterInput, productName: contentfulProductProductNameTextNodeFilterInput, productDescription: contentfulProductProductDescriptionTextNodeFilterInput, spaceId: StringQueryOperatorInput, createdAt: DateQueryOperatorInput, updatedAt: DateQueryOperatorInput, sys: ContentfulProductSysFilterInput, childrenContentfulProductProductDescriptionTextNode: contentfulProductProductDescriptionTextNodeFilterListInput, childContentfulProductProductDescriptionTextNode: contentfulProductProductDescriptionTextNodeFilterInput, childrenContentfulProductProductNameTextNode: contentfulProductProductNameTextNodeFilterListInput, childContentfulProductProductNameTextNode: contentfulProductProductNameTextNodeFilterInput, parent: NodeFilterInput, children: NodeFilterListInput, internal: InternalFilterInput): ContentfulProduct
   allContentfulProduct(filter: ContentfulProductFilterInput, sort: ContentfulProductSortInput, skip: Int, limit: Int): ContentfulProductConnection!
+  contentfulPage(contentful_id: StringQueryOperatorInput, id: StringQueryOperatorInput, node_locale: StringQueryOperatorInput, title: StringQueryOperatorInput, subheading: contentfulPageSubheadingTextNodeFilterInput, spaceId: StringQueryOperatorInput, createdAt: DateQueryOperatorInput, updatedAt: DateQueryOperatorInput, sys: ContentfulPageSysFilterInput, childrenContentfulPageSubheadingTextNode: contentfulPageSubheadingTextNodeFilterListInput, childContentfulPageSubheadingTextNode: contentfulPageSubheadingTextNodeFilterInput, parent: NodeFilterInput, children: NodeFilterListInput, internal: InternalFilterInput): ContentfulPage
+  allContentfulPage(filter: ContentfulPageFilterInput, sort: ContentfulPageSortInput, skip: Int, limit: Int): ContentfulPageConnection!
+  contentfulPageSubheadingTextNode(id: StringQueryOperatorInput, parent: NodeFilterInput, children: NodeFilterListInput, internal: InternalFilterInput, subheading: StringQueryOperatorInput, sys: contentfulPageSubheadingTextNodeSysFilterInput): contentfulPageSubheadingTextNode
+  allContentfulPageSubheadingTextNode(filter: contentfulPageSubheadingTextNodeFilterInput, sort: contentfulPageSubheadingTextNodeSortInput, skip: Int, limit: Int): contentfulPageSubheadingTextNodeConnection!
   contentfulProductProductDescriptionTextNode(id: StringQueryOperatorInput, parent: NodeFilterInput, children: NodeFilterListInput, internal: InternalFilterInput, productDescription: StringQueryOperatorInput, sys: contentfulProductProductDescriptionTextNodeSysFilterInput): contentfulProductProductDescriptionTextNode
   allContentfulProductProductDescriptionTextNode(filter: contentfulProductProductDescriptionTextNodeFilterInput, sort: contentfulProductProductDescriptionTextNodeSortInput, skip: Int, limit: Int): contentfulProductProductDescriptionTextNodeConnection!
   contentfulProductProductNameTextNode(id: StringQueryOperatorInput, parent: NodeFilterInput, children: NodeFilterListInput, internal: InternalFilterInput, productName: StringQueryOperatorInput, sys: contentfulProductProductNameTextNodeSysFilterInput): contentfulProductProductNameTextNode
@@ -1231,7 +1370,7 @@ type Query {
   allContentfulCategoryCategoryDescriptionTextNode(filter: contentfulCategoryCategoryDescriptionTextNodeFilterInput, sort: contentfulCategoryCategoryDescriptionTextNodeSortInput, skip: Int, limit: Int): contentfulCategoryCategoryDescriptionTextNodeConnection!
   contentfulCategoryTitleTextNode(id: StringQueryOperatorInput, parent: NodeFilterInput, children: NodeFilterListInput, internal: InternalFilterInput, title: StringQueryOperatorInput, sys: contentfulCategoryTitleTextNodeSysFilterInput): contentfulCategoryTitleTextNode
   allContentfulCategoryTitleTextNode(filter: contentfulCategoryTitleTextNodeFilterInput, sort: contentfulCategoryTitleTextNodeSortInput, skip: Int, limit: Int): contentfulCategoryTitleTextNodeConnection!
-  contentfulContentType(id: StringQueryOperatorInput, parent: NodeFilterInput, children: NodeFilterListInput, internal: InternalFilterInput, name: StringQueryOperatorInput, displayField: StringQueryOperatorInput, sys: ContentfulContentTypeSysFilterInput): ContentfulContentType
+  contentfulContentType(id: StringQueryOperatorInput, parent: NodeFilterInput, children: NodeFilterListInput, internal: InternalFilterInput, name: StringQueryOperatorInput, displayField: StringQueryOperatorInput, description: StringQueryOperatorInput, sys: ContentfulContentTypeSysFilterInput): ContentfulContentType
   allContentfulContentType(filter: ContentfulContentTypeFilterInput, sort: ContentfulContentTypeSortInput, skip: Int, limit: Int): ContentfulContentTypeConnection!
   siteBuildMetadata(id: StringQueryOperatorInput, parent: NodeFilterInput, children: NodeFilterListInput, internal: InternalFilterInput, buildTime: DateQueryOperatorInput): SiteBuildMetadata
   allSiteBuildMetadata(filter: SiteBuildMetadataFilterInput, sort: SiteBuildMetadataSortInput, skip: Int, limit: Int): SiteBuildMetadataConnection!
@@ -1925,6 +2064,10 @@ input SiteSiteMetadataFilterInput {
   description: StringQueryOperatorInput
 }
 
+input SiteFlagsFilterInput {
+  FAST_DEV: BooleanQueryOperatorInput
+}
+
 type SiteConnection {
   totalCount: Int!
   edges: [SiteEdge!]!
@@ -1946,6 +2089,7 @@ enum SiteFieldsEnum {
   siteMetadata___description
   port
   host
+  flags___FAST_DEV
   polyfill
   pathPrefix
   id
@@ -2050,6 +2194,7 @@ input SiteFilterInput {
   siteMetadata: SiteSiteMetadataFilterInput
   port: IntQueryOperatorInput
   host: StringQueryOperatorInput
+  flags: SiteFlagsFilterInput
   polyfill: BooleanQueryOperatorInput
   pathPrefix: StringQueryOperatorInput
   id: StringQueryOperatorInput
@@ -2089,8 +2234,6 @@ input SitePluginPluginOptionsFilterInput {
   pageLimit: IntQueryOperatorInput
   assetDownloadWorkers: IntQueryOperatorInput
   useNameForId: BooleanQueryOperatorInput
-  output: StringQueryOperatorInput
-  createLinkInHead: BooleanQueryOperatorInput
   icon: StringQueryOperatorInput
   legacy: BooleanQueryOperatorInput
   theme_color_in_head: BooleanQueryOperatorInput
@@ -2104,6 +2247,7 @@ input SitePluginPluginOptionsFilterInput {
   failOnError: BooleanQueryOperatorInput
   name: StringQueryOperatorInput
   path: StringQueryOperatorInput
+  outputPath: StringQueryOperatorInput
   emitSchema: SitePluginPluginOptionsEmitSchemaFilterInput
   pathCheck: BooleanQueryOperatorInput
   allExtensions: BooleanQueryOperatorInput
@@ -2312,8 +2456,6 @@ enum SitePageFieldsEnum {
   pluginCreator___pluginOptions___pageLimit
   pluginCreator___pluginOptions___assetDownloadWorkers
   pluginCreator___pluginOptions___useNameForId
-  pluginCreator___pluginOptions___output
-  pluginCreator___pluginOptions___createLinkInHead
   pluginCreator___pluginOptions___icon
   pluginCreator___pluginOptions___legacy
   pluginCreator___pluginOptions___theme_color_in_head
@@ -2327,6 +2469,7 @@ enum SitePageFieldsEnum {
   pluginCreator___pluginOptions___failOnError
   pluginCreator___pluginOptions___name
   pluginCreator___pluginOptions___path
+  pluginCreator___pluginOptions___outputPath
   pluginCreator___pluginOptions___emitSchema___src___generated___gatsby_schema_graphql
   pluginCreator___pluginOptions___pathCheck
   pluginCreator___pluginOptions___allExtensions
@@ -2664,6 +2807,28 @@ input ContentfulEntrySortInput {
   order: [SortOrderEnum] = [ASC]
 }
 
+input ContentfulAssetFileFilterInput {
+  url: StringQueryOperatorInput
+  details: ContentfulAssetFileDetailsFilterInput
+  fileName: StringQueryOperatorInput
+  contentType: StringQueryOperatorInput
+}
+
+input ContentfulAssetFileDetailsFilterInput {
+  size: IntQueryOperatorInput
+  image: ContentfulAssetFileDetailsImageFilterInput
+}
+
+input ContentfulAssetFileDetailsImageFilterInput {
+  width: IntQueryOperatorInput
+  height: IntQueryOperatorInput
+}
+
+input ContentfulAssetSysFilterInput {
+  type: StringQueryOperatorInput
+  revision: IntQueryOperatorInput
+}
+
 input ContentfulFixedFilterInput {
   base64: StringQueryOperatorInput
   tracedSVG: StringQueryOperatorInput
@@ -2714,6 +2879,20 @@ type ContentfulAssetEdge {
 enum ContentfulAssetFieldsEnum {
   contentful_id
   id
+  spaceId
+  createdAt
+  updatedAt
+  file___url
+  file___details___size
+  file___details___image___width
+  file___details___image___height
+  file___fileName
+  file___contentType
+  title
+  description
+  node_locale
+  sys___type
+  sys___revision
   fixed___base64 @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
   fixed___tracedSVG @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
   fixed___aspectRatio @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
@@ -2837,6 +3016,14 @@ type ContentfulAssetGroupConnection {
 input ContentfulAssetFilterInput {
   contentful_id: StringQueryOperatorInput
   id: StringQueryOperatorInput
+  spaceId: StringQueryOperatorInput
+  createdAt: DateQueryOperatorInput
+  updatedAt: DateQueryOperatorInput
+  file: ContentfulAssetFileFilterInput
+  title: StringQueryOperatorInput
+  description: StringQueryOperatorInput
+  node_locale: StringQueryOperatorInput
+  sys: ContentfulAssetSysFilterInput
   fixed: ContentfulFixedFilterInput
   fluid: ContentfulFluidFilterInput
   gatsbyImageData: JSONQueryOperatorInput
@@ -2891,6 +3078,8 @@ input ContentfulCategoryFilterInput {
   contentful_id: StringQueryOperatorInput
   id: StringQueryOperatorInput
   node_locale: StringQueryOperatorInput
+  icon: ContentfulAssetFilterInput
+  heroImage: ContentfulAssetFilterInput
   product: ContentfulProductFilterListInput
   title: contentfulCategoryTitleTextNodeFilterInput
   categoryDescription: contentfulCategoryCategoryDescriptionTextNodeFilterInput
@@ -3100,6 +3289,156 @@ enum ContentfulCategoryFieldsEnum {
   contentful_id
   id
   node_locale
+  icon___contentful_id
+  icon___id
+  icon___spaceId
+  icon___createdAt
+  icon___updatedAt
+  icon___file___url
+  icon___file___details___size
+  icon___file___fileName
+  icon___file___contentType
+  icon___title
+  icon___description
+  icon___node_locale
+  icon___sys___type
+  icon___sys___revision
+  icon___fixed___base64 @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___fixed___tracedSVG @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___fixed___aspectRatio @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___fixed___width @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___fixed___height @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___fixed___src @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___fixed___srcSet @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___fixed___srcWebp @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___fixed___srcSetWebp @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___fluid___base64 @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___fluid___tracedSVG @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___fluid___aspectRatio @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___fluid___src @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___fluid___srcSet @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___fluid___srcWebp @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___fluid___srcSetWebp @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___fluid___sizes @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___gatsbyImageData @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___resize___base64 @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___resize___tracedSVG @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___resize___src @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___resize___width @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___resize___height @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___resize___aspectRatio @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___parent___id @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___parent___parent___id @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___parent___parent___children @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___parent___children @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___parent___children___id @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___parent___children___children @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___parent___internal___content @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___parent___internal___contentDigest @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___parent___internal___description @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___parent___internal___fieldOwners @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___parent___internal___ignoreType @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___parent___internal___mediaType @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___parent___internal___owner @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___parent___internal___type @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___children @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___children___id @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___children___parent___id @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___children___parent___children @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___children___children @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___children___children___id @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___children___children___children @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___children___internal___content @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___children___internal___contentDigest @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___children___internal___description @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___children___internal___fieldOwners @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___children___internal___ignoreType @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___children___internal___mediaType @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___children___internal___owner @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___children___internal___type @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___internal___content @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___internal___contentDigest @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___internal___description @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___internal___fieldOwners @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___internal___ignoreType @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___internal___mediaType @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___internal___owner @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  icon___internal___type @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___contentful_id
+  heroImage___id
+  heroImage___spaceId
+  heroImage___createdAt
+  heroImage___updatedAt
+  heroImage___file___url
+  heroImage___file___details___size
+  heroImage___file___fileName
+  heroImage___file___contentType
+  heroImage___title
+  heroImage___description
+  heroImage___node_locale
+  heroImage___sys___type
+  heroImage___sys___revision
+  heroImage___fixed___base64 @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___fixed___tracedSVG @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___fixed___aspectRatio @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___fixed___width @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___fixed___height @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___fixed___src @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___fixed___srcSet @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___fixed___srcWebp @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___fixed___srcSetWebp @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___fluid___base64 @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___fluid___tracedSVG @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___fluid___aspectRatio @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___fluid___src @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___fluid___srcSet @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___fluid___srcWebp @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___fluid___srcSetWebp @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___fluid___sizes @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___gatsbyImageData @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___resize___base64 @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___resize___tracedSVG @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___resize___src @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___resize___width @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___resize___height @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___resize___aspectRatio @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___parent___id @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___parent___parent___id @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___parent___parent___children @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___parent___children @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___parent___children___id @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___parent___children___children @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___parent___internal___content @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___parent___internal___contentDigest @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___parent___internal___description @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___parent___internal___fieldOwners @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___parent___internal___ignoreType @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___parent___internal___mediaType @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___parent___internal___owner @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___parent___internal___type @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___children @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___children___id @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___children___parent___id @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___children___parent___children @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___children___children @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___children___children___id @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___children___children___children @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___children___internal___content @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___children___internal___contentDigest @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___children___internal___description @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___children___internal___fieldOwners @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___children___internal___ignoreType @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___children___internal___mediaType @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___children___internal___owner @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___children___internal___type @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___internal___content @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___internal___contentDigest @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___internal___description @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___internal___fieldOwners @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___internal___ignoreType @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___internal___mediaType @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___internal___owner @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  heroImage___internal___type @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
   product
   product___contentful_id
   product___id
@@ -3115,6 +3454,26 @@ enum ContentfulCategoryFieldsEnum {
   product___categories___contentful_id
   product___categories___id
   product___categories___node_locale
+  product___categories___icon___contentful_id
+  product___categories___icon___id
+  product___categories___icon___spaceId
+  product___categories___icon___createdAt
+  product___categories___icon___updatedAt
+  product___categories___icon___title
+  product___categories___icon___description
+  product___categories___icon___node_locale
+  product___categories___icon___gatsbyImageData @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  product___categories___icon___children @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  product___categories___heroImage___contentful_id
+  product___categories___heroImage___id
+  product___categories___heroImage___spaceId
+  product___categories___heroImage___createdAt
+  product___categories___heroImage___updatedAt
+  product___categories___heroImage___title
+  product___categories___heroImage___description
+  product___categories___heroImage___node_locale
+  product___categories___heroImage___gatsbyImageData @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  product___categories___heroImage___children @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
   product___categories___product
   product___categories___product___contentful_id
   product___categories___product___id
@@ -3760,6 +4119,26 @@ enum ContentfulBrandFieldsEnum {
   product___categories___contentful_id
   product___categories___id
   product___categories___node_locale
+  product___categories___icon___contentful_id
+  product___categories___icon___id
+  product___categories___icon___spaceId
+  product___categories___icon___createdAt
+  product___categories___icon___updatedAt
+  product___categories___icon___title
+  product___categories___icon___description
+  product___categories___icon___node_locale
+  product___categories___icon___gatsbyImageData @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  product___categories___icon___children @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  product___categories___heroImage___contentful_id
+  product___categories___heroImage___id
+  product___categories___heroImage___spaceId
+  product___categories___heroImage___createdAt
+  product___categories___heroImage___updatedAt
+  product___categories___heroImage___title
+  product___categories___heroImage___description
+  product___categories___heroImage___node_locale
+  product___categories___heroImage___gatsbyImageData @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  product___categories___heroImage___children @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
   product___categories___product
   product___categories___product___contentful_id
   product___categories___product___id
@@ -4403,6 +4782,106 @@ enum ContentfulProductFieldsEnum {
   categories___contentful_id
   categories___id
   categories___node_locale
+  categories___icon___contentful_id
+  categories___icon___id
+  categories___icon___spaceId
+  categories___icon___createdAt
+  categories___icon___updatedAt
+  categories___icon___file___url
+  categories___icon___file___fileName
+  categories___icon___file___contentType
+  categories___icon___title
+  categories___icon___description
+  categories___icon___node_locale
+  categories___icon___sys___type
+  categories___icon___sys___revision
+  categories___icon___fixed___base64 @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___icon___fixed___tracedSVG @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___icon___fixed___aspectRatio @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___icon___fixed___width @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___icon___fixed___height @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___icon___fixed___src @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___icon___fixed___srcSet @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___icon___fixed___srcWebp @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___icon___fixed___srcSetWebp @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___icon___fluid___base64 @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___icon___fluid___tracedSVG @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___icon___fluid___aspectRatio @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___icon___fluid___src @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___icon___fluid___srcSet @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___icon___fluid___srcWebp @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___icon___fluid___srcSetWebp @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___icon___fluid___sizes @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___icon___gatsbyImageData @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___icon___resize___base64 @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___icon___resize___tracedSVG @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___icon___resize___src @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___icon___resize___width @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___icon___resize___height @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___icon___resize___aspectRatio @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___icon___parent___id @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___icon___parent___children @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___icon___children @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___icon___children___id @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___icon___children___children @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___icon___internal___content @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___icon___internal___contentDigest @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___icon___internal___description @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___icon___internal___fieldOwners @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___icon___internal___ignoreType @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___icon___internal___mediaType @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___icon___internal___owner @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___icon___internal___type @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___heroImage___contentful_id
+  categories___heroImage___id
+  categories___heroImage___spaceId
+  categories___heroImage___createdAt
+  categories___heroImage___updatedAt
+  categories___heroImage___file___url
+  categories___heroImage___file___fileName
+  categories___heroImage___file___contentType
+  categories___heroImage___title
+  categories___heroImage___description
+  categories___heroImage___node_locale
+  categories___heroImage___sys___type
+  categories___heroImage___sys___revision
+  categories___heroImage___fixed___base64 @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___heroImage___fixed___tracedSVG @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___heroImage___fixed___aspectRatio @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___heroImage___fixed___width @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___heroImage___fixed___height @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___heroImage___fixed___src @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___heroImage___fixed___srcSet @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___heroImage___fixed___srcWebp @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___heroImage___fixed___srcSetWebp @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___heroImage___fluid___base64 @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___heroImage___fluid___tracedSVG @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___heroImage___fluid___aspectRatio @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___heroImage___fluid___src @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___heroImage___fluid___srcSet @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___heroImage___fluid___srcWebp @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___heroImage___fluid___srcSetWebp @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___heroImage___fluid___sizes @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___heroImage___gatsbyImageData @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___heroImage___resize___base64 @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___heroImage___resize___tracedSVG @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___heroImage___resize___src @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___heroImage___resize___width @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___heroImage___resize___height @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___heroImage___resize___aspectRatio @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___heroImage___parent___id @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___heroImage___parent___children @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___heroImage___children @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___heroImage___children___id @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___heroImage___children___children @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___heroImage___internal___content @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___heroImage___internal___contentDigest @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___heroImage___internal___description @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___heroImage___internal___fieldOwners @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___heroImage___internal___ignoreType @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___heroImage___internal___mediaType @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___heroImage___internal___owner @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  categories___heroImage___internal___type @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
   categories___product
   categories___product___contentful_id
   categories___product___id
@@ -5186,6 +5665,426 @@ type ContentfulProductGroupConnection {
 
 input ContentfulProductSortInput {
   fields: [ContentfulProductFieldsEnum]
+  order: [SortOrderEnum] = [ASC]
+}
+
+input contentfulPageSubheadingTextNodeFilterInput {
+  id: StringQueryOperatorInput
+  parent: NodeFilterInput
+  children: NodeFilterListInput
+  internal: InternalFilterInput
+  subheading: StringQueryOperatorInput
+  sys: contentfulPageSubheadingTextNodeSysFilterInput
+}
+
+input contentfulPageSubheadingTextNodeSysFilterInput {
+  type: StringQueryOperatorInput
+}
+
+input ContentfulPageSysFilterInput {
+  type: StringQueryOperatorInput
+  revision: IntQueryOperatorInput
+  contentType: ContentfulPageSysContentTypeFilterInput
+}
+
+input ContentfulPageSysContentTypeFilterInput {
+  sys: ContentfulPageSysContentTypeSysFilterInput
+}
+
+input ContentfulPageSysContentTypeSysFilterInput {
+  type: StringQueryOperatorInput
+  linkType: StringQueryOperatorInput
+  id: StringQueryOperatorInput
+}
+
+input contentfulPageSubheadingTextNodeFilterListInput {
+  elemMatch: contentfulPageSubheadingTextNodeFilterInput
+}
+
+type ContentfulPageConnection {
+  totalCount: Int!
+  edges: [ContentfulPageEdge!]!
+  nodes: [ContentfulPage!]!
+  pageInfo: PageInfo!
+  distinct(field: ContentfulPageFieldsEnum!): [String!]!
+  group(skip: Int, limit: Int, field: ContentfulPageFieldsEnum!): [ContentfulPageGroupConnection!]!
+}
+
+type ContentfulPageEdge {
+  next: ContentfulPage
+  node: ContentfulPage!
+  previous: ContentfulPage
+}
+
+enum ContentfulPageFieldsEnum {
+  contentful_id
+  id
+  node_locale
+  title
+  subheading___id
+  subheading___parent___id
+  subheading___parent___parent___id
+  subheading___parent___parent___children
+  subheading___parent___children
+  subheading___parent___children___id
+  subheading___parent___children___children
+  subheading___parent___internal___content
+  subheading___parent___internal___contentDigest
+  subheading___parent___internal___description
+  subheading___parent___internal___fieldOwners
+  subheading___parent___internal___ignoreType
+  subheading___parent___internal___mediaType
+  subheading___parent___internal___owner
+  subheading___parent___internal___type
+  subheading___children
+  subheading___children___id
+  subheading___children___parent___id
+  subheading___children___parent___children
+  subheading___children___children
+  subheading___children___children___id
+  subheading___children___children___children
+  subheading___children___internal___content
+  subheading___children___internal___contentDigest
+  subheading___children___internal___description
+  subheading___children___internal___fieldOwners
+  subheading___children___internal___ignoreType
+  subheading___children___internal___mediaType
+  subheading___children___internal___owner
+  subheading___children___internal___type
+  subheading___internal___content
+  subheading___internal___contentDigest
+  subheading___internal___description
+  subheading___internal___fieldOwners
+  subheading___internal___ignoreType
+  subheading___internal___mediaType
+  subheading___internal___owner
+  subheading___internal___type
+  subheading___subheading
+  subheading___sys___type
+  spaceId
+  createdAt
+  updatedAt
+  sys___type
+  sys___revision
+  sys___contentType___sys___type
+  sys___contentType___sys___linkType
+  sys___contentType___sys___id
+  childrenContentfulPageSubheadingTextNode
+  childrenContentfulPageSubheadingTextNode___id
+  childrenContentfulPageSubheadingTextNode___parent___id
+  childrenContentfulPageSubheadingTextNode___parent___parent___id
+  childrenContentfulPageSubheadingTextNode___parent___parent___children
+  childrenContentfulPageSubheadingTextNode___parent___children
+  childrenContentfulPageSubheadingTextNode___parent___children___id
+  childrenContentfulPageSubheadingTextNode___parent___children___children
+  childrenContentfulPageSubheadingTextNode___parent___internal___content
+  childrenContentfulPageSubheadingTextNode___parent___internal___contentDigest
+  childrenContentfulPageSubheadingTextNode___parent___internal___description
+  childrenContentfulPageSubheadingTextNode___parent___internal___fieldOwners
+  childrenContentfulPageSubheadingTextNode___parent___internal___ignoreType
+  childrenContentfulPageSubheadingTextNode___parent___internal___mediaType
+  childrenContentfulPageSubheadingTextNode___parent___internal___owner
+  childrenContentfulPageSubheadingTextNode___parent___internal___type
+  childrenContentfulPageSubheadingTextNode___children
+  childrenContentfulPageSubheadingTextNode___children___id
+  childrenContentfulPageSubheadingTextNode___children___parent___id
+  childrenContentfulPageSubheadingTextNode___children___parent___children
+  childrenContentfulPageSubheadingTextNode___children___children
+  childrenContentfulPageSubheadingTextNode___children___children___id
+  childrenContentfulPageSubheadingTextNode___children___children___children
+  childrenContentfulPageSubheadingTextNode___children___internal___content
+  childrenContentfulPageSubheadingTextNode___children___internal___contentDigest
+  childrenContentfulPageSubheadingTextNode___children___internal___description
+  childrenContentfulPageSubheadingTextNode___children___internal___fieldOwners
+  childrenContentfulPageSubheadingTextNode___children___internal___ignoreType
+  childrenContentfulPageSubheadingTextNode___children___internal___mediaType
+  childrenContentfulPageSubheadingTextNode___children___internal___owner
+  childrenContentfulPageSubheadingTextNode___children___internal___type
+  childrenContentfulPageSubheadingTextNode___internal___content
+  childrenContentfulPageSubheadingTextNode___internal___contentDigest
+  childrenContentfulPageSubheadingTextNode___internal___description
+  childrenContentfulPageSubheadingTextNode___internal___fieldOwners
+  childrenContentfulPageSubheadingTextNode___internal___ignoreType
+  childrenContentfulPageSubheadingTextNode___internal___mediaType
+  childrenContentfulPageSubheadingTextNode___internal___owner
+  childrenContentfulPageSubheadingTextNode___internal___type
+  childrenContentfulPageSubheadingTextNode___subheading
+  childrenContentfulPageSubheadingTextNode___sys___type
+  childContentfulPageSubheadingTextNode___id
+  childContentfulPageSubheadingTextNode___parent___id
+  childContentfulPageSubheadingTextNode___parent___parent___id
+  childContentfulPageSubheadingTextNode___parent___parent___children
+  childContentfulPageSubheadingTextNode___parent___children
+  childContentfulPageSubheadingTextNode___parent___children___id
+  childContentfulPageSubheadingTextNode___parent___children___children
+  childContentfulPageSubheadingTextNode___parent___internal___content
+  childContentfulPageSubheadingTextNode___parent___internal___contentDigest
+  childContentfulPageSubheadingTextNode___parent___internal___description
+  childContentfulPageSubheadingTextNode___parent___internal___fieldOwners
+  childContentfulPageSubheadingTextNode___parent___internal___ignoreType
+  childContentfulPageSubheadingTextNode___parent___internal___mediaType
+  childContentfulPageSubheadingTextNode___parent___internal___owner
+  childContentfulPageSubheadingTextNode___parent___internal___type
+  childContentfulPageSubheadingTextNode___children
+  childContentfulPageSubheadingTextNode___children___id
+  childContentfulPageSubheadingTextNode___children___parent___id
+  childContentfulPageSubheadingTextNode___children___parent___children
+  childContentfulPageSubheadingTextNode___children___children
+  childContentfulPageSubheadingTextNode___children___children___id
+  childContentfulPageSubheadingTextNode___children___children___children
+  childContentfulPageSubheadingTextNode___children___internal___content
+  childContentfulPageSubheadingTextNode___children___internal___contentDigest
+  childContentfulPageSubheadingTextNode___children___internal___description
+  childContentfulPageSubheadingTextNode___children___internal___fieldOwners
+  childContentfulPageSubheadingTextNode___children___internal___ignoreType
+  childContentfulPageSubheadingTextNode___children___internal___mediaType
+  childContentfulPageSubheadingTextNode___children___internal___owner
+  childContentfulPageSubheadingTextNode___children___internal___type
+  childContentfulPageSubheadingTextNode___internal___content
+  childContentfulPageSubheadingTextNode___internal___contentDigest
+  childContentfulPageSubheadingTextNode___internal___description
+  childContentfulPageSubheadingTextNode___internal___fieldOwners
+  childContentfulPageSubheadingTextNode___internal___ignoreType
+  childContentfulPageSubheadingTextNode___internal___mediaType
+  childContentfulPageSubheadingTextNode___internal___owner
+  childContentfulPageSubheadingTextNode___internal___type
+  childContentfulPageSubheadingTextNode___subheading
+  childContentfulPageSubheadingTextNode___sys___type
+  parent___id
+  parent___parent___id
+  parent___parent___parent___id
+  parent___parent___parent___children
+  parent___parent___children
+  parent___parent___children___id
+  parent___parent___children___children
+  parent___parent___internal___content
+  parent___parent___internal___contentDigest
+  parent___parent___internal___description
+  parent___parent___internal___fieldOwners
+  parent___parent___internal___ignoreType
+  parent___parent___internal___mediaType
+  parent___parent___internal___owner
+  parent___parent___internal___type
+  parent___children
+  parent___children___id
+  parent___children___parent___id
+  parent___children___parent___children
+  parent___children___children
+  parent___children___children___id
+  parent___children___children___children
+  parent___children___internal___content
+  parent___children___internal___contentDigest
+  parent___children___internal___description
+  parent___children___internal___fieldOwners
+  parent___children___internal___ignoreType
+  parent___children___internal___mediaType
+  parent___children___internal___owner
+  parent___children___internal___type
+  parent___internal___content
+  parent___internal___contentDigest
+  parent___internal___description
+  parent___internal___fieldOwners
+  parent___internal___ignoreType
+  parent___internal___mediaType
+  parent___internal___owner
+  parent___internal___type
+  children
+  children___id
+  children___parent___id
+  children___parent___parent___id
+  children___parent___parent___children
+  children___parent___children
+  children___parent___children___id
+  children___parent___children___children
+  children___parent___internal___content
+  children___parent___internal___contentDigest
+  children___parent___internal___description
+  children___parent___internal___fieldOwners
+  children___parent___internal___ignoreType
+  children___parent___internal___mediaType
+  children___parent___internal___owner
+  children___parent___internal___type
+  children___children
+  children___children___id
+  children___children___parent___id
+  children___children___parent___children
+  children___children___children
+  children___children___children___id
+  children___children___children___children
+  children___children___internal___content
+  children___children___internal___contentDigest
+  children___children___internal___description
+  children___children___internal___fieldOwners
+  children___children___internal___ignoreType
+  children___children___internal___mediaType
+  children___children___internal___owner
+  children___children___internal___type
+  children___internal___content
+  children___internal___contentDigest
+  children___internal___description
+  children___internal___fieldOwners
+  children___internal___ignoreType
+  children___internal___mediaType
+  children___internal___owner
+  children___internal___type
+  internal___content
+  internal___contentDigest
+  internal___description
+  internal___fieldOwners
+  internal___ignoreType
+  internal___mediaType
+  internal___owner
+  internal___type
+}
+
+type ContentfulPageGroupConnection {
+  totalCount: Int!
+  edges: [ContentfulPageEdge!]!
+  nodes: [ContentfulPage!]!
+  pageInfo: PageInfo!
+  field: String!
+  fieldValue: String
+}
+
+input ContentfulPageFilterInput {
+  contentful_id: StringQueryOperatorInput
+  id: StringQueryOperatorInput
+  node_locale: StringQueryOperatorInput
+  title: StringQueryOperatorInput
+  subheading: contentfulPageSubheadingTextNodeFilterInput
+  spaceId: StringQueryOperatorInput
+  createdAt: DateQueryOperatorInput
+  updatedAt: DateQueryOperatorInput
+  sys: ContentfulPageSysFilterInput
+  childrenContentfulPageSubheadingTextNode: contentfulPageSubheadingTextNodeFilterListInput
+  childContentfulPageSubheadingTextNode: contentfulPageSubheadingTextNodeFilterInput
+  parent: NodeFilterInput
+  children: NodeFilterListInput
+  internal: InternalFilterInput
+}
+
+input ContentfulPageSortInput {
+  fields: [ContentfulPageFieldsEnum]
+  order: [SortOrderEnum] = [ASC]
+}
+
+type contentfulPageSubheadingTextNodeConnection {
+  totalCount: Int!
+  edges: [contentfulPageSubheadingTextNodeEdge!]!
+  nodes: [contentfulPageSubheadingTextNode!]!
+  pageInfo: PageInfo!
+  distinct(field: contentfulPageSubheadingTextNodeFieldsEnum!): [String!]!
+  group(skip: Int, limit: Int, field: contentfulPageSubheadingTextNodeFieldsEnum!): [contentfulPageSubheadingTextNodeGroupConnection!]!
+}
+
+type contentfulPageSubheadingTextNodeEdge {
+  next: contentfulPageSubheadingTextNode
+  node: contentfulPageSubheadingTextNode!
+  previous: contentfulPageSubheadingTextNode
+}
+
+enum contentfulPageSubheadingTextNodeFieldsEnum {
+  id
+  parent___id
+  parent___parent___id
+  parent___parent___parent___id
+  parent___parent___parent___children
+  parent___parent___children
+  parent___parent___children___id
+  parent___parent___children___children
+  parent___parent___internal___content
+  parent___parent___internal___contentDigest
+  parent___parent___internal___description
+  parent___parent___internal___fieldOwners
+  parent___parent___internal___ignoreType
+  parent___parent___internal___mediaType
+  parent___parent___internal___owner
+  parent___parent___internal___type
+  parent___children
+  parent___children___id
+  parent___children___parent___id
+  parent___children___parent___children
+  parent___children___children
+  parent___children___children___id
+  parent___children___children___children
+  parent___children___internal___content
+  parent___children___internal___contentDigest
+  parent___children___internal___description
+  parent___children___internal___fieldOwners
+  parent___children___internal___ignoreType
+  parent___children___internal___mediaType
+  parent___children___internal___owner
+  parent___children___internal___type
+  parent___internal___content
+  parent___internal___contentDigest
+  parent___internal___description
+  parent___internal___fieldOwners
+  parent___internal___ignoreType
+  parent___internal___mediaType
+  parent___internal___owner
+  parent___internal___type
+  children
+  children___id
+  children___parent___id
+  children___parent___parent___id
+  children___parent___parent___children
+  children___parent___children
+  children___parent___children___id
+  children___parent___children___children
+  children___parent___internal___content
+  children___parent___internal___contentDigest
+  children___parent___internal___description
+  children___parent___internal___fieldOwners
+  children___parent___internal___ignoreType
+  children___parent___internal___mediaType
+  children___parent___internal___owner
+  children___parent___internal___type
+  children___children
+  children___children___id
+  children___children___parent___id
+  children___children___parent___children
+  children___children___children
+  children___children___children___id
+  children___children___children___children
+  children___children___internal___content
+  children___children___internal___contentDigest
+  children___children___internal___description
+  children___children___internal___fieldOwners
+  children___children___internal___ignoreType
+  children___children___internal___mediaType
+  children___children___internal___owner
+  children___children___internal___type
+  children___internal___content
+  children___internal___contentDigest
+  children___internal___description
+  children___internal___fieldOwners
+  children___internal___ignoreType
+  children___internal___mediaType
+  children___internal___owner
+  children___internal___type
+  internal___content
+  internal___contentDigest
+  internal___description
+  internal___fieldOwners
+  internal___ignoreType
+  internal___mediaType
+  internal___owner
+  internal___type
+  subheading
+  sys___type
+}
+
+type contentfulPageSubheadingTextNodeGroupConnection {
+  totalCount: Int!
+  edges: [contentfulPageSubheadingTextNodeEdge!]!
+  nodes: [contentfulPageSubheadingTextNode!]!
+  pageInfo: PageInfo!
+  field: String!
+  fieldValue: String
+}
+
+input contentfulPageSubheadingTextNodeSortInput {
+  fields: [contentfulPageSubheadingTextNodeFieldsEnum]
   order: [SortOrderEnum] = [ASC]
 }
 
@@ -6017,6 +6916,7 @@ enum ContentfulContentTypeFieldsEnum {
   internal___type
   name
   displayField
+  description
   sys___type
 }
 
@@ -6036,6 +6936,7 @@ input ContentfulContentTypeFilterInput {
   internal: InternalFilterInput
   name: StringQueryOperatorInput
   displayField: StringQueryOperatorInput
+  description: StringQueryOperatorInput
   sys: ContentfulContentTypeSysFilterInput
 }
 
@@ -6285,8 +7186,6 @@ enum SitePluginFieldsEnum {
   pluginOptions___pageLimit
   pluginOptions___assetDownloadWorkers
   pluginOptions___useNameForId
-  pluginOptions___output
-  pluginOptions___createLinkInHead
   pluginOptions___icon
   pluginOptions___legacy
   pluginOptions___theme_color_in_head
@@ -6300,6 +7199,7 @@ enum SitePluginFieldsEnum {
   pluginOptions___failOnError
   pluginOptions___name
   pluginOptions___path
+  pluginOptions___outputPath
   pluginOptions___emitSchema___src___generated___gatsby_schema_graphql
   pluginOptions___pathCheck
   pluginOptions___allExtensions

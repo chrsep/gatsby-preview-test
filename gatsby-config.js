@@ -1,4 +1,7 @@
 module.exports = {
+  flags: {
+    FAST_DEV: true
+  },
   siteMetadata: {
     title: "gatsby-preview-test",
   },
@@ -33,11 +36,13 @@ module.exports = {
     {
       resolve: `gatsby-plugin-typegen`,
       options: {
+        outputPath: `src/__generated__/gatsby-types.d.ts`,
         emitSchema: {
           "src/__generated__/gatsby-schema.graphql": true,
         },
       },
     },
-    'gatsby-plugin-postcss'
+    'gatsby-plugin-postcss',
+    'gatsby-plugin-layout'
   ],
 };
