@@ -1,3 +1,7 @@
+require("dotenv").config({
+  path: `.env.${process.env.NODE_ENV}`,
+})
+
 module.exports = {
   flags: {
     FAST_DEV: true,
@@ -9,9 +13,9 @@ module.exports = {
     {
       resolve: "gatsby-source-contentful",
       options: {
-        accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
+        accessToken: process.env.CONTENTFUL_ACCESS_TOKEN || process.env.CONTENTFUL_PREVIEW_ACCESS_TOKEN,
         spaceId: process.env.CONTENTFUL_SPACE_ID,
-        host: process.env.CONTENTFUL_HOST,
+        host: process.env.CONTENTFUL_HOST || "cdn.contentful.com",
       },
     },
     "gatsby-plugin-gatsby-cloud",
