@@ -15,4 +15,6 @@
     width: 1px;
     height: 1px;
 }
-
+.carousel-height{
+    max-height:600px;
+}
