@@ -1,6 +1,6 @@
 module.exports = {
   flags: {
-    FAST_DEV: true
+    FAST_DEV: true,
   },
   siteMetadata: {
     title: "gatsby-preview-test",
@@ -9,9 +9,9 @@ module.exports = {
     {
       resolve: "gatsby-source-contentful",
       options: {
-        accessToken: "O-yrYs8rsuih_qbVo8XSxleuR7-JDB26Jl0er-M91Eo",
-        spaceId: "uahr2m12hn5b",
-        host: `preview.contentful.com`,
+        accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
+        spaceId: process.env.CONTENTFUL_SPACE_ID,
+        host: process.env.CONTENTFUL_HOST,
       },
     },
     "gatsby-plugin-gatsby-cloud",
@@ -43,7 +43,7 @@ module.exports = {
         },
       },
     },
-    'gatsby-plugin-postcss',
-    'gatsby-plugin-layout'
+    "gatsby-plugin-postcss",
+    "gatsby-plugin-layout",
   ],
-};
+}
