@@ -7854,6 +7854,14 @@ type SitePluginSortInput = {
   readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
 };
 
+type IndexPageQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type IndexPageQuery = { readonly contentfulPage: Maybe<(
+    Pick<ContentfulPage, 'title'>
+    & { readonly subheading: Maybe<Pick<contentfulPageSubheadingTextNode, 'subheading'>> }
+  )>, readonly allContentfulCategory: { readonly nodes: ReadonlyArray<{ readonly title: Maybe<Pick<contentfulCategoryTitleTextNode, 'title'>> }> }, readonly allContentfulProduct: { readonly nodes: ReadonlyArray<{ readonly productDescription: Maybe<Pick<contentfulProductProductDescriptionTextNode, 'id' | 'productDescription'>> }> } };
+
 type GatsbyContentfulFixedFragment = Pick<ContentfulFixed, 'base64' | 'width' | 'height' | 'src' | 'srcSet'>;
 
 type GatsbyContentfulFixed_tracedSVGFragment = Pick<ContentfulFixed, 'tracedSVG' | 'width' | 'height' | 'src' | 'srcSet'>;
@@ -7873,14 +7881,6 @@ type GatsbyContentfulFluid_noBase64Fragment = Pick<ContentfulFluid, 'aspectRatio
 type GatsbyContentfulFluid_withWebpFragment = Pick<ContentfulFluid, 'base64' | 'aspectRatio' | 'src' | 'srcSet' | 'srcWebp' | 'srcSetWebp' | 'sizes'>;
 
 type GatsbyContentfulFluid_withWebp_noBase64Fragment = Pick<ContentfulFluid, 'aspectRatio' | 'src' | 'srcSet' | 'srcWebp' | 'srcSetWebp' | 'sizes'>;
-
-type IndexPageQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type IndexPageQuery = { readonly contentfulPage: Maybe<(
-    Pick<ContentfulPage, 'title'>
-    & { readonly subheading: Maybe<Pick<contentfulPageSubheadingTextNode, 'subheading'>> }
-  )>, readonly allContentfulCategory: { readonly nodes: ReadonlyArray<{ readonly title: Maybe<Pick<contentfulCategoryTitleTextNode, 'title'>> }> }, readonly allContentfulProduct: { readonly nodes: ReadonlyArray<{ readonly productDescription: Maybe<Pick<contentfulProductProductDescriptionTextNode, 'id' | 'productDescription'>> }> } };
 
 type GatsbyImageSharpFixedFragment = Pick<ImageSharpFixed, 'base64' | 'width' | 'height' | 'src' | 'srcSet'>;
 
