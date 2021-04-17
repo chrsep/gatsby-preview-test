@@ -11,6 +11,7 @@ module.exports = {
       options: {
         accessToken: "O-yrYs8rsuih_qbVo8XSxleuR7-JDB26Jl0er-M91Eo",
         spaceId: "uahr2m12hn5b",
+        host: `preview.contentful.com`,
       },
     },
     "gatsby-plugin-gatsby-cloud",
