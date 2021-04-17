@@ -257,6 +257,8 @@ type Directory_ctimeArgs = {
 type Site = Node & {
   readonly buildTime: Maybe<Scalars['Date']>;
   readonly siteMetadata: Maybe<SiteSiteMetadata>;
+  readonly port: Maybe<Scalars['Int']>;
+  readonly host: Maybe<Scalars['String']>;
   readonly flags: Maybe<SiteFlags>;
   readonly polyfill: Maybe<Scalars['Boolean']>;
   readonly pathPrefix: Maybe<Scalars['String']>;
@@ -750,64 +752,6 @@ type ContentfulResize = {
   readonly aspectRatio: Maybe<Scalars['Float']>;
 };
 
-type ContentfulCategory = ContentfulReference & ContentfulEntry & Node & {
-  readonly contentful_id: Scalars['String'];
-  readonly id: Scalars['ID'];
-  readonly node_locale: Scalars['String'];
-  readonly icon: Maybe<ContentfulAsset>;
-  readonly heroImage: Maybe<ContentfulAsset>;
-  readonly product: Maybe<ReadonlyArray<Maybe<ContentfulProduct>>>;
-  readonly title: Maybe<contentfulCategoryTitleTextNode>;
-  readonly categoryDescription: Maybe<contentfulCategoryCategoryDescriptionTextNode>;
-  readonly spaceId: Maybe<Scalars['String']>;
-  readonly createdAt: Maybe<Scalars['Date']>;
-  readonly updatedAt: Maybe<Scalars['Date']>;
-  readonly sys: Maybe<ContentfulCategorySys>;
-  /** Returns all children nodes filtered by type contentfulCategoryCategoryDescriptionTextNode */
-  readonly childrenContentfulCategoryCategoryDescriptionTextNode: Maybe<ReadonlyArray<Maybe<contentfulCategoryCategoryDescriptionTextNode>>>;
-  /** Returns the first child node of type contentfulCategoryCategoryDescriptionTextNode or null if there are no children of given type on this node */
-  readonly childContentfulCategoryCategoryDescriptionTextNode: Maybe<contentfulCategoryCategoryDescriptionTextNode>;
-  /** Returns all children nodes filtered by type contentfulCategoryTitleTextNode */
-  readonly childrenContentfulCategoryTitleTextNode: Maybe<ReadonlyArray<Maybe<contentfulCategoryTitleTextNode>>>;
-  /** Returns the first child node of type contentfulCategoryTitleTextNode or null if there are no children of given type on this node */
-  readonly childContentfulCategoryTitleTextNode: Maybe<contentfulCategoryTitleTextNode>;
-  readonly parent: Maybe<Node>;
-  readonly children: ReadonlyArray<Node>;
-  readonly internal: Internal;
-};
-
-
-type ContentfulCategory_createdAtArgs = {
-  formatString: Maybe<Scalars['String']>;
-  fromNow: Maybe<Scalars['Boolean']>;
-  difference: Maybe<Scalars['String']>;
-  locale: Maybe<Scalars['String']>;
-};
-
-
-type ContentfulCategory_updatedAtArgs = {
-  formatString: Maybe<Scalars['String']>;
-  fromNow: Maybe<Scalars['Boolean']>;
-  difference: Maybe<Scalars['String']>;
-  locale: Maybe<Scalars['String']>;
-};
-
-type ContentfulCategorySys = {
-  readonly type: Maybe<Scalars['String']>;
-  readonly revision: Maybe<Scalars['Int']>;
-  readonly contentType: Maybe<ContentfulCategorySysContentType>;
-};
-
-type ContentfulCategorySysContentType = {
-  readonly sys: Maybe<ContentfulCategorySysContentTypeSys>;
-};
-
-type ContentfulCategorySysContentTypeSys = {
-  readonly type: Maybe<Scalars['String']>;
-  readonly linkType: Maybe<Scalars['String']>;
-  readonly id: Maybe<Scalars['String']>;
-};
-
 type ContentfulBrand = ContentfulReference & ContentfulEntry & Node & {
   readonly contentful_id: Scalars['String'];
   readonly id: Scalars['ID'];
@@ -863,6 +807,64 @@ type ContentfulBrandSysContentType = {
 };
 
 type ContentfulBrandSysContentTypeSys = {
+  readonly type: Maybe<Scalars['String']>;
+  readonly linkType: Maybe<Scalars['String']>;
+  readonly id: Maybe<Scalars['String']>;
+};
+
+type ContentfulCategory = ContentfulReference & ContentfulEntry & Node & {
+  readonly contentful_id: Scalars['String'];
+  readonly id: Scalars['ID'];
+  readonly node_locale: Scalars['String'];
+  readonly icon: Maybe<ContentfulAsset>;
+  readonly heroImage: Maybe<ContentfulAsset>;
+  readonly product: Maybe<ReadonlyArray<Maybe<ContentfulProduct>>>;
+  readonly title: Maybe<contentfulCategoryTitleTextNode>;
+  readonly categoryDescription: Maybe<contentfulCategoryCategoryDescriptionTextNode>;
+  readonly spaceId: Maybe<Scalars['String']>;
+  readonly createdAt: Maybe<Scalars['Date']>;
+  readonly updatedAt: Maybe<Scalars['Date']>;
+  readonly sys: Maybe<ContentfulCategorySys>;
+  /** Returns all children nodes filtered by type contentfulCategoryCategoryDescriptionTextNode */
+  readonly childrenContentfulCategoryCategoryDescriptionTextNode: Maybe<ReadonlyArray<Maybe<contentfulCategoryCategoryDescriptionTextNode>>>;
+  /** Returns the first child node of type contentfulCategoryCategoryDescriptionTextNode or null if there are no children of given type on this node */
+  readonly childContentfulCategoryCategoryDescriptionTextNode: Maybe<contentfulCategoryCategoryDescriptionTextNode>;
+  /** Returns all children nodes filtered by type contentfulCategoryTitleTextNode */
+  readonly childrenContentfulCategoryTitleTextNode: Maybe<ReadonlyArray<Maybe<contentfulCategoryTitleTextNode>>>;
+  /** Returns the first child node of type contentfulCategoryTitleTextNode or null if there are no children of given type on this node */
+  readonly childContentfulCategoryTitleTextNode: Maybe<contentfulCategoryTitleTextNode>;
+  readonly parent: Maybe<Node>;
+  readonly children: ReadonlyArray<Node>;
+  readonly internal: Internal;
+};
+
+
+type ContentfulCategory_createdAtArgs = {
+  formatString: Maybe<Scalars['String']>;
+  fromNow: Maybe<Scalars['Boolean']>;
+  difference: Maybe<Scalars['String']>;
+  locale: Maybe<Scalars['String']>;
+};
+
+
+type ContentfulCategory_updatedAtArgs = {
+  formatString: Maybe<Scalars['String']>;
+  fromNow: Maybe<Scalars['Boolean']>;
+  difference: Maybe<Scalars['String']>;
+  locale: Maybe<Scalars['String']>;
+};
+
+type ContentfulCategorySys = {
+  readonly type: Maybe<Scalars['String']>;
+  readonly revision: Maybe<Scalars['Int']>;
+  readonly contentType: Maybe<ContentfulCategorySysContentType>;
+};
+
+type ContentfulCategorySysContentType = {
+  readonly sys: Maybe<ContentfulCategorySysContentTypeSys>;
+};
+
+type ContentfulCategorySysContentTypeSys = {
   readonly type: Maybe<Scalars['String']>;
   readonly linkType: Maybe<Scalars['String']>;
   readonly id: Maybe<Scalars['String']>;
@@ -1122,15 +1124,6 @@ type SitePlugin = Node & {
 };
 
 type SitePluginPluginOptions = {
-  readonly accessToken: Maybe<Scalars['String']>;
-  readonly spaceId: Maybe<Scalars['String']>;
-  readonly host: Maybe<Scalars['String']>;
-  readonly environment: Maybe<Scalars['String']>;
-  readonly downloadLocal: Maybe<Scalars['Boolean']>;
-  readonly forceFullSync: Maybe<Scalars['Boolean']>;
-  readonly pageLimit: Maybe<Scalars['Int']>;
-  readonly assetDownloadWorkers: Maybe<Scalars['Int']>;
-  readonly useNameForId: Maybe<Scalars['Boolean']>;
   readonly icon: Maybe<Scalars['String']>;
   readonly legacy: Maybe<Scalars['Boolean']>;
   readonly theme_color_in_head: Maybe<Scalars['Boolean']>;
@@ -1150,6 +1143,15 @@ type SitePluginPluginOptions = {
   readonly allExtensions: Maybe<Scalars['Boolean']>;
   readonly isTSX: Maybe<Scalars['Boolean']>;
   readonly jsxPragma: Maybe<Scalars['String']>;
+  readonly accessToken: Maybe<Scalars['String']>;
+  readonly spaceId: Maybe<Scalars['String']>;
+  readonly host: Maybe<Scalars['String']>;
+  readonly environment: Maybe<Scalars['String']>;
+  readonly downloadLocal: Maybe<Scalars['Boolean']>;
+  readonly forceFullSync: Maybe<Scalars['Boolean']>;
+  readonly pageLimit: Maybe<Scalars['Int']>;
+  readonly assetDownloadWorkers: Maybe<Scalars['Int']>;
+  readonly useNameForId: Maybe<Scalars['Boolean']>;
 };
 
 type SitePluginPluginOptionsEmitSchema = {
@@ -1198,10 +1200,10 @@ type Query = {
   readonly allContentfulEntry: ContentfulEntryConnection;
   readonly contentfulAsset: Maybe<ContentfulAsset>;
   readonly allContentfulAsset: ContentfulAssetConnection;
-  readonly contentfulCategory: Maybe<ContentfulCategory>;
-  readonly allContentfulCategory: ContentfulCategoryConnection;
   readonly contentfulBrand: Maybe<ContentfulBrand>;
   readonly allContentfulBrand: ContentfulBrandConnection;
+  readonly contentfulCategory: Maybe<ContentfulCategory>;
+  readonly allContentfulCategory: ContentfulCategoryConnection;
   readonly contentfulProduct: Maybe<ContentfulProduct>;
   readonly allContentfulProduct: ContentfulProductConnection;
   readonly contentfulPage: Maybe<ContentfulPage>;
@@ -1333,6 +1335,8 @@ type Query_allDirectoryArgs = {
 type Query_siteArgs = {
   buildTime: Maybe<DateQueryOperatorInput>;
   siteMetadata: Maybe<SiteSiteMetadataFilterInput>;
+  port: Maybe<IntQueryOperatorInput>;
+  host: Maybe<StringQueryOperatorInput>;
   flags: Maybe<SiteFlagsFilterInput>;
   polyfill: Maybe<BooleanQueryOperatorInput>;
   pathPrefix: Maybe<StringQueryOperatorInput>;
@@ -1444,37 +1448,6 @@ type Query_allContentfulAssetArgs = {
 };
 
 
-type Query_contentfulCategoryArgs = {
-  contentful_id: Maybe<StringQueryOperatorInput>;
-  id: Maybe<StringQueryOperatorInput>;
-  node_locale: Maybe<StringQueryOperatorInput>;
-  icon: Maybe<ContentfulAssetFilterInput>;
-  heroImage: Maybe<ContentfulAssetFilterInput>;
-  product: Maybe<ContentfulProductFilterListInput>;
-  title: Maybe<contentfulCategoryTitleTextNodeFilterInput>;
-  categoryDescription: Maybe<contentfulCategoryCategoryDescriptionTextNodeFilterInput>;
-  spaceId: Maybe<StringQueryOperatorInput>;
-  createdAt: Maybe<DateQueryOperatorInput>;
-  updatedAt: Maybe<DateQueryOperatorInput>;
-  sys: Maybe<ContentfulCategorySysFilterInput>;
-  childrenContentfulCategoryCategoryDescriptionTextNode: Maybe<contentfulCategoryCategoryDescriptionTextNodeFilterListInput>;
-  childContentfulCategoryCategoryDescriptionTextNode: Maybe<contentfulCategoryCategoryDescriptionTextNodeFilterInput>;
-  childrenContentfulCategoryTitleTextNode: Maybe<contentfulCategoryTitleTextNodeFilterListInput>;
-  childContentfulCategoryTitleTextNode: Maybe<contentfulCategoryTitleTextNodeFilterInput>;
-  parent: Maybe<NodeFilterInput>;
-  children: Maybe<NodeFilterListInput>;
-  internal: Maybe<InternalFilterInput>;
-};
-
-
-type Query_allContentfulCategoryArgs = {
-  filter: Maybe<ContentfulCategoryFilterInput>;
-  sort: Maybe<ContentfulCategorySortInput>;
-  skip: Maybe<Scalars['Int']>;
-  limit: Maybe<Scalars['Int']>;
-};
-
-
 type Query_contentfulBrandArgs = {
   contentful_id: Maybe<StringQueryOperatorInput>;
   id: Maybe<StringQueryOperatorInput>;
@@ -1503,6 +1476,37 @@ type Query_contentfulBrandArgs = {
 type Query_allContentfulBrandArgs = {
   filter: Maybe<ContentfulBrandFilterInput>;
   sort: Maybe<ContentfulBrandSortInput>;
+  skip: Maybe<Scalars['Int']>;
+  limit: Maybe<Scalars['Int']>;
+};
+
+
+type Query_contentfulCategoryArgs = {
+  contentful_id: Maybe<StringQueryOperatorInput>;
+  id: Maybe<StringQueryOperatorInput>;
+  node_locale: Maybe<StringQueryOperatorInput>;
+  icon: Maybe<ContentfulAssetFilterInput>;
+  heroImage: Maybe<ContentfulAssetFilterInput>;
+  product: Maybe<ContentfulProductFilterListInput>;
+  title: Maybe<contentfulCategoryTitleTextNodeFilterInput>;
+  categoryDescription: Maybe<contentfulCategoryCategoryDescriptionTextNodeFilterInput>;
+  spaceId: Maybe<StringQueryOperatorInput>;
+  createdAt: Maybe<DateQueryOperatorInput>;
+  updatedAt: Maybe<DateQueryOperatorInput>;
+  sys: Maybe<ContentfulCategorySysFilterInput>;
+  childrenContentfulCategoryCategoryDescriptionTextNode: Maybe<contentfulCategoryCategoryDescriptionTextNodeFilterListInput>;
+  childContentfulCategoryCategoryDescriptionTextNode: Maybe<contentfulCategoryCategoryDescriptionTextNodeFilterInput>;
+  childrenContentfulCategoryTitleTextNode: Maybe<contentfulCategoryTitleTextNodeFilterListInput>;
+  childContentfulCategoryTitleTextNode: Maybe<contentfulCategoryTitleTextNodeFilterInput>;
+  parent: Maybe<NodeFilterInput>;
+  children: Maybe<NodeFilterListInput>;
+  internal: Maybe<InternalFilterInput>;
+};
+
+
+type Query_allContentfulCategoryArgs = {
+  filter: Maybe<ContentfulCategoryFilterInput>;
+  sort: Maybe<ContentfulCategorySortInput>;
   skip: Maybe<Scalars['Int']>;
   limit: Maybe<Scalars['Int']>;
 };
@@ -2500,6 +2504,8 @@ type SiteFieldsEnum =
   | 'buildTime'
   | 'siteMetadata.title'
   | 'siteMetadata.description'
+  | 'port'
+  | 'host'
   | 'flags.FAST_DEV'
   | 'polyfill'
   | 'pathPrefix'
@@ -2602,6 +2608,8 @@ type SiteGroupConnection = {
 type SiteFilterInput = {
   readonly buildTime: Maybe<DateQueryOperatorInput>;
   readonly siteMetadata: Maybe<SiteSiteMetadataFilterInput>;
+  readonly port: Maybe<IntQueryOperatorInput>;
+  readonly host: Maybe<StringQueryOperatorInput>;
   readonly flags: Maybe<SiteFlagsFilterInput>;
   readonly polyfill: Maybe<BooleanQueryOperatorInput>;
   readonly pathPrefix: Maybe<StringQueryOperatorInput>;
@@ -2633,15 +2641,6 @@ type SitePluginFilterInput = {
 };
 
 type SitePluginPluginOptionsFilterInput = {
-  readonly accessToken: Maybe<StringQueryOperatorInput>;
-  readonly spaceId: Maybe<StringQueryOperatorInput>;
-  readonly host: Maybe<StringQueryOperatorInput>;
-  readonly environment: Maybe<StringQueryOperatorInput>;
-  readonly downloadLocal: Maybe<BooleanQueryOperatorInput>;
-  readonly forceFullSync: Maybe<BooleanQueryOperatorInput>;
-  readonly pageLimit: Maybe<IntQueryOperatorInput>;
-  readonly assetDownloadWorkers: Maybe<IntQueryOperatorInput>;
-  readonly useNameForId: Maybe<BooleanQueryOperatorInput>;
   readonly icon: Maybe<StringQueryOperatorInput>;
   readonly legacy: Maybe<BooleanQueryOperatorInput>;
   readonly theme_color_in_head: Maybe<BooleanQueryOperatorInput>;
@@ -2661,6 +2660,15 @@ type SitePluginPluginOptionsFilterInput = {
   readonly allExtensions: Maybe<BooleanQueryOperatorInput>;
   readonly isTSX: Maybe<BooleanQueryOperatorInput>;
   readonly jsxPragma: Maybe<StringQueryOperatorInput>;
+  readonly accessToken: Maybe<StringQueryOperatorInput>;
+  readonly spaceId: Maybe<StringQueryOperatorInput>;
+  readonly host: Maybe<StringQueryOperatorInput>;
+  readonly environment: Maybe<StringQueryOperatorInput>;
+  readonly downloadLocal: Maybe<BooleanQueryOperatorInput>;
+  readonly forceFullSync: Maybe<BooleanQueryOperatorInput>;
+  readonly pageLimit: Maybe<IntQueryOperatorInput>;
+  readonly assetDownloadWorkers: Maybe<IntQueryOperatorInput>;
+  readonly useNameForId: Maybe<BooleanQueryOperatorInput>;
 };
 
 type SitePluginPluginOptionsEmitSchemaFilterInput = {
@@ -2867,15 +2875,6 @@ type SitePageFieldsEnum =
   | 'pluginCreator.resolve'
   | 'pluginCreator.name'
   | 'pluginCreator.version'
-  | 'pluginCreator.pluginOptions.accessToken'
-  | 'pluginCreator.pluginOptions.spaceId'
-  | 'pluginCreator.pluginOptions.host'
-  | 'pluginCreator.pluginOptions.environment'
-  | 'pluginCreator.pluginOptions.downloadLocal'
-  | 'pluginCreator.pluginOptions.forceFullSync'
-  | 'pluginCreator.pluginOptions.pageLimit'
-  | 'pluginCreator.pluginOptions.assetDownloadWorkers'
-  | 'pluginCreator.pluginOptions.useNameForId'
   | 'pluginCreator.pluginOptions.icon'
   | 'pluginCreator.pluginOptions.legacy'
   | 'pluginCreator.pluginOptions.theme_color_in_head'
@@ -2895,6 +2894,15 @@ type SitePageFieldsEnum =
   | 'pluginCreator.pluginOptions.allExtensions'
   | 'pluginCreator.pluginOptions.isTSX'
   | 'pluginCreator.pluginOptions.jsxPragma'
+  | 'pluginCreator.pluginOptions.accessToken'
+  | 'pluginCreator.pluginOptions.spaceId'
+  | 'pluginCreator.pluginOptions.host'
+  | 'pluginCreator.pluginOptions.environment'
+  | 'pluginCreator.pluginOptions.downloadLocal'
+  | 'pluginCreator.pluginOptions.forceFullSync'
+  | 'pluginCreator.pluginOptions.pageLimit'
+  | 'pluginCreator.pluginOptions.assetDownloadWorkers'
+  | 'pluginCreator.pluginOptions.useNameForId'
   | 'pluginCreator.nodeAPIs'
   | 'pluginCreator.browserAPIs'
   | 'pluginCreator.ssrAPIs'
@@ -3722,6 +3730,685 @@ type contentfulProductProductNameTextNodeFilterListInput = {
   readonly elemMatch: Maybe<contentfulProductProductNameTextNodeFilterInput>;
 };
 
+type ContentfulBrandConnection = {
+  readonly totalCount: Scalars['Int'];
+  readonly edges: ReadonlyArray<ContentfulBrandEdge>;
+  readonly nodes: ReadonlyArray<ContentfulBrand>;
+  readonly pageInfo: PageInfo;
+  readonly distinct: ReadonlyArray<Scalars['String']>;
+  readonly group: ReadonlyArray<ContentfulBrandGroupConnection>;
+};
+
+
+type ContentfulBrandConnection_distinctArgs = {
+  field: ContentfulBrandFieldsEnum;
+};
+
+
+type ContentfulBrandConnection_groupArgs = {
+  skip: Maybe<Scalars['Int']>;
+  limit: Maybe<Scalars['Int']>;
+  field: ContentfulBrandFieldsEnum;
+};
+
+type ContentfulBrandEdge = {
+  readonly next: Maybe<ContentfulBrand>;
+  readonly node: ContentfulBrand;
+  readonly previous: Maybe<ContentfulBrand>;
+};
+
+type ContentfulBrandFieldsEnum =
+  | 'contentful_id'
+  | 'id'
+  | 'node_locale'
+  | 'website'
+  | 'product'
+  | 'product.contentful_id'
+  | 'product.id'
+  | 'product.node_locale'
+  | 'product.slug'
+  | 'product.sizetypecolor'
+  | 'product.tags'
+  | 'product.price'
+  | 'product.quantity'
+  | 'product.sku'
+  | 'product.website'
+  | 'product.categories'
+  | 'product.categories.contentful_id'
+  | 'product.categories.id'
+  | 'product.categories.node_locale'
+  | 'product.categories.icon.contentful_id'
+  | 'product.categories.icon.id'
+  | 'product.categories.icon.spaceId'
+  | 'product.categories.icon.createdAt'
+  | 'product.categories.icon.updatedAt'
+  | 'product.categories.icon.title'
+  | 'product.categories.icon.description'
+  | 'product.categories.icon.node_locale'
+  | 'product.categories.icon.gatsbyImageData'
+  | 'product.categories.icon.children'
+  | 'product.categories.heroImage.contentful_id'
+  | 'product.categories.heroImage.id'
+  | 'product.categories.heroImage.spaceId'
+  | 'product.categories.heroImage.createdAt'
+  | 'product.categories.heroImage.updatedAt'
+  | 'product.categories.heroImage.title'
+  | 'product.categories.heroImage.description'
+  | 'product.categories.heroImage.node_locale'
+  | 'product.categories.heroImage.gatsbyImageData'
+  | 'product.categories.heroImage.children'
+  | 'product.categories.product'
+  | 'product.categories.product.contentful_id'
+  | 'product.categories.product.id'
+  | 'product.categories.product.node_locale'
+  | 'product.categories.product.slug'
+  | 'product.categories.product.sizetypecolor'
+  | 'product.categories.product.tags'
+  | 'product.categories.product.price'
+  | 'product.categories.product.quantity'
+  | 'product.categories.product.sku'
+  | 'product.categories.product.website'
+  | 'product.categories.product.categories'
+  | 'product.categories.product.spaceId'
+  | 'product.categories.product.createdAt'
+  | 'product.categories.product.updatedAt'
+  | 'product.categories.product.childrenContentfulProductProductDescriptionTextNode'
+  | 'product.categories.product.childrenContentfulProductProductNameTextNode'
+  | 'product.categories.product.children'
+  | 'product.categories.title.id'
+  | 'product.categories.title.children'
+  | 'product.categories.title.title'
+  | 'product.categories.categoryDescription.id'
+  | 'product.categories.categoryDescription.children'
+  | 'product.categories.categoryDescription.categoryDescription'
+  | 'product.categories.spaceId'
+  | 'product.categories.createdAt'
+  | 'product.categories.updatedAt'
+  | 'product.categories.sys.type'
+  | 'product.categories.sys.revision'
+  | 'product.categories.childrenContentfulCategoryCategoryDescriptionTextNode'
+  | 'product.categories.childrenContentfulCategoryCategoryDescriptionTextNode.id'
+  | 'product.categories.childrenContentfulCategoryCategoryDescriptionTextNode.children'
+  | 'product.categories.childrenContentfulCategoryCategoryDescriptionTextNode.categoryDescription'
+  | 'product.categories.childContentfulCategoryCategoryDescriptionTextNode.id'
+  | 'product.categories.childContentfulCategoryCategoryDescriptionTextNode.children'
+  | 'product.categories.childContentfulCategoryCategoryDescriptionTextNode.categoryDescription'
+  | 'product.categories.childrenContentfulCategoryTitleTextNode'
+  | 'product.categories.childrenContentfulCategoryTitleTextNode.id'
+  | 'product.categories.childrenContentfulCategoryTitleTextNode.children'
+  | 'product.categories.childrenContentfulCategoryTitleTextNode.title'
+  | 'product.categories.childContentfulCategoryTitleTextNode.id'
+  | 'product.categories.childContentfulCategoryTitleTextNode.children'
+  | 'product.categories.childContentfulCategoryTitleTextNode.title'
+  | 'product.categories.parent.id'
+  | 'product.categories.parent.children'
+  | 'product.categories.children'
+  | 'product.categories.children.id'
+  | 'product.categories.children.children'
+  | 'product.categories.internal.content'
+  | 'product.categories.internal.contentDigest'
+  | 'product.categories.internal.description'
+  | 'product.categories.internal.fieldOwners'
+  | 'product.categories.internal.ignoreType'
+  | 'product.categories.internal.mediaType'
+  | 'product.categories.internal.owner'
+  | 'product.categories.internal.type'
+  | 'product.brand.contentful_id'
+  | 'product.brand.id'
+  | 'product.brand.node_locale'
+  | 'product.brand.website'
+  | 'product.brand.product'
+  | 'product.brand.product.contentful_id'
+  | 'product.brand.product.id'
+  | 'product.brand.product.node_locale'
+  | 'product.brand.product.slug'
+  | 'product.brand.product.sizetypecolor'
+  | 'product.brand.product.tags'
+  | 'product.brand.product.price'
+  | 'product.brand.product.quantity'
+  | 'product.brand.product.sku'
+  | 'product.brand.product.website'
+  | 'product.brand.product.categories'
+  | 'product.brand.product.spaceId'
+  | 'product.brand.product.createdAt'
+  | 'product.brand.product.updatedAt'
+  | 'product.brand.product.childrenContentfulProductProductDescriptionTextNode'
+  | 'product.brand.product.childrenContentfulProductProductNameTextNode'
+  | 'product.brand.product.children'
+  | 'product.brand.companyName.id'
+  | 'product.brand.companyName.children'
+  | 'product.brand.companyName.companyName'
+  | 'product.brand.companyDescription.id'
+  | 'product.brand.companyDescription.children'
+  | 'product.brand.companyDescription.companyDescription'
+  | 'product.brand.spaceId'
+  | 'product.brand.createdAt'
+  | 'product.brand.updatedAt'
+  | 'product.brand.sys.type'
+  | 'product.brand.sys.revision'
+  | 'product.brand.email'
+  | 'product.brand.phone'
+  | 'product.brand.twitter'
+  | 'product.brand.childrenContentfulBrandCompanyDescriptionTextNode'
+  | 'product.brand.childrenContentfulBrandCompanyDescriptionTextNode.id'
+  | 'product.brand.childrenContentfulBrandCompanyDescriptionTextNode.children'
+  | 'product.brand.childrenContentfulBrandCompanyDescriptionTextNode.companyDescription'
+  | 'product.brand.childContentfulBrandCompanyDescriptionTextNode.id'
+  | 'product.brand.childContentfulBrandCompanyDescriptionTextNode.children'
+  | 'product.brand.childContentfulBrandCompanyDescriptionTextNode.companyDescription'
+  | 'product.brand.childrenContentfulBrandCompanyNameTextNode'
+  | 'product.brand.childrenContentfulBrandCompanyNameTextNode.id'
+  | 'product.brand.childrenContentfulBrandCompanyNameTextNode.children'
+  | 'product.brand.childrenContentfulBrandCompanyNameTextNode.companyName'
+  | 'product.brand.childContentfulBrandCompanyNameTextNode.id'
+  | 'product.brand.childContentfulBrandCompanyNameTextNode.children'
+  | 'product.brand.childContentfulBrandCompanyNameTextNode.companyName'
+  | 'product.brand.parent.id'
+  | 'product.brand.parent.children'
+  | 'product.brand.children'
+  | 'product.brand.children.id'
+  | 'product.brand.children.children'
+  | 'product.brand.internal.content'
+  | 'product.brand.internal.contentDigest'
+  | 'product.brand.internal.description'
+  | 'product.brand.internal.fieldOwners'
+  | 'product.brand.internal.ignoreType'
+  | 'product.brand.internal.mediaType'
+  | 'product.brand.internal.owner'
+  | 'product.brand.internal.type'
+  | 'product.productName.id'
+  | 'product.productName.parent.id'
+  | 'product.productName.parent.children'
+  | 'product.productName.children'
+  | 'product.productName.children.id'
+  | 'product.productName.children.children'
+  | 'product.productName.internal.content'
+  | 'product.productName.internal.contentDigest'
+  | 'product.productName.internal.description'
+  | 'product.productName.internal.fieldOwners'
+  | 'product.productName.internal.ignoreType'
+  | 'product.productName.internal.mediaType'
+  | 'product.productName.internal.owner'
+  | 'product.productName.internal.type'
+  | 'product.productName.productName'
+  | 'product.productName.sys.type'
+  | 'product.productDescription.id'
+  | 'product.productDescription.parent.id'
+  | 'product.productDescription.parent.children'
+  | 'product.productDescription.children'
+  | 'product.productDescription.children.id'
+  | 'product.productDescription.children.children'
+  | 'product.productDescription.internal.content'
+  | 'product.productDescription.internal.contentDigest'
+  | 'product.productDescription.internal.description'
+  | 'product.productDescription.internal.fieldOwners'
+  | 'product.productDescription.internal.ignoreType'
+  | 'product.productDescription.internal.mediaType'
+  | 'product.productDescription.internal.owner'
+  | 'product.productDescription.internal.type'
+  | 'product.productDescription.productDescription'
+  | 'product.productDescription.sys.type'
+  | 'product.spaceId'
+  | 'product.createdAt'
+  | 'product.updatedAt'
+  | 'product.sys.type'
+  | 'product.sys.revision'
+  | 'product.childrenContentfulProductProductDescriptionTextNode'
+  | 'product.childrenContentfulProductProductDescriptionTextNode.id'
+  | 'product.childrenContentfulProductProductDescriptionTextNode.parent.id'
+  | 'product.childrenContentfulProductProductDescriptionTextNode.parent.children'
+  | 'product.childrenContentfulProductProductDescriptionTextNode.children'
+  | 'product.childrenContentfulProductProductDescriptionTextNode.children.id'
+  | 'product.childrenContentfulProductProductDescriptionTextNode.children.children'
+  | 'product.childrenContentfulProductProductDescriptionTextNode.internal.content'
+  | 'product.childrenContentfulProductProductDescriptionTextNode.internal.contentDigest'
+  | 'product.childrenContentfulProductProductDescriptionTextNode.internal.description'
+  | 'product.childrenContentfulProductProductDescriptionTextNode.internal.fieldOwners'
+  | 'product.childrenContentfulProductProductDescriptionTextNode.internal.ignoreType'
+  | 'product.childrenContentfulProductProductDescriptionTextNode.internal.mediaType'
+  | 'product.childrenContentfulProductProductDescriptionTextNode.internal.owner'
+  | 'product.childrenContentfulProductProductDescriptionTextNode.internal.type'
+  | 'product.childrenContentfulProductProductDescriptionTextNode.productDescription'
+  | 'product.childrenContentfulProductProductDescriptionTextNode.sys.type'
+  | 'product.childContentfulProductProductDescriptionTextNode.id'
+  | 'product.childContentfulProductProductDescriptionTextNode.parent.id'
+  | 'product.childContentfulProductProductDescriptionTextNode.parent.children'
+  | 'product.childContentfulProductProductDescriptionTextNode.children'
+  | 'product.childContentfulProductProductDescriptionTextNode.children.id'
+  | 'product.childContentfulProductProductDescriptionTextNode.children.children'
+  | 'product.childContentfulProductProductDescriptionTextNode.internal.content'
+  | 'product.childContentfulProductProductDescriptionTextNode.internal.contentDigest'
+  | 'product.childContentfulProductProductDescriptionTextNode.internal.description'
+  | 'product.childContentfulProductProductDescriptionTextNode.internal.fieldOwners'
+  | 'product.childContentfulProductProductDescriptionTextNode.internal.ignoreType'
+  | 'product.childContentfulProductProductDescriptionTextNode.internal.mediaType'
+  | 'product.childContentfulProductProductDescriptionTextNode.internal.owner'
+  | 'product.childContentfulProductProductDescriptionTextNode.internal.type'
+  | 'product.childContentfulProductProductDescriptionTextNode.productDescription'
+  | 'product.childContentfulProductProductDescriptionTextNode.sys.type'
+  | 'product.childrenContentfulProductProductNameTextNode'
+  | 'product.childrenContentfulProductProductNameTextNode.id'
+  | 'product.childrenContentfulProductProductNameTextNode.parent.id'
+  | 'product.childrenContentfulProductProductNameTextNode.parent.children'
+  | 'product.childrenContentfulProductProductNameTextNode.children'
+  | 'product.childrenContentfulProductProductNameTextNode.children.id'
+  | 'product.childrenContentfulProductProductNameTextNode.children.children'
+  | 'product.childrenContentfulProductProductNameTextNode.internal.content'
+  | 'product.childrenContentfulProductProductNameTextNode.internal.contentDigest'
+  | 'product.childrenContentfulProductProductNameTextNode.internal.description'
+  | 'product.childrenContentfulProductProductNameTextNode.internal.fieldOwners'
+  | 'product.childrenContentfulProductProductNameTextNode.internal.ignoreType'
+  | 'product.childrenContentfulProductProductNameTextNode.internal.mediaType'
+  | 'product.childrenContentfulProductProductNameTextNode.internal.owner'
+  | 'product.childrenContentfulProductProductNameTextNode.internal.type'
+  | 'product.childrenContentfulProductProductNameTextNode.productName'
+  | 'product.childrenContentfulProductProductNameTextNode.sys.type'
+  | 'product.childContentfulProductProductNameTextNode.id'
+  | 'product.childContentfulProductProductNameTextNode.parent.id'
+  | 'product.childContentfulProductProductNameTextNode.parent.children'
+  | 'product.childContentfulProductProductNameTextNode.children'
+  | 'product.childContentfulProductProductNameTextNode.children.id'
+  | 'product.childContentfulProductProductNameTextNode.children.children'
+  | 'product.childContentfulProductProductNameTextNode.internal.content'
+  | 'product.childContentfulProductProductNameTextNode.internal.contentDigest'
+  | 'product.childContentfulProductProductNameTextNode.internal.description'
+  | 'product.childContentfulProductProductNameTextNode.internal.fieldOwners'
+  | 'product.childContentfulProductProductNameTextNode.internal.ignoreType'
+  | 'product.childContentfulProductProductNameTextNode.internal.mediaType'
+  | 'product.childContentfulProductProductNameTextNode.internal.owner'
+  | 'product.childContentfulProductProductNameTextNode.internal.type'
+  | 'product.childContentfulProductProductNameTextNode.productName'
+  | 'product.childContentfulProductProductNameTextNode.sys.type'
+  | 'product.parent.id'
+  | 'product.parent.parent.id'
+  | 'product.parent.parent.children'
+  | 'product.parent.children'
+  | 'product.parent.children.id'
+  | 'product.parent.children.children'
+  | 'product.parent.internal.content'
+  | 'product.parent.internal.contentDigest'
+  | 'product.parent.internal.description'
+  | 'product.parent.internal.fieldOwners'
+  | 'product.parent.internal.ignoreType'
+  | 'product.parent.internal.mediaType'
+  | 'product.parent.internal.owner'
+  | 'product.parent.internal.type'
+  | 'product.children'
+  | 'product.children.id'
+  | 'product.children.parent.id'
+  | 'product.children.parent.children'
+  | 'product.children.children'
+  | 'product.children.children.id'
+  | 'product.children.children.children'
+  | 'product.children.internal.content'
+  | 'product.children.internal.contentDigest'
+  | 'product.children.internal.description'
+  | 'product.children.internal.fieldOwners'
+  | 'product.children.internal.ignoreType'
+  | 'product.children.internal.mediaType'
+  | 'product.children.internal.owner'
+  | 'product.children.internal.type'
+  | 'product.internal.content'
+  | 'product.internal.contentDigest'
+  | 'product.internal.description'
+  | 'product.internal.fieldOwners'
+  | 'product.internal.ignoreType'
+  | 'product.internal.mediaType'
+  | 'product.internal.owner'
+  | 'product.internal.type'
+  | 'companyName.id'
+  | 'companyName.parent.id'
+  | 'companyName.parent.parent.id'
+  | 'companyName.parent.parent.children'
+  | 'companyName.parent.children'
+  | 'companyName.parent.children.id'
+  | 'companyName.parent.children.children'
+  | 'companyName.parent.internal.content'
+  | 'companyName.parent.internal.contentDigest'
+  | 'companyName.parent.internal.description'
+  | 'companyName.parent.internal.fieldOwners'
+  | 'companyName.parent.internal.ignoreType'
+  | 'companyName.parent.internal.mediaType'
+  | 'companyName.parent.internal.owner'
+  | 'companyName.parent.internal.type'
+  | 'companyName.children'
+  | 'companyName.children.id'
+  | 'companyName.children.parent.id'
+  | 'companyName.children.parent.children'
+  | 'companyName.children.children'
+  | 'companyName.children.children.id'
+  | 'companyName.children.children.children'
+  | 'companyName.children.internal.content'
+  | 'companyName.children.internal.contentDigest'
+  | 'companyName.children.internal.description'
+  | 'companyName.children.internal.fieldOwners'
+  | 'companyName.children.internal.ignoreType'
+  | 'companyName.children.internal.mediaType'
+  | 'companyName.children.internal.owner'
+  | 'companyName.children.internal.type'
+  | 'companyName.internal.content'
+  | 'companyName.internal.contentDigest'
+  | 'companyName.internal.description'
+  | 'companyName.internal.fieldOwners'
+  | 'companyName.internal.ignoreType'
+  | 'companyName.internal.mediaType'
+  | 'companyName.internal.owner'
+  | 'companyName.internal.type'
+  | 'companyName.companyName'
+  | 'companyName.sys.type'
+  | 'companyDescription.id'
+  | 'companyDescription.parent.id'
+  | 'companyDescription.parent.parent.id'
+  | 'companyDescription.parent.parent.children'
+  | 'companyDescription.parent.children'
+  | 'companyDescription.parent.children.id'
+  | 'companyDescription.parent.children.children'
+  | 'companyDescription.parent.internal.content'
+  | 'companyDescription.parent.internal.contentDigest'
+  | 'companyDescription.parent.internal.description'
+  | 'companyDescription.parent.internal.fieldOwners'
+  | 'companyDescription.parent.internal.ignoreType'
+  | 'companyDescription.parent.internal.mediaType'
+  | 'companyDescription.parent.internal.owner'
+  | 'companyDescription.parent.internal.type'
+  | 'companyDescription.children'
+  | 'companyDescription.children.id'
+  | 'companyDescription.children.parent.id'
+  | 'companyDescription.children.parent.children'
+  | 'companyDescription.children.children'
+  | 'companyDescription.children.children.id'
+  | 'companyDescription.children.children.children'
+  | 'companyDescription.children.internal.content'
+  | 'companyDescription.children.internal.contentDigest'
+  | 'companyDescription.children.internal.description'
+  | 'companyDescription.children.internal.fieldOwners'
+  | 'companyDescription.children.internal.ignoreType'
+  | 'companyDescription.children.internal.mediaType'
+  | 'companyDescription.children.internal.owner'
+  | 'companyDescription.children.internal.type'
+  | 'companyDescription.internal.content'
+  | 'companyDescription.internal.contentDigest'
+  | 'companyDescription.internal.description'
+  | 'companyDescription.internal.fieldOwners'
+  | 'companyDescription.internal.ignoreType'
+  | 'companyDescription.internal.mediaType'
+  | 'companyDescription.internal.owner'
+  | 'companyDescription.internal.type'
+  | 'companyDescription.companyDescription'
+  | 'companyDescription.sys.type'
+  | 'spaceId'
+  | 'createdAt'
+  | 'updatedAt'
+  | 'sys.type'
+  | 'sys.revision'
+  | 'sys.contentType.sys.type'
+  | 'sys.contentType.sys.linkType'
+  | 'sys.contentType.sys.id'
+  | 'email'
+  | 'phone'
+  | 'twitter'
+  | 'childrenContentfulBrandCompanyDescriptionTextNode'
+  | 'childrenContentfulBrandCompanyDescriptionTextNode.id'
+  | 'childrenContentfulBrandCompanyDescriptionTextNode.parent.id'
+  | 'childrenContentfulBrandCompanyDescriptionTextNode.parent.parent.id'
+  | 'childrenContentfulBrandCompanyDescriptionTextNode.parent.parent.children'
+  | 'childrenContentfulBrandCompanyDescriptionTextNode.parent.children'
+  | 'childrenContentfulBrandCompanyDescriptionTextNode.parent.children.id'
+  | 'childrenContentfulBrandCompanyDescriptionTextNode.parent.children.children'
+  | 'childrenContentfulBrandCompanyDescriptionTextNode.parent.internal.content'
+  | 'childrenContentfulBrandCompanyDescriptionTextNode.parent.internal.contentDigest'
+  | 'childrenContentfulBrandCompanyDescriptionTextNode.parent.internal.description'
+  | 'childrenContentfulBrandCompanyDescriptionTextNode.parent.internal.fieldOwners'
+  | 'childrenContentfulBrandCompanyDescriptionTextNode.parent.internal.ignoreType'
+  | 'childrenContentfulBrandCompanyDescriptionTextNode.parent.internal.mediaType'
+  | 'childrenContentfulBrandCompanyDescriptionTextNode.parent.internal.owner'
+  | 'childrenContentfulBrandCompanyDescriptionTextNode.parent.internal.type'
+  | 'childrenContentfulBrandCompanyDescriptionTextNode.children'
+  | 'childrenContentfulBrandCompanyDescriptionTextNode.children.id'
+  | 'childrenContentfulBrandCompanyDescriptionTextNode.children.parent.id'
+  | 'childrenContentfulBrandCompanyDescriptionTextNode.children.parent.children'
+  | 'childrenContentfulBrandCompanyDescriptionTextNode.children.children'
+  | 'childrenContentfulBrandCompanyDescriptionTextNode.children.children.id'
+  | 'childrenContentfulBrandCompanyDescriptionTextNode.children.children.children'
+  | 'childrenContentfulBrandCompanyDescriptionTextNode.children.internal.content'
+  | 'childrenContentfulBrandCompanyDescriptionTextNode.children.internal.contentDigest'
+  | 'childrenContentfulBrandCompanyDescriptionTextNode.children.internal.description'
+  | 'childrenContentfulBrandCompanyDescriptionTextNode.children.internal.fieldOwners'
+  | 'childrenContentfulBrandCompanyDescriptionTextNode.children.internal.ignoreType'
+  | 'childrenContentfulBrandCompanyDescriptionTextNode.children.internal.mediaType'
+  | 'childrenContentfulBrandCompanyDescriptionTextNode.children.internal.owner'
+  | 'childrenContentfulBrandCompanyDescriptionTextNode.children.internal.type'
+  | 'childrenContentfulBrandCompanyDescriptionTextNode.internal.content'
+  | 'childrenContentfulBrandCompanyDescriptionTextNode.internal.contentDigest'
+  | 'childrenContentfulBrandCompanyDescriptionTextNode.internal.description'
+  | 'childrenContentfulBrandCompanyDescriptionTextNode.internal.fieldOwners'
+  | 'childrenContentfulBrandCompanyDescriptionTextNode.internal.ignoreType'
+  | 'childrenContentfulBrandCompanyDescriptionTextNode.internal.mediaType'
+  | 'childrenContentfulBrandCompanyDescriptionTextNode.internal.owner'
+  | 'childrenContentfulBrandCompanyDescriptionTextNode.internal.type'
+  | 'childrenContentfulBrandCompanyDescriptionTextNode.companyDescription'
+  | 'childrenContentfulBrandCompanyDescriptionTextNode.sys.type'
+  | 'childContentfulBrandCompanyDescriptionTextNode.id'
+  | 'childContentfulBrandCompanyDescriptionTextNode.parent.id'
+  | 'childContentfulBrandCompanyDescriptionTextNode.parent.parent.id'
+  | 'childContentfulBrandCompanyDescriptionTextNode.parent.parent.children'
+  | 'childContentfulBrandCompanyDescriptionTextNode.parent.children'
+  | 'childContentfulBrandCompanyDescriptionTextNode.parent.children.id'
+  | 'childContentfulBrandCompanyDescriptionTextNode.parent.children.children'
+  | 'childContentfulBrandCompanyDescriptionTextNode.parent.internal.content'
+  | 'childContentfulBrandCompanyDescriptionTextNode.parent.internal.contentDigest'
+  | 'childContentfulBrandCompanyDescriptionTextNode.parent.internal.description'
+  | 'childContentfulBrandCompanyDescriptionTextNode.parent.internal.fieldOwners'
+  | 'childContentfulBrandCompanyDescriptionTextNode.parent.internal.ignoreType'
+  | 'childContentfulBrandCompanyDescriptionTextNode.parent.internal.mediaType'
+  | 'childContentfulBrandCompanyDescriptionTextNode.parent.internal.owner'
+  | 'childContentfulBrandCompanyDescriptionTextNode.parent.internal.type'
+  | 'childContentfulBrandCompanyDescriptionTextNode.children'
+  | 'childContentfulBrandCompanyDescriptionTextNode.children.id'
+  | 'childContentfulBrandCompanyDescriptionTextNode.children.parent.id'
+  | 'childContentfulBrandCompanyDescriptionTextNode.children.parent.children'
+  | 'childContentfulBrandCompanyDescriptionTextNode.children.children'
+  | 'childContentfulBrandCompanyDescriptionTextNode.children.children.id'
+  | 'childContentfulBrandCompanyDescriptionTextNode.children.children.children'
+  | 'childContentfulBrandCompanyDescriptionTextNode.children.internal.content'
+  | 'childContentfulBrandCompanyDescriptionTextNode.children.internal.contentDigest'
+  | 'childContentfulBrandCompanyDescriptionTextNode.children.internal.description'
+  | 'childContentfulBrandCompanyDescriptionTextNode.children.internal.fieldOwners'
+  | 'childContentfulBrandCompanyDescriptionTextNode.children.internal.ignoreType'
+  | 'childContentfulBrandCompanyDescriptionTextNode.children.internal.mediaType'
+  | 'childContentfulBrandCompanyDescriptionTextNode.children.internal.owner'
+  | 'childContentfulBrandCompanyDescriptionTextNode.children.internal.type'
+  | 'childContentfulBrandCompanyDescriptionTextNode.internal.content'
+  | 'childContentfulBrandCompanyDescriptionTextNode.internal.contentDigest'
+  | 'childContentfulBrandCompanyDescriptionTextNode.internal.description'
+  | 'childContentfulBrandCompanyDescriptionTextNode.internal.fieldOwners'
+  | 'childContentfulBrandCompanyDescriptionTextNode.internal.ignoreType'
+  | 'childContentfulBrandCompanyDescriptionTextNode.internal.mediaType'
+  | 'childContentfulBrandCompanyDescriptionTextNode.internal.owner'
+  | 'childContentfulBrandCompanyDescriptionTextNode.internal.type'
+  | 'childContentfulBrandCompanyDescriptionTextNode.companyDescription'
+  | 'childContentfulBrandCompanyDescriptionTextNode.sys.type'
+  | 'childrenContentfulBrandCompanyNameTextNode'
+  | 'childrenContentfulBrandCompanyNameTextNode.id'
+  | 'childrenContentfulBrandCompanyNameTextNode.parent.id'
+  | 'childrenContentfulBrandCompanyNameTextNode.parent.parent.id'
+  | 'childrenContentfulBrandCompanyNameTextNode.parent.parent.children'
+  | 'childrenContentfulBrandCompanyNameTextNode.parent.children'
+  | 'childrenContentfulBrandCompanyNameTextNode.parent.children.id'
+  | 'childrenContentfulBrandCompanyNameTextNode.parent.children.children'
+  | 'childrenContentfulBrandCompanyNameTextNode.parent.internal.content'
+  | 'childrenContentfulBrandCompanyNameTextNode.parent.internal.contentDigest'
+  | 'childrenContentfulBrandCompanyNameTextNode.parent.internal.description'
+  | 'childrenContentfulBrandCompanyNameTextNode.parent.internal.fieldOwners'
+  | 'childrenContentfulBrandCompanyNameTextNode.parent.internal.ignoreType'
+  | 'childrenContentfulBrandCompanyNameTextNode.parent.internal.mediaType'
+  | 'childrenContentfulBrandCompanyNameTextNode.parent.internal.owner'
+  | 'childrenContentfulBrandCompanyNameTextNode.parent.internal.type'
+  | 'childrenContentfulBrandCompanyNameTextNode.children'
+  | 'childrenContentfulBrandCompanyNameTextNode.children.id'
+  | 'childrenContentfulBrandCompanyNameTextNode.children.parent.id'
+  | 'childrenContentfulBrandCompanyNameTextNode.children.parent.children'
+  | 'childrenContentfulBrandCompanyNameTextNode.children.children'
+  | 'childrenContentfulBrandCompanyNameTextNode.children.children.id'
+  | 'childrenContentfulBrandCompanyNameTextNode.children.children.children'
+  | 'childrenContentfulBrandCompanyNameTextNode.children.internal.content'
+  | 'childrenContentfulBrandCompanyNameTextNode.children.internal.contentDigest'
+  | 'childrenContentfulBrandCompanyNameTextNode.children.internal.description'
+  | 'childrenContentfulBrandCompanyNameTextNode.children.internal.fieldOwners'
+  | 'childrenContentfulBrandCompanyNameTextNode.children.internal.ignoreType'
+  | 'childrenContentfulBrandCompanyNameTextNode.children.internal.mediaType'
+  | 'childrenContentfulBrandCompanyNameTextNode.children.internal.owner'
+  | 'childrenContentfulBrandCompanyNameTextNode.children.internal.type'
+  | 'childrenContentfulBrandCompanyNameTextNode.internal.content'
+  | 'childrenContentfulBrandCompanyNameTextNode.internal.contentDigest'
+  | 'childrenContentfulBrandCompanyNameTextNode.internal.description'
+  | 'childrenContentfulBrandCompanyNameTextNode.internal.fieldOwners'
+  | 'childrenContentfulBrandCompanyNameTextNode.internal.ignoreType'
+  | 'childrenContentfulBrandCompanyNameTextNode.internal.mediaType'
+  | 'childrenContentfulBrandCompanyNameTextNode.internal.owner'
+  | 'childrenContentfulBrandCompanyNameTextNode.internal.type'
+  | 'childrenContentfulBrandCompanyNameTextNode.companyName'
+  | 'childrenContentfulBrandCompanyNameTextNode.sys.type'
+  | 'childContentfulBrandCompanyNameTextNode.id'
+  | 'childContentfulBrandCompanyNameTextNode.parent.id'
+  | 'childContentfulBrandCompanyNameTextNode.parent.parent.id'
+  | 'childContentfulBrandCompanyNameTextNode.parent.parent.children'
+  | 'childContentfulBrandCompanyNameTextNode.parent.children'
+  | 'childContentfulBrandCompanyNameTextNode.parent.children.id'
+  | 'childContentfulBrandCompanyNameTextNode.parent.children.children'
+  | 'childContentfulBrandCompanyNameTextNode.parent.internal.content'
+  | 'childContentfulBrandCompanyNameTextNode.parent.internal.contentDigest'
+  | 'childContentfulBrandCompanyNameTextNode.parent.internal.description'
+  | 'childContentfulBrandCompanyNameTextNode.parent.internal.fieldOwners'
+  | 'childContentfulBrandCompanyNameTextNode.parent.internal.ignoreType'
+  | 'childContentfulBrandCompanyNameTextNode.parent.internal.mediaType'
+  | 'childContentfulBrandCompanyNameTextNode.parent.internal.owner'
+  | 'childContentfulBrandCompanyNameTextNode.parent.internal.type'
+  | 'childContentfulBrandCompanyNameTextNode.children'
+  | 'childContentfulBrandCompanyNameTextNode.children.id'
+  | 'childContentfulBrandCompanyNameTextNode.children.parent.id'
+  | 'childContentfulBrandCompanyNameTextNode.children.parent.children'
+  | 'childContentfulBrandCompanyNameTextNode.children.children'
+  | 'childContentfulBrandCompanyNameTextNode.children.children.id'
+  | 'childContentfulBrandCompanyNameTextNode.children.children.children'
+  | 'childContentfulBrandCompanyNameTextNode.children.internal.content'
+  | 'childContentfulBrandCompanyNameTextNode.children.internal.contentDigest'
+  | 'childContentfulBrandCompanyNameTextNode.children.internal.description'
+  | 'childContentfulBrandCompanyNameTextNode.children.internal.fieldOwners'
+  | 'childContentfulBrandCompanyNameTextNode.children.internal.ignoreType'
+  | 'childContentfulBrandCompanyNameTextNode.children.internal.mediaType'
+  | 'childContentfulBrandCompanyNameTextNode.children.internal.owner'
+  | 'childContentfulBrandCompanyNameTextNode.children.internal.type'
+  | 'childContentfulBrandCompanyNameTextNode.internal.content'
+  | 'childContentfulBrandCompanyNameTextNode.internal.contentDigest'
+  | 'childContentfulBrandCompanyNameTextNode.internal.description'
+  | 'childContentfulBrandCompanyNameTextNode.internal.fieldOwners'
+  | 'childContentfulBrandCompanyNameTextNode.internal.ignoreType'
+  | 'childContentfulBrandCompanyNameTextNode.internal.mediaType'
+  | 'childContentfulBrandCompanyNameTextNode.internal.owner'
+  | 'childContentfulBrandCompanyNameTextNode.internal.type'
+  | 'childContentfulBrandCompanyNameTextNode.companyName'
+  | 'childContentfulBrandCompanyNameTextNode.sys.type'
+  | 'parent.id'
+  | 'parent.parent.id'
+  | 'parent.parent.parent.id'
+  | 'parent.parent.parent.children'
+  | 'parent.parent.children'
+  | 'parent.parent.children.id'
+  | 'parent.parent.children.children'
+  | 'parent.parent.internal.content'
+  | 'parent.parent.internal.contentDigest'
+  | 'parent.parent.internal.description'
+  | 'parent.parent.internal.fieldOwners'
+  | 'parent.parent.internal.ignoreType'
+  | 'parent.parent.internal.mediaType'
+  | 'parent.parent.internal.owner'
+  | 'parent.parent.internal.type'
+  | 'parent.children'
+  | 'parent.children.id'
+  | 'parent.children.parent.id'
+  | 'parent.children.parent.children'
+  | 'parent.children.children'
+  | 'parent.children.children.id'
+  | 'parent.children.children.children'
+  | 'parent.children.internal.content'
+  | 'parent.children.internal.contentDigest'
+  | 'parent.children.internal.description'
+  | 'parent.children.internal.fieldOwners'
+  | 'parent.children.internal.ignoreType'
+  | 'parent.children.internal.mediaType'
+  | 'parent.children.internal.owner'
+  | 'parent.children.internal.type'
+  | 'parent.internal.content'
+  | 'parent.internal.contentDigest'
+  | 'parent.internal.description'
+  | 'parent.internal.fieldOwners'
+  | 'parent.internal.ignoreType'
+  | 'parent.internal.mediaType'
+  | 'parent.internal.owner'
+  | 'parent.internal.type'
+  | 'children'
+  | 'children.id'
+  | 'children.parent.id'
+  | 'children.parent.parent.id'
+  | 'children.parent.parent.children'
+  | 'children.parent.children'
+  | 'children.parent.children.id'
+  | 'children.parent.children.children'
+  | 'children.parent.internal.content'
+  | 'children.parent.internal.contentDigest'
+  | 'children.parent.internal.description'
+  | 'children.parent.internal.fieldOwners'
+  | 'children.parent.internal.ignoreType'
+  | 'children.parent.internal.mediaType'
+  | 'children.parent.internal.owner'
+  | 'children.parent.internal.type'
+  | 'children.children'
+  | 'children.children.id'
+  | 'children.children.parent.id'
+  | 'children.children.parent.children'
+  | 'children.children.children'
+  | 'children.children.children.id'
+  | 'children.children.children.children'
+  | 'children.children.internal.content'
+  | 'children.children.internal.contentDigest'
+  | 'children.children.internal.description'
+  | 'children.children.internal.fieldOwners'
+  | 'children.children.internal.ignoreType'
+  | 'children.children.internal.mediaType'
+  | 'children.children.internal.owner'
+  | 'children.children.internal.type'
+  | 'children.internal.content'
+  | 'children.internal.contentDigest'
+  | 'children.internal.description'
+  | 'children.internal.fieldOwners'
+  | 'children.internal.ignoreType'
+  | 'children.internal.mediaType'
+  | 'children.internal.owner'
+  | 'children.internal.type'
+  | 'internal.content'
+  | 'internal.contentDigest'
+  | 'internal.description'
+  | 'internal.fieldOwners'
+  | 'internal.ignoreType'
+  | 'internal.mediaType'
+  | 'internal.owner'
+  | 'internal.type';
+
+type ContentfulBrandGroupConnection = {
+  readonly totalCount: Scalars['Int'];
+  readonly edges: ReadonlyArray<ContentfulBrandEdge>;
+  readonly nodes: ReadonlyArray<ContentfulBrand>;
+  readonly pageInfo: PageInfo;
+  readonly field: Scalars['String'];
+  readonly fieldValue: Maybe<Scalars['String']>;
+};
+
+type ContentfulBrandSortInput = {
+  readonly fields: Maybe<ReadonlyArray<Maybe<ContentfulBrandFieldsEnum>>>;
+  readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
+};
+
 type ContentfulCategoryConnection = {
   readonly totalCount: Scalars['Int'];
   readonly edges: ReadonlyArray<ContentfulCategoryEdge>;
@@ -4544,685 +5231,6 @@ type ContentfulCategoryGroupConnection = {
 
 type ContentfulCategorySortInput = {
   readonly fields: Maybe<ReadonlyArray<Maybe<ContentfulCategoryFieldsEnum>>>;
-  readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
-};
-
-type ContentfulBrandConnection = {
-  readonly totalCount: Scalars['Int'];
-  readonly edges: ReadonlyArray<ContentfulBrandEdge>;
-  readonly nodes: ReadonlyArray<ContentfulBrand>;
-  readonly pageInfo: PageInfo;
-  readonly distinct: ReadonlyArray<Scalars['String']>;
-  readonly group: ReadonlyArray<ContentfulBrandGroupConnection>;
-};
-
-
-type ContentfulBrandConnection_distinctArgs = {
-  field: ContentfulBrandFieldsEnum;
-};
-
-
-type ContentfulBrandConnection_groupArgs = {
-  skip: Maybe<Scalars['Int']>;
-  limit: Maybe<Scalars['Int']>;
-  field: ContentfulBrandFieldsEnum;
-};
-
-type ContentfulBrandEdge = {
-  readonly next: Maybe<ContentfulBrand>;
-  readonly node: ContentfulBrand;
-  readonly previous: Maybe<ContentfulBrand>;
-};
-
-type ContentfulBrandFieldsEnum =
-  | 'contentful_id'
-  | 'id'
-  | 'node_locale'
-  | 'website'
-  | 'product'
-  | 'product.contentful_id'
-  | 'product.id'
-  | 'product.node_locale'
-  | 'product.slug'
-  | 'product.sizetypecolor'
-  | 'product.tags'
-  | 'product.price'
-  | 'product.quantity'
-  | 'product.sku'
-  | 'product.website'
-  | 'product.categories'
-  | 'product.categories.contentful_id'
-  | 'product.categories.id'
-  | 'product.categories.node_locale'
-  | 'product.categories.icon.contentful_id'
-  | 'product.categories.icon.id'
-  | 'product.categories.icon.spaceId'
-  | 'product.categories.icon.createdAt'
-  | 'product.categories.icon.updatedAt'
-  | 'product.categories.icon.title'
-  | 'product.categories.icon.description'
-  | 'product.categories.icon.node_locale'
-  | 'product.categories.icon.gatsbyImageData'
-  | 'product.categories.icon.children'
-  | 'product.categories.heroImage.contentful_id'
-  | 'product.categories.heroImage.id'
-  | 'product.categories.heroImage.spaceId'
-  | 'product.categories.heroImage.createdAt'
-  | 'product.categories.heroImage.updatedAt'
-  | 'product.categories.heroImage.title'
-  | 'product.categories.heroImage.description'
-  | 'product.categories.heroImage.node_locale'
-  | 'product.categories.heroImage.gatsbyImageData'
-  | 'product.categories.heroImage.children'
-  | 'product.categories.product'
-  | 'product.categories.product.contentful_id'
-  | 'product.categories.product.id'
-  | 'product.categories.product.node_locale'
-  | 'product.categories.product.slug'
-  | 'product.categories.product.sizetypecolor'
-  | 'product.categories.product.tags'
-  | 'product.categories.product.price'
-  | 'product.categories.product.quantity'
-  | 'product.categories.product.sku'
-  | 'product.categories.product.website'
-  | 'product.categories.product.categories'
-  | 'product.categories.product.spaceId'
-  | 'product.categories.product.createdAt'
-  | 'product.categories.product.updatedAt'
-  | 'product.categories.product.childrenContentfulProductProductDescriptionTextNode'
-  | 'product.categories.product.childrenContentfulProductProductNameTextNode'
-  | 'product.categories.product.children'
-  | 'product.categories.title.id'
-  | 'product.categories.title.children'
-  | 'product.categories.title.title'
-  | 'product.categories.categoryDescription.id'
-  | 'product.categories.categoryDescription.children'
-  | 'product.categories.categoryDescription.categoryDescription'
-  | 'product.categories.spaceId'
-  | 'product.categories.createdAt'
-  | 'product.categories.updatedAt'
-  | 'product.categories.sys.type'
-  | 'product.categories.sys.revision'
-  | 'product.categories.childrenContentfulCategoryCategoryDescriptionTextNode'
-  | 'product.categories.childrenContentfulCategoryCategoryDescriptionTextNode.id'
-  | 'product.categories.childrenContentfulCategoryCategoryDescriptionTextNode.children'
-  | 'product.categories.childrenContentfulCategoryCategoryDescriptionTextNode.categoryDescription'
-  | 'product.categories.childContentfulCategoryCategoryDescriptionTextNode.id'
-  | 'product.categories.childContentfulCategoryCategoryDescriptionTextNode.children'
-  | 'product.categories.childContentfulCategoryCategoryDescriptionTextNode.categoryDescription'
-  | 'product.categories.childrenContentfulCategoryTitleTextNode'
-  | 'product.categories.childrenContentfulCategoryTitleTextNode.id'
-  | 'product.categories.childrenContentfulCategoryTitleTextNode.children'
-  | 'product.categories.childrenContentfulCategoryTitleTextNode.title'
-  | 'product.categories.childContentfulCategoryTitleTextNode.id'
-  | 'product.categories.childContentfulCategoryTitleTextNode.children'
-  | 'product.categories.childContentfulCategoryTitleTextNode.title'
-  | 'product.categories.parent.id'
-  | 'product.categories.parent.children'
-  | 'product.categories.children'
-  | 'product.categories.children.id'
-  | 'product.categories.children.children'
-  | 'product.categories.internal.content'
-  | 'product.categories.internal.contentDigest'
-  | 'product.categories.internal.description'
-  | 'product.categories.internal.fieldOwners'
-  | 'product.categories.internal.ignoreType'
-  | 'product.categories.internal.mediaType'
-  | 'product.categories.internal.owner'
-  | 'product.categories.internal.type'
-  | 'product.brand.contentful_id'
-  | 'product.brand.id'
-  | 'product.brand.node_locale'
-  | 'product.brand.website'
-  | 'product.brand.product'
-  | 'product.brand.product.contentful_id'
-  | 'product.brand.product.id'
-  | 'product.brand.product.node_locale'
-  | 'product.brand.product.slug'
-  | 'product.brand.product.sizetypecolor'
-  | 'product.brand.product.tags'
-  | 'product.brand.product.price'
-  | 'product.brand.product.quantity'
-  | 'product.brand.product.sku'
-  | 'product.brand.product.website'
-  | 'product.brand.product.categories'
-  | 'product.brand.product.spaceId'
-  | 'product.brand.product.createdAt'
-  | 'product.brand.product.updatedAt'
-  | 'product.brand.product.childrenContentfulProductProductDescriptionTextNode'
-  | 'product.brand.product.childrenContentfulProductProductNameTextNode'
-  | 'product.brand.product.children'
-  | 'product.brand.companyName.id'
-  | 'product.brand.companyName.children'
-  | 'product.brand.companyName.companyName'
-  | 'product.brand.companyDescription.id'
-  | 'product.brand.companyDescription.children'
-  | 'product.brand.companyDescription.companyDescription'
-  | 'product.brand.spaceId'
-  | 'product.brand.createdAt'
-  | 'product.brand.updatedAt'
-  | 'product.brand.sys.type'
-  | 'product.brand.sys.revision'
-  | 'product.brand.email'
-  | 'product.brand.phone'
-  | 'product.brand.twitter'
-  | 'product.brand.childrenContentfulBrandCompanyDescriptionTextNode'
-  | 'product.brand.childrenContentfulBrandCompanyDescriptionTextNode.id'
-  | 'product.brand.childrenContentfulBrandCompanyDescriptionTextNode.children'
-  | 'product.brand.childrenContentfulBrandCompanyDescriptionTextNode.companyDescription'
-  | 'product.brand.childContentfulBrandCompanyDescriptionTextNode.id'
-  | 'product.brand.childContentfulBrandCompanyDescriptionTextNode.children'
-  | 'product.brand.childContentfulBrandCompanyDescriptionTextNode.companyDescription'
-  | 'product.brand.childrenContentfulBrandCompanyNameTextNode'
-  | 'product.brand.childrenContentfulBrandCompanyNameTextNode.id'
-  | 'product.brand.childrenContentfulBrandCompanyNameTextNode.children'
-  | 'product.brand.childrenContentfulBrandCompanyNameTextNode.companyName'
-  | 'product.brand.childContentfulBrandCompanyNameTextNode.id'
-  | 'product.brand.childContentfulBrandCompanyNameTextNode.children'
-  | 'product.brand.childContentfulBrandCompanyNameTextNode.companyName'
-  | 'product.brand.parent.id'
-  | 'product.brand.parent.children'
-  | 'product.brand.children'
-  | 'product.brand.children.id'
-  | 'product.brand.children.children'
-  | 'product.brand.internal.content'
-  | 'product.brand.internal.contentDigest'
-  | 'product.brand.internal.description'
-  | 'product.brand.internal.fieldOwners'
-  | 'product.brand.internal.ignoreType'
-  | 'product.brand.internal.mediaType'
-  | 'product.brand.internal.owner'
-  | 'product.brand.internal.type'
-  | 'product.productName.id'
-  | 'product.productName.parent.id'
-  | 'product.productName.parent.children'
-  | 'product.productName.children'
-  | 'product.productName.children.id'
-  | 'product.productName.children.children'
-  | 'product.productName.internal.content'
-  | 'product.productName.internal.contentDigest'
-  | 'product.productName.internal.description'
-  | 'product.productName.internal.fieldOwners'
-  | 'product.productName.internal.ignoreType'
-  | 'product.productName.internal.mediaType'
-  | 'product.productName.internal.owner'
-  | 'product.productName.internal.type'
-  | 'product.productName.productName'
-  | 'product.productName.sys.type'
-  | 'product.productDescription.id'
-  | 'product.productDescription.parent.id'
-  | 'product.productDescription.parent.children'
-  | 'product.productDescription.children'
-  | 'product.productDescription.children.id'
-  | 'product.productDescription.children.children'
-  | 'product.productDescription.internal.content'
-  | 'product.productDescription.internal.contentDigest'
-  | 'product.productDescription.internal.description'
-  | 'product.productDescription.internal.fieldOwners'
-  | 'product.productDescription.internal.ignoreType'
-  | 'product.productDescription.internal.mediaType'
-  | 'product.productDescription.internal.owner'
-  | 'product.productDescription.internal.type'
-  | 'product.productDescription.productDescription'
-  | 'product.productDescription.sys.type'
-  | 'product.spaceId'
-  | 'product.createdAt'
-  | 'product.updatedAt'
-  | 'product.sys.type'
-  | 'product.sys.revision'
-  | 'product.childrenContentfulProductProductDescriptionTextNode'
-  | 'product.childrenContentfulProductProductDescriptionTextNode.id'
-  | 'product.childrenContentfulProductProductDescriptionTextNode.parent.id'
-  | 'product.childrenContentfulProductProductDescriptionTextNode.parent.children'
-  | 'product.childrenContentfulProductProductDescriptionTextNode.children'
-  | 'product.childrenContentfulProductProductDescriptionTextNode.children.id'
-  | 'product.childrenContentfulProductProductDescriptionTextNode.children.children'
-  | 'product.childrenContentfulProductProductDescriptionTextNode.internal.content'
-  | 'product.childrenContentfulProductProductDescriptionTextNode.internal.contentDigest'
-  | 'product.childrenContentfulProductProductDescriptionTextNode.internal.description'
-  | 'product.childrenContentfulProductProductDescriptionTextNode.internal.fieldOwners'
-  | 'product.childrenContentfulProductProductDescriptionTextNode.internal.ignoreType'
-  | 'product.childrenContentfulProductProductDescriptionTextNode.internal.mediaType'
-  | 'product.childrenContentfulProductProductDescriptionTextNode.internal.owner'
-  | 'product.childrenContentfulProductProductDescriptionTextNode.internal.type'
-  | 'product.childrenContentfulProductProductDescriptionTextNode.productDescription'
-  | 'product.childrenContentfulProductProductDescriptionTextNode.sys.type'
-  | 'product.childContentfulProductProductDescriptionTextNode.id'
-  | 'product.childContentfulProductProductDescriptionTextNode.parent.id'
-  | 'product.childContentfulProductProductDescriptionTextNode.parent.children'
-  | 'product.childContentfulProductProductDescriptionTextNode.children'
-  | 'product.childContentfulProductProductDescriptionTextNode.children.id'
-  | 'product.childContentfulProductProductDescriptionTextNode.children.children'
-  | 'product.childContentfulProductProductDescriptionTextNode.internal.content'
-  | 'product.childContentfulProductProductDescriptionTextNode.internal.contentDigest'
-  | 'product.childContentfulProductProductDescriptionTextNode.internal.description'
-  | 'product.childContentfulProductProductDescriptionTextNode.internal.fieldOwners'
-  | 'product.childContentfulProductProductDescriptionTextNode.internal.ignoreType'
-  | 'product.childContentfulProductProductDescriptionTextNode.internal.mediaType'
-  | 'product.childContentfulProductProductDescriptionTextNode.internal.owner'
-  | 'product.childContentfulProductProductDescriptionTextNode.internal.type'
-  | 'product.childContentfulProductProductDescriptionTextNode.productDescription'
-  | 'product.childContentfulProductProductDescriptionTextNode.sys.type'
-  | 'product.childrenContentfulProductProductNameTextNode'
-  | 'product.childrenContentfulProductProductNameTextNode.id'
-  | 'product.childrenContentfulProductProductNameTextNode.parent.id'
-  | 'product.childrenContentfulProductProductNameTextNode.parent.children'
-  | 'product.childrenContentfulProductProductNameTextNode.children'
-  | 'product.childrenContentfulProductProductNameTextNode.children.id'
-  | 'product.childrenContentfulProductProductNameTextNode.children.children'
-  | 'product.childrenContentfulProductProductNameTextNode.internal.content'
-  | 'product.childrenContentfulProductProductNameTextNode.internal.contentDigest'
-  | 'product.childrenContentfulProductProductNameTextNode.internal.description'
-  | 'product.childrenContentfulProductProductNameTextNode.internal.fieldOwners'
-  | 'product.childrenContentfulProductProductNameTextNode.internal.ignoreType'
-  | 'product.childrenContentfulProductProductNameTextNode.internal.mediaType'
-  | 'product.childrenContentfulProductProductNameTextNode.internal.owner'
-  | 'product.childrenContentfulProductProductNameTextNode.internal.type'
-  | 'product.childrenContentfulProductProductNameTextNode.productName'
-  | 'product.childrenContentfulProductProductNameTextNode.sys.type'
-  | 'product.childContentfulProductProductNameTextNode.id'
-  | 'product.childContentfulProductProductNameTextNode.parent.id'
-  | 'product.childContentfulProductProductNameTextNode.parent.children'
-  | 'product.childContentfulProductProductNameTextNode.children'
-  | 'product.childContentfulProductProductNameTextNode.children.id'
-  | 'product.childContentfulProductProductNameTextNode.children.children'
-  | 'product.childContentfulProductProductNameTextNode.internal.content'
-  | 'product.childContentfulProductProductNameTextNode.internal.contentDigest'
-  | 'product.childContentfulProductProductNameTextNode.internal.description'
-  | 'product.childContentfulProductProductNameTextNode.internal.fieldOwners'
-  | 'product.childContentfulProductProductNameTextNode.internal.ignoreType'
-  | 'product.childContentfulProductProductNameTextNode.internal.mediaType'
-  | 'product.childContentfulProductProductNameTextNode.internal.owner'
-  | 'product.childContentfulProductProductNameTextNode.internal.type'
-  | 'product.childContentfulProductProductNameTextNode.productName'
-  | 'product.childContentfulProductProductNameTextNode.sys.type'
-  | 'product.parent.id'
-  | 'product.parent.parent.id'
-  | 'product.parent.parent.children'
-  | 'product.parent.children'
-  | 'product.parent.children.id'
-  | 'product.parent.children.children'
-  | 'product.parent.internal.content'
-  | 'product.parent.internal.contentDigest'
-  | 'product.parent.internal.description'
-  | 'product.parent.internal.fieldOwners'
-  | 'product.parent.internal.ignoreType'
-  | 'product.parent.internal.mediaType'
-  | 'product.parent.internal.owner'
-  | 'product.parent.internal.type'
-  | 'product.children'
-  | 'product.children.id'
-  | 'product.children.parent.id'
-  | 'product.children.parent.children'
-  | 'product.children.children'
-  | 'product.children.children.id'
-  | 'product.children.children.children'
-  | 'product.children.internal.content'
-  | 'product.children.internal.contentDigest'
-  | 'product.children.internal.description'
-  | 'product.children.internal.fieldOwners'
-  | 'product.children.internal.ignoreType'
-  | 'product.children.internal.mediaType'
-  | 'product.children.internal.owner'
-  | 'product.children.internal.type'
-  | 'product.internal.content'
-  | 'product.internal.contentDigest'
-  | 'product.internal.description'
-  | 'product.internal.fieldOwners'
-  | 'product.internal.ignoreType'
-  | 'product.internal.mediaType'
-  | 'product.internal.owner'
-  | 'product.internal.type'
-  | 'companyName.id'
-  | 'companyName.parent.id'
-  | 'companyName.parent.parent.id'
-  | 'companyName.parent.parent.children'
-  | 'companyName.parent.children'
-  | 'companyName.parent.children.id'
-  | 'companyName.parent.children.children'
-  | 'companyName.parent.internal.content'
-  | 'companyName.parent.internal.contentDigest'
-  | 'companyName.parent.internal.description'
-  | 'companyName.parent.internal.fieldOwners'
-  | 'companyName.parent.internal.ignoreType'
-  | 'companyName.parent.internal.mediaType'
-  | 'companyName.parent.internal.owner'
-  | 'companyName.parent.internal.type'
-  | 'companyName.children'
-  | 'companyName.children.id'
-  | 'companyName.children.parent.id'
-  | 'companyName.children.parent.children'
-  | 'companyName.children.children'
-  | 'companyName.children.children.id'
-  | 'companyName.children.children.children'
-  | 'companyName.children.internal.content'
-  | 'companyName.children.internal.contentDigest'
-  | 'companyName.children.internal.description'
-  | 'companyName.children.internal.fieldOwners'
-  | 'companyName.children.internal.ignoreType'
-  | 'companyName.children.internal.mediaType'
-  | 'companyName.children.internal.owner'
-  | 'companyName.children.internal.type'
-  | 'companyName.internal.content'
-  | 'companyName.internal.contentDigest'
-  | 'companyName.internal.description'
-  | 'companyName.internal.fieldOwners'
-  | 'companyName.internal.ignoreType'
-  | 'companyName.internal.mediaType'
-  | 'companyName.internal.owner'
-  | 'companyName.internal.type'
-  | 'companyName.companyName'
-  | 'companyName.sys.type'
-  | 'companyDescription.id'
-  | 'companyDescription.parent.id'
-  | 'companyDescription.parent.parent.id'
-  | 'companyDescription.parent.parent.children'
-  | 'companyDescription.parent.children'
-  | 'companyDescription.parent.children.id'
-  | 'companyDescription.parent.children.children'
-  | 'companyDescription.parent.internal.content'
-  | 'companyDescription.parent.internal.contentDigest'
-  | 'companyDescription.parent.internal.description'
-  | 'companyDescription.parent.internal.fieldOwners'
-  | 'companyDescription.parent.internal.ignoreType'
-  | 'companyDescription.parent.internal.mediaType'
-  | 'companyDescription.parent.internal.owner'
-  | 'companyDescription.parent.internal.type'
-  | 'companyDescription.children'
-  | 'companyDescription.children.id'
-  | 'companyDescription.children.parent.id'
-  | 'companyDescription.children.parent.children'
-  | 'companyDescription.children.children'
-  | 'companyDescription.children.children.id'
-  | 'companyDescription.children.children.children'
-  | 'companyDescription.children.internal.content'
-  | 'companyDescription.children.internal.contentDigest'
-  | 'companyDescription.children.internal.description'
-  | 'companyDescription.children.internal.fieldOwners'
-  | 'companyDescription.children.internal.ignoreType'
-  | 'companyDescription.children.internal.mediaType'
-  | 'companyDescription.children.internal.owner'
-  | 'companyDescription.children.internal.type'
-  | 'companyDescription.internal.content'
-  | 'companyDescription.internal.contentDigest'
-  | 'companyDescription.internal.description'
-  | 'companyDescription.internal.fieldOwners'
-  | 'companyDescription.internal.ignoreType'
-  | 'companyDescription.internal.mediaType'
-  | 'companyDescription.internal.owner'
-  | 'companyDescription.internal.type'
-  | 'companyDescription.companyDescription'
-  | 'companyDescription.sys.type'
-  | 'spaceId'
-  | 'createdAt'
-  | 'updatedAt'
-  | 'sys.type'
-  | 'sys.revision'
-  | 'sys.contentType.sys.type'
-  | 'sys.contentType.sys.linkType'
-  | 'sys.contentType.sys.id'
-  | 'email'
-  | 'phone'
-  | 'twitter'
-  | 'childrenContentfulBrandCompanyDescriptionTextNode'
-  | 'childrenContentfulBrandCompanyDescriptionTextNode.id'
-  | 'childrenContentfulBrandCompanyDescriptionTextNode.parent.id'
-  | 'childrenContentfulBrandCompanyDescriptionTextNode.parent.parent.id'
-  | 'childrenContentfulBrandCompanyDescriptionTextNode.parent.parent.children'
-  | 'childrenContentfulBrandCompanyDescriptionTextNode.parent.children'
-  | 'childrenContentfulBrandCompanyDescriptionTextNode.parent.children.id'
-  | 'childrenContentfulBrandCompanyDescriptionTextNode.parent.children.children'
-  | 'childrenContentfulBrandCompanyDescriptionTextNode.parent.internal.content'
-  | 'childrenContentfulBrandCompanyDescriptionTextNode.parent.internal.contentDigest'
-  | 'childrenContentfulBrandCompanyDescriptionTextNode.parent.internal.description'
-  | 'childrenContentfulBrandCompanyDescriptionTextNode.parent.internal.fieldOwners'
-  | 'childrenContentfulBrandCompanyDescriptionTextNode.parent.internal.ignoreType'
-  | 'childrenContentfulBrandCompanyDescriptionTextNode.parent.internal.mediaType'
-  | 'childrenContentfulBrandCompanyDescriptionTextNode.parent.internal.owner'
-  | 'childrenContentfulBrandCompanyDescriptionTextNode.parent.internal.type'
-  | 'childrenContentfulBrandCompanyDescriptionTextNode.children'
-  | 'childrenContentfulBrandCompanyDescriptionTextNode.children.id'
-  | 'childrenContentfulBrandCompanyDescriptionTextNode.children.parent.id'
-  | 'childrenContentfulBrandCompanyDescriptionTextNode.children.parent.children'
-  | 'childrenContentfulBrandCompanyDescriptionTextNode.children.children'
-  | 'childrenContentfulBrandCompanyDescriptionTextNode.children.children.id'
-  | 'childrenContentfulBrandCompanyDescriptionTextNode.children.children.children'
-  | 'childrenContentfulBrandCompanyDescriptionTextNode.children.internal.content'
-  | 'childrenContentfulBrandCompanyDescriptionTextNode.children.internal.contentDigest'
-  | 'childrenContentfulBrandCompanyDescriptionTextNode.children.internal.description'
-  | 'childrenContentfulBrandCompanyDescriptionTextNode.children.internal.fieldOwners'
-  | 'childrenContentfulBrandCompanyDescriptionTextNode.children.internal.ignoreType'
-  | 'childrenContentfulBrandCompanyDescriptionTextNode.children.internal.mediaType'
-  | 'childrenContentfulBrandCompanyDescriptionTextNode.children.internal.owner'
-  | 'childrenContentfulBrandCompanyDescriptionTextNode.children.internal.type'
-  | 'childrenContentfulBrandCompanyDescriptionTextNode.internal.content'
-  | 'childrenContentfulBrandCompanyDescriptionTextNode.internal.contentDigest'
-  | 'childrenContentfulBrandCompanyDescriptionTextNode.internal.description'
-  | 'childrenContentfulBrandCompanyDescriptionTextNode.internal.fieldOwners'
-  | 'childrenContentfulBrandCompanyDescriptionTextNode.internal.ignoreType'
-  | 'childrenContentfulBrandCompanyDescriptionTextNode.internal.mediaType'
-  | 'childrenContentfulBrandCompanyDescriptionTextNode.internal.owner'
-  | 'childrenContentfulBrandCompanyDescriptionTextNode.internal.type'
-  | 'childrenContentfulBrandCompanyDescriptionTextNode.companyDescription'
-  | 'childrenContentfulBrandCompanyDescriptionTextNode.sys.type'
-  | 'childContentfulBrandCompanyDescriptionTextNode.id'
-  | 'childContentfulBrandCompanyDescriptionTextNode.parent.id'
-  | 'childContentfulBrandCompanyDescriptionTextNode.parent.parent.id'
-  | 'childContentfulBrandCompanyDescriptionTextNode.parent.parent.children'
-  | 'childContentfulBrandCompanyDescriptionTextNode.parent.children'
-  | 'childContentfulBrandCompanyDescriptionTextNode.parent.children.id'
-  | 'childContentfulBrandCompanyDescriptionTextNode.parent.children.children'
-  | 'childContentfulBrandCompanyDescriptionTextNode.parent.internal.content'
-  | 'childContentfulBrandCompanyDescriptionTextNode.parent.internal.contentDigest'
-  | 'childContentfulBrandCompanyDescriptionTextNode.parent.internal.description'
-  | 'childContentfulBrandCompanyDescriptionTextNode.parent.internal.fieldOwners'
-  | 'childContentfulBrandCompanyDescriptionTextNode.parent.internal.ignoreType'
-  | 'childContentfulBrandCompanyDescriptionTextNode.parent.internal.mediaType'
-  | 'childContentfulBrandCompanyDescriptionTextNode.parent.internal.owner'
-  | 'childContentfulBrandCompanyDescriptionTextNode.parent.internal.type'
-  | 'childContentfulBrandCompanyDescriptionTextNode.children'
-  | 'childContentfulBrandCompanyDescriptionTextNode.children.id'
-  | 'childContentfulBrandCompanyDescriptionTextNode.children.parent.id'
-  | 'childContentfulBrandCompanyDescriptionTextNode.children.parent.children'
-  | 'childContentfulBrandCompanyDescriptionTextNode.children.children'
-  | 'childContentfulBrandCompanyDescriptionTextNode.children.children.id'
-  | 'childContentfulBrandCompanyDescriptionTextNode.children.children.children'
-  | 'childContentfulBrandCompanyDescriptionTextNode.children.internal.content'
-  | 'childContentfulBrandCompanyDescriptionTextNode.children.internal.contentDigest'
-  | 'childContentfulBrandCompanyDescriptionTextNode.children.internal.description'
-  | 'childContentfulBrandCompanyDescriptionTextNode.children.internal.fieldOwners'
-  | 'childContentfulBrandCompanyDescriptionTextNode.children.internal.ignoreType'
-  | 'childContentfulBrandCompanyDescriptionTextNode.children.internal.mediaType'
-  | 'childContentfulBrandCompanyDescriptionTextNode.children.internal.owner'
-  | 'childContentfulBrandCompanyDescriptionTextNode.children.internal.type'
-  | 'childContentfulBrandCompanyDescriptionTextNode.internal.content'
-  | 'childContentfulBrandCompanyDescriptionTextNode.internal.contentDigest'
-  | 'childContentfulBrandCompanyDescriptionTextNode.internal.description'
-  | 'childContentfulBrandCompanyDescriptionTextNode.internal.fieldOwners'
-  | 'childContentfulBrandCompanyDescriptionTextNode.internal.ignoreType'
-  | 'childContentfulBrandCompanyDescriptionTextNode.internal.mediaType'
-  | 'childContentfulBrandCompanyDescriptionTextNode.internal.owner'
-  | 'childContentfulBrandCompanyDescriptionTextNode.internal.type'
-  | 'childContentfulBrandCompanyDescriptionTextNode.companyDescription'
-  | 'childContentfulBrandCompanyDescriptionTextNode.sys.type'
-  | 'childrenContentfulBrandCompanyNameTextNode'
-  | 'childrenContentfulBrandCompanyNameTextNode.id'
-  | 'childrenContentfulBrandCompanyNameTextNode.parent.id'
-  | 'childrenContentfulBrandCompanyNameTextNode.parent.parent.id'
-  | 'childrenContentfulBrandCompanyNameTextNode.parent.parent.children'
-  | 'childrenContentfulBrandCompanyNameTextNode.parent.children'
-  | 'childrenContentfulBrandCompanyNameTextNode.parent.children.id'
-  | 'childrenContentfulBrandCompanyNameTextNode.parent.children.children'
-  | 'childrenContentfulBrandCompanyNameTextNode.parent.internal.content'
-  | 'childrenContentfulBrandCompanyNameTextNode.parent.internal.contentDigest'
-  | 'childrenContentfulBrandCompanyNameTextNode.parent.internal.description'
-  | 'childrenContentfulBrandCompanyNameTextNode.parent.internal.fieldOwners'
-  | 'childrenContentfulBrandCompanyNameTextNode.parent.internal.ignoreType'
-  | 'childrenContentfulBrandCompanyNameTextNode.parent.internal.mediaType'
-  | 'childrenContentfulBrandCompanyNameTextNode.parent.internal.owner'
-  | 'childrenContentfulBrandCompanyNameTextNode.parent.internal.type'
-  | 'childrenContentfulBrandCompanyNameTextNode.children'
-  | 'childrenContentfulBrandCompanyNameTextNode.children.id'
-  | 'childrenContentfulBrandCompanyNameTextNode.children.parent.id'
-  | 'childrenContentfulBrandCompanyNameTextNode.children.parent.children'
-  | 'childrenContentfulBrandCompanyNameTextNode.children.children'
-  | 'childrenContentfulBrandCompanyNameTextNode.children.children.id'
-  | 'childrenContentfulBrandCompanyNameTextNode.children.children.children'
-  | 'childrenContentfulBrandCompanyNameTextNode.children.internal.content'
-  | 'childrenContentfulBrandCompanyNameTextNode.children.internal.contentDigest'
-  | 'childrenContentfulBrandCompanyNameTextNode.children.internal.description'
-  | 'childrenContentfulBrandCompanyNameTextNode.children.internal.fieldOwners'
-  | 'childrenContentfulBrandCompanyNameTextNode.children.internal.ignoreType'
-  | 'childrenContentfulBrandCompanyNameTextNode.children.internal.mediaType'
-  | 'childrenContentfulBrandCompanyNameTextNode.children.internal.owner'
-  | 'childrenContentfulBrandCompanyNameTextNode.children.internal.type'
-  | 'childrenContentfulBrandCompanyNameTextNode.internal.content'
-  | 'childrenContentfulBrandCompanyNameTextNode.internal.contentDigest'
-  | 'childrenContentfulBrandCompanyNameTextNode.internal.description'
-  | 'childrenContentfulBrandCompanyNameTextNode.internal.fieldOwners'
-  | 'childrenContentfulBrandCompanyNameTextNode.internal.ignoreType'
-  | 'childrenContentfulBrandCompanyNameTextNode.internal.mediaType'
-  | 'childrenContentfulBrandCompanyNameTextNode.internal.owner'
-  | 'childrenContentfulBrandCompanyNameTextNode.internal.type'
-  | 'childrenContentfulBrandCompanyNameTextNode.companyName'
-  | 'childrenContentfulBrandCompanyNameTextNode.sys.type'
-  | 'childContentfulBrandCompanyNameTextNode.id'
-  | 'childContentfulBrandCompanyNameTextNode.parent.id'
-  | 'childContentfulBrandCompanyNameTextNode.parent.parent.id'
-  | 'childContentfulBrandCompanyNameTextNode.parent.parent.children'
-  | 'childContentfulBrandCompanyNameTextNode.parent.children'
-  | 'childContentfulBrandCompanyNameTextNode.parent.children.id'
-  | 'childContentfulBrandCompanyNameTextNode.parent.children.children'
-  | 'childContentfulBrandCompanyNameTextNode.parent.internal.content'
-  | 'childContentfulBrandCompanyNameTextNode.parent.internal.contentDigest'
-  | 'childContentfulBrandCompanyNameTextNode.parent.internal.description'
-  | 'childContentfulBrandCompanyNameTextNode.parent.internal.fieldOwners'
-  | 'childContentfulBrandCompanyNameTextNode.parent.internal.ignoreType'
-  | 'childContentfulBrandCompanyNameTextNode.parent.internal.mediaType'
-  | 'childContentfulBrandCompanyNameTextNode.parent.internal.owner'
-  | 'childContentfulBrandCompanyNameTextNode.parent.internal.type'
-  | 'childContentfulBrandCompanyNameTextNode.children'
-  | 'childContentfulBrandCompanyNameTextNode.children.id'
-  | 'childContentfulBrandCompanyNameTextNode.children.parent.id'
-  | 'childContentfulBrandCompanyNameTextNode.children.parent.children'
-  | 'childContentfulBrandCompanyNameTextNode.children.children'
-  | 'childContentfulBrandCompanyNameTextNode.children.children.id'
-  | 'childContentfulBrandCompanyNameTextNode.children.children.children'
-  | 'childContentfulBrandCompanyNameTextNode.children.internal.content'
-  | 'childContentfulBrandCompanyNameTextNode.children.internal.contentDigest'
-  | 'childContentfulBrandCompanyNameTextNode.children.internal.description'
-  | 'childContentfulBrandCompanyNameTextNode.children.internal.fieldOwners'
-  | 'childContentfulBrandCompanyNameTextNode.children.internal.ignoreType'
-  | 'childContentfulBrandCompanyNameTextNode.children.internal.mediaType'
-  | 'childContentfulBrandCompanyNameTextNode.children.internal.owner'
-  | 'childContentfulBrandCompanyNameTextNode.children.internal.type'
-  | 'childContentfulBrandCompanyNameTextNode.internal.content'
-  | 'childContentfulBrandCompanyNameTextNode.internal.contentDigest'
-  | 'childContentfulBrandCompanyNameTextNode.internal.description'
-  | 'childContentfulBrandCompanyNameTextNode.internal.fieldOwners'
-  | 'childContentfulBrandCompanyNameTextNode.internal.ignoreType'
-  | 'childContentfulBrandCompanyNameTextNode.internal.mediaType'
-  | 'childContentfulBrandCompanyNameTextNode.internal.owner'
-  | 'childContentfulBrandCompanyNameTextNode.internal.type'
-  | 'childContentfulBrandCompanyNameTextNode.companyName'
-  | 'childContentfulBrandCompanyNameTextNode.sys.type'
-  | 'parent.id'
-  | 'parent.parent.id'
-  | 'parent.parent.parent.id'
-  | 'parent.parent.parent.children'
-  | 'parent.parent.children'
-  | 'parent.parent.children.id'
-  | 'parent.parent.children.children'
-  | 'parent.parent.internal.content'
-  | 'parent.parent.internal.contentDigest'
-  | 'parent.parent.internal.description'
-  | 'parent.parent.internal.fieldOwners'
-  | 'parent.parent.internal.ignoreType'
-  | 'parent.parent.internal.mediaType'
-  | 'parent.parent.internal.owner'
-  | 'parent.parent.internal.type'
-  | 'parent.children'
-  | 'parent.children.id'
-  | 'parent.children.parent.id'
-  | 'parent.children.parent.children'
-  | 'parent.children.children'
-  | 'parent.children.children.id'
-  | 'parent.children.children.children'
-  | 'parent.children.internal.content'
-  | 'parent.children.internal.contentDigest'
-  | 'parent.children.internal.description'
-  | 'parent.children.internal.fieldOwners'
-  | 'parent.children.internal.ignoreType'
-  | 'parent.children.internal.mediaType'
-  | 'parent.children.internal.owner'
-  | 'parent.children.internal.type'
-  | 'parent.internal.content'
-  | 'parent.internal.contentDigest'
-  | 'parent.internal.description'
-  | 'parent.internal.fieldOwners'
-  | 'parent.internal.ignoreType'
-  | 'parent.internal.mediaType'
-  | 'parent.internal.owner'
-  | 'parent.internal.type'
-  | 'children'
-  | 'children.id'
-  | 'children.parent.id'
-  | 'children.parent.parent.id'
-  | 'children.parent.parent.children'
-  | 'children.parent.children'
-  | 'children.parent.children.id'
-  | 'children.parent.children.children'
-  | 'children.parent.internal.content'
-  | 'children.parent.internal.contentDigest'
-  | 'children.parent.internal.description'
-  | 'children.parent.internal.fieldOwners'
-  | 'children.parent.internal.ignoreType'
-  | 'children.parent.internal.mediaType'
-  | 'children.parent.internal.owner'
-  | 'children.parent.internal.type'
-  | 'children.children'
-  | 'children.children.id'
-  | 'children.children.parent.id'
-  | 'children.children.parent.children'
-  | 'children.children.children'
-  | 'children.children.children.id'
-  | 'children.children.children.children'
-  | 'children.children.internal.content'
-  | 'children.children.internal.contentDigest'
-  | 'children.children.internal.description'
-  | 'children.children.internal.fieldOwners'
-  | 'children.children.internal.ignoreType'
-  | 'children.children.internal.mediaType'
-  | 'children.children.internal.owner'
-  | 'children.children.internal.type'
-  | 'children.internal.content'
-  | 'children.internal.contentDigest'
-  | 'children.internal.description'
-  | 'children.internal.fieldOwners'
-  | 'children.internal.ignoreType'
-  | 'children.internal.mediaType'
-  | 'children.internal.owner'
-  | 'children.internal.type'
-  | 'internal.content'
-  | 'internal.contentDigest'
-  | 'internal.description'
-  | 'internal.fieldOwners'
-  | 'internal.ignoreType'
-  | 'internal.mediaType'
-  | 'internal.owner'
-  | 'internal.type';
-
-type ContentfulBrandGroupConnection = {
-  readonly totalCount: Scalars['Int'];
-  readonly edges: ReadonlyArray<ContentfulBrandEdge>;
-  readonly nodes: ReadonlyArray<ContentfulBrand>;
-  readonly pageInfo: PageInfo;
-  readonly field: Scalars['String'];
-  readonly fieldValue: Maybe<Scalars['String']>;
-};
-
-type ContentfulBrandSortInput = {
-  readonly fields: Maybe<ReadonlyArray<Maybe<ContentfulBrandFieldsEnum>>>;
   readonly order: Maybe<ReadonlyArray<Maybe<SortOrderEnum>>>;
 };
 
@@ -7784,15 +7792,6 @@ type SitePluginFieldsEnum =
   | 'resolve'
   | 'name'
   | 'version'
-  | 'pluginOptions.accessToken'
-  | 'pluginOptions.spaceId'
-  | 'pluginOptions.host'
-  | 'pluginOptions.environment'
-  | 'pluginOptions.downloadLocal'
-  | 'pluginOptions.forceFullSync'
-  | 'pluginOptions.pageLimit'
-  | 'pluginOptions.assetDownloadWorkers'
-  | 'pluginOptions.useNameForId'
   | 'pluginOptions.icon'
   | 'pluginOptions.legacy'
   | 'pluginOptions.theme_color_in_head'
@@ -7812,6 +7811,15 @@ type SitePluginFieldsEnum =
   | 'pluginOptions.allExtensions'
   | 'pluginOptions.isTSX'
   | 'pluginOptions.jsxPragma'
+  | 'pluginOptions.accessToken'
+  | 'pluginOptions.spaceId'
+  | 'pluginOptions.host'
+  | 'pluginOptions.environment'
+  | 'pluginOptions.downloadLocal'
+  | 'pluginOptions.forceFullSync'
+  | 'pluginOptions.pageLimit'
+  | 'pluginOptions.assetDownloadWorkers'
+  | 'pluginOptions.useNameForId'
   | 'nodeAPIs'
   | 'browserAPIs'
   | 'ssrAPIs'
@@ -7866,6 +7874,14 @@ type GatsbyContentfulFluid_withWebpFragment = Pick<ContentfulFluid, 'base64' | '
 
 type GatsbyContentfulFluid_withWebp_noBase64Fragment = Pick<ContentfulFluid, 'aspectRatio' | 'src' | 'srcSet' | 'srcWebp' | 'srcSetWebp' | 'sizes'>;
 
+type IndexPageQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type IndexPageQuery = { readonly contentfulPage: Maybe<(
+    Pick<ContentfulPage, 'title'>
+    & { readonly subheading: Maybe<Pick<contentfulPageSubheadingTextNode, 'subheading'>> }
+  )>, readonly allContentfulCategory: { readonly nodes: ReadonlyArray<{ readonly title: Maybe<Pick<contentfulCategoryTitleTextNode, 'title'>> }> }, readonly allContentfulProduct: { readonly nodes: ReadonlyArray<{ readonly productDescription: Maybe<Pick<contentfulProductProductDescriptionTextNode, 'id' | 'productDescription'>> }> } };
+
 type GatsbyImageSharpFixedFragment = Pick<ImageSharpFixed, 'base64' | 'width' | 'height' | 'src' | 'srcSet'>;
 
 type GatsbyImageSharpFixed_tracedSVGFragment = Pick<ImageSharpFixed, 'tracedSVG' | 'width' | 'height' | 'src' | 'srcSet'>;
@@ -7892,12 +7908,9 @@ type GatsbyImageSharpFluid_noBase64Fragment = Pick<ImageSharpFluid, 'aspectRatio
 
 type GatsbyImageSharpFluid_withWebp_noBase64Fragment = Pick<ImageSharpFluid, 'aspectRatio' | 'src' | 'srcSet' | 'srcWebp' | 'srcSetWebp' | 'sizes'>;
 
-type IndexPageQueryVariables = Exact<{ [key: string]: never; }>;
+type PagesQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-type IndexPageQuery = { readonly contentfulPage: Maybe<(
-    Pick<ContentfulPage, 'title'>
-    & { readonly subheading: Maybe<Pick<contentfulPageSubheadingTextNode, 'subheading'>> }
-  )>, readonly allContentfulCategory: { readonly nodes: ReadonlyArray<{ readonly title: Maybe<Pick<contentfulCategoryTitleTextNode, 'title'>> }> }, readonly allContentfulProduct: { readonly nodes: ReadonlyArray<{ readonly productDescription: Maybe<Pick<contentfulProductProductDescriptionTextNode, 'id' | 'productDescription'>> }> } };
+type PagesQueryQuery = { readonly allSitePage: { readonly nodes: ReadonlyArray<Pick<SitePage, 'path'>> } };
 
 }

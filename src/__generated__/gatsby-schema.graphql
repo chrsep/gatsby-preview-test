@@ -330,6 +330,8 @@ type Site implements Node {
     locale: String
   ): Date
   siteMetadata: SiteSiteMetadata
+  port: Int
+  host: String
   flags: SiteFlags
   polyfill: Boolean
   pathPrefix: String
@@ -848,76 +850,6 @@ type ContentfulResize {
   aspectRatio: Float
 }
 
-type ContentfulCategory implements ContentfulReference & ContentfulEntry & Node {
-  contentful_id: String!
-  id: ID!
-  node_locale: String!
-  icon: ContentfulAsset
-  heroImage: ContentfulAsset
-  product: [ContentfulProduct]
-  title: contentfulCategoryTitleTextNode
-  categoryDescription: contentfulCategoryCategoryDescriptionTextNode
-  spaceId: String
-  createdAt(
-    # Format the date using Moment.js' date tokens, e.g. `date(formatString: "YYYY MMMM DD")`. See https://momentjs.com/docs/#/displaying/format/ for documentation for different tokens.
-    formatString: String
-
-    # Returns a string generated with Moment.js' `fromNow` function
-    fromNow: Boolean
-
-    # Returns the difference between this date and the current time. Defaults to "milliseconds" but you can also pass in as the measurement "years", "months", "weeks", "days", "hours", "minutes", and "seconds".
-    difference: String
-
-    # Configures the locale Moment.js will use to format the date.
-    locale: String
-  ): Date
-  updatedAt(
-    # Format the date using Moment.js' date tokens, e.g. `date(formatString: "YYYY MMMM DD")`. See https://momentjs.com/docs/#/displaying/format/ for documentation for different tokens.
-    formatString: String
-
-    # Returns a string generated with Moment.js' `fromNow` function
-    fromNow: Boolean
-
-    # Returns the difference between this date and the current time. Defaults to "milliseconds" but you can also pass in as the measurement "years", "months", "weeks", "days", "hours", "minutes", and "seconds".
-    difference: String
-
-    # Configures the locale Moment.js will use to format the date.
-    locale: String
-  ): Date
-  sys: ContentfulCategorySys
-
-  # Returns all children nodes filtered by type contentfulCategoryCategoryDescriptionTextNode
-  childrenContentfulCategoryCategoryDescriptionTextNode: [contentfulCategoryCategoryDescriptionTextNode]
-
-  # Returns the first child node of type contentfulCategoryCategoryDescriptionTextNode or null if there are no children of given type on this node
-  childContentfulCategoryCategoryDescriptionTextNode: contentfulCategoryCategoryDescriptionTextNode
-
-  # Returns all children nodes filtered by type contentfulCategoryTitleTextNode
-  childrenContentfulCategoryTitleTextNode: [contentfulCategoryTitleTextNode]
-
-  # Returns the first child node of type contentfulCategoryTitleTextNode or null if there are no children of given type on this node
-  childContentfulCategoryTitleTextNode: contentfulCategoryTitleTextNode
-  parent: Node
-  children: [Node!]!
-  internal: Internal!
-}
-
-type ContentfulCategorySys {
-  type: String
-  revision: Int
-  contentType: ContentfulCategorySysContentType
-}
-
-type ContentfulCategorySysContentType {
-  sys: ContentfulCategorySysContentTypeSys
-}
-
-type ContentfulCategorySysContentTypeSys {
-  type: String
-  linkType: String
-  id: String
-}
-
 type ContentfulBrand implements ContentfulReference & ContentfulEntry & Node {
   contentful_id: String!
   id: ID!
@@ -985,6 +917,76 @@ type ContentfulBrandSysContentType {
 }
 
 type ContentfulBrandSysContentTypeSys {
+  type: String
+  linkType: String
+  id: String
+}
+
+type ContentfulCategory implements ContentfulReference & ContentfulEntry & Node {
+  contentful_id: String!
+  id: ID!
+  node_locale: String!
+  icon: ContentfulAsset
+  heroImage: ContentfulAsset
+  product: [ContentfulProduct]
+  title: contentfulCategoryTitleTextNode
+  categoryDescription: contentfulCategoryCategoryDescriptionTextNode
+  spaceId: String
+  createdAt(
+    # Format the date using Moment.js' date tokens, e.g. `date(formatString: "YYYY MMMM DD")`. See https://momentjs.com/docs/#/displaying/format/ for documentation for different tokens.
+    formatString: String
+
+    # Returns a string generated with Moment.js' `fromNow` function
+    fromNow: Boolean
+
+    # Returns the difference between this date and the current time. Defaults to "milliseconds" but you can also pass in as the measurement "years", "months", "weeks", "days", "hours", "minutes", and "seconds".
+    difference: String
+
+    # Configures the locale Moment.js will use to format the date.
+    locale: String
+  ): Date
+  updatedAt(
+    # Format the date using Moment.js' date tokens, e.g. `date(formatString: "YYYY MMMM DD")`. See https://momentjs.com/docs/#/displaying/format/ for documentation for different tokens.
+    formatString: String
+
+    # Returns a string generated with Moment.js' `fromNow` function
+    fromNow: Boolean
+
+    # Returns the difference between this date and the current time. Defaults to "milliseconds" but you can also pass in as the measurement "years", "months", "weeks", "days", "hours", "minutes", and "seconds".
+    difference: String
+
+    # Configures the locale Moment.js will use to format the date.
+    locale: String
+  ): Date
+  sys: ContentfulCategorySys
+
+  # Returns all children nodes filtered by type contentfulCategoryCategoryDescriptionTextNode
+  childrenContentfulCategoryCategoryDescriptionTextNode: [contentfulCategoryCategoryDescriptionTextNode]
+
+  # Returns the first child node of type contentfulCategoryCategoryDescriptionTextNode or null if there are no children of given type on this node
+  childContentfulCategoryCategoryDescriptionTextNode: contentfulCategoryCategoryDescriptionTextNode
+
+  # Returns all children nodes filtered by type contentfulCategoryTitleTextNode
+  childrenContentfulCategoryTitleTextNode: [contentfulCategoryTitleTextNode]
+
+  # Returns the first child node of type contentfulCategoryTitleTextNode or null if there are no children of given type on this node
+  childContentfulCategoryTitleTextNode: contentfulCategoryTitleTextNode
+  parent: Node
+  children: [Node!]!
+  internal: Internal!
+}
+
+type ContentfulCategorySys {
+  type: String
+  revision: Int
+  contentType: ContentfulCategorySysContentType
+}
+
+type ContentfulCategorySysContentType {
+  sys: ContentfulCategorySysContentTypeSys
+}
+
+type ContentfulCategorySysContentTypeSys {
   type: String
   linkType: String
   id: String
@@ -1270,15 +1272,6 @@ type SitePlugin implements Node {
 }
 
 type SitePluginPluginOptions {
-  accessToken: String
-  spaceId: String
-  host: String
-  environment: String
-  downloadLocal: Boolean
-  forceFullSync: Boolean
-  pageLimit: Int
-  assetDownloadWorkers: Int
-  useNameForId: Boolean
   icon: String
   legacy: Boolean
   theme_color_in_head: Boolean
@@ -1298,6 +1291,15 @@ type SitePluginPluginOptions {
   allExtensions: Boolean
   isTSX: Boolean
   jsxPragma: String
+  accessToken: String
+  spaceId: String
+  host: String
+  environment: String
+  downloadLocal: Boolean
+  forceFullSync: Boolean
+  pageLimit: Int
+  assetDownloadWorkers: Int
+  useNameForId: Boolean
 }
 
 type SitePluginPluginOptionsEmitSchema {
@@ -1336,7 +1338,7 @@ type Query {
   allFile(filter: FileFilterInput, sort: FileSortInput, skip: Int, limit: Int): FileConnection!
   directory(sourceInstanceName: StringQueryOperatorInput, absolutePath: StringQueryOperatorInput, relativePath: StringQueryOperatorInput, extension: StringQueryOperatorInput, size: IntQueryOperatorInput, prettySize: StringQueryOperatorInput, modifiedTime: DateQueryOperatorInput, accessTime: DateQueryOperatorInput, changeTime: DateQueryOperatorInput, birthTime: DateQueryOperatorInput, root: StringQueryOperatorInput, dir: StringQueryOperatorInput, base: StringQueryOperatorInput, ext: StringQueryOperatorInput, name: StringQueryOperatorInput, relativeDirectory: StringQueryOperatorInput, dev: IntQueryOperatorInput, mode: IntQueryOperatorInput, nlink: IntQueryOperatorInput, uid: IntQueryOperatorInput, gid: IntQueryOperatorInput, rdev: IntQueryOperatorInput, ino: FloatQueryOperatorInput, atimeMs: FloatQueryOperatorInput, mtimeMs: FloatQueryOperatorInput, ctimeMs: FloatQueryOperatorInput, atime: DateQueryOperatorInput, mtime: DateQueryOperatorInput, ctime: DateQueryOperatorInput, birthtime: DateQueryOperatorInput, birthtimeMs: FloatQueryOperatorInput, blksize: IntQueryOperatorInput, blocks: IntQueryOperatorInput, id: StringQueryOperatorInput, parent: NodeFilterInput, children: NodeFilterListInput, internal: InternalFilterInput): Directory
   allDirectory(filter: DirectoryFilterInput, sort: DirectorySortInput, skip: Int, limit: Int): DirectoryConnection!
-  site(buildTime: DateQueryOperatorInput, siteMetadata: SiteSiteMetadataFilterInput, flags: SiteFlagsFilterInput, polyfill: BooleanQueryOperatorInput, pathPrefix: StringQueryOperatorInput, id: StringQueryOperatorInput, parent: NodeFilterInput, children: NodeFilterListInput, internal: InternalFilterInput): Site
+  site(buildTime: DateQueryOperatorInput, siteMetadata: SiteSiteMetadataFilterInput, port: IntQueryOperatorInput, host: StringQueryOperatorInput, flags: SiteFlagsFilterInput, polyfill: BooleanQueryOperatorInput, pathPrefix: StringQueryOperatorInput, id: StringQueryOperatorInput, parent: NodeFilterInput, children: NodeFilterListInput, internal: InternalFilterInput): Site
   allSite(filter: SiteFilterInput, sort: SiteSortInput, skip: Int, limit: Int): SiteConnection!
   sitePage(path: StringQueryOperatorInput, component: StringQueryOperatorInput, internalComponentName: StringQueryOperatorInput, componentChunkName: StringQueryOperatorInput, matchPath: StringQueryOperatorInput, id: StringQueryOperatorInput, parent: NodeFilterInput, children: NodeFilterListInput, internal: InternalFilterInput, isCreatedByStatefulCreatePages: BooleanQueryOperatorInput, pluginCreator: SitePluginFilterInput, pluginCreatorId: StringQueryOperatorInput, componentPath: StringQueryOperatorInput): SitePage
   allSitePage(filter: SitePageFilterInput, sort: SitePageSortInput, skip: Int, limit: Int): SitePageConnection!
@@ -1346,10 +1348,10 @@ type Query {
   allContentfulEntry(filter: ContentfulEntryFilterInput, sort: ContentfulEntrySortInput, skip: Int, limit: Int): ContentfulEntryConnection!
   contentfulAsset(contentful_id: StringQueryOperatorInput, id: StringQueryOperatorInput, spaceId: StringQueryOperatorInput, createdAt: DateQueryOperatorInput, updatedAt: DateQueryOperatorInput, file: ContentfulAssetFileFilterInput, title: StringQueryOperatorInput, description: StringQueryOperatorInput, node_locale: StringQueryOperatorInput, sys: ContentfulAssetSysFilterInput, fixed: ContentfulFixedFilterInput, fluid: ContentfulFluidFilterInput, gatsbyImageData: JSONQueryOperatorInput, resize: ContentfulResizeFilterInput, parent: NodeFilterInput, children: NodeFilterListInput, internal: InternalFilterInput): ContentfulAsset
   allContentfulAsset(filter: ContentfulAssetFilterInput, sort: ContentfulAssetSortInput, skip: Int, limit: Int): ContentfulAssetConnection!
-  contentfulCategory(contentful_id: StringQueryOperatorInput, id: StringQueryOperatorInput, node_locale: StringQueryOperatorInput, icon: ContentfulAssetFilterInput, heroImage: ContentfulAssetFilterInput, product: ContentfulProductFilterListInput, title: contentfulCategoryTitleTextNodeFilterInput, categoryDescription: contentfulCategoryCategoryDescriptionTextNodeFilterInput, spaceId: StringQueryOperatorInput, createdAt: DateQueryOperatorInput, updatedAt: DateQueryOperatorInput, sys: ContentfulCategorySysFilterInput, childrenContentfulCategoryCategoryDescriptionTextNode: contentfulCategoryCategoryDescriptionTextNodeFilterListInput, childContentfulCategoryCategoryDescriptionTextNode: contentfulCategoryCategoryDescriptionTextNodeFilterInput, childrenContentfulCategoryTitleTextNode: contentfulCategoryTitleTextNodeFilterListInput, childContentfulCategoryTitleTextNode: contentfulCategoryTitleTextNodeFilterInput, parent: NodeFilterInput, children: NodeFilterListInput, internal: InternalFilterInput): ContentfulCategory
-  allContentfulCategory(filter: ContentfulCategoryFilterInput, sort: ContentfulCategorySortInput, skip: Int, limit: Int): ContentfulCategoryConnection!
   contentfulBrand(contentful_id: StringQueryOperatorInput, id: StringQueryOperatorInput, node_locale: StringQueryOperatorInput, website: StringQueryOperatorInput, product: ContentfulProductFilterListInput, companyName: contentfulBrandCompanyNameTextNodeFilterInput, companyDescription: contentfulBrandCompanyDescriptionTextNodeFilterInput, spaceId: StringQueryOperatorInput, createdAt: DateQueryOperatorInput, updatedAt: DateQueryOperatorInput, sys: ContentfulBrandSysFilterInput, email: StringQueryOperatorInput, phone: StringQueryOperatorInput, twitter: StringQueryOperatorInput, childrenContentfulBrandCompanyDescriptionTextNode: contentfulBrandCompanyDescriptionTextNodeFilterListInput, childContentfulBrandCompanyDescriptionTextNode: contentfulBrandCompanyDescriptionTextNodeFilterInput, childrenContentfulBrandCompanyNameTextNode: contentfulBrandCompanyNameTextNodeFilterListInput, childContentfulBrandCompanyNameTextNode: contentfulBrandCompanyNameTextNodeFilterInput, parent: NodeFilterInput, children: NodeFilterListInput, internal: InternalFilterInput): ContentfulBrand
   allContentfulBrand(filter: ContentfulBrandFilterInput, sort: ContentfulBrandSortInput, skip: Int, limit: Int): ContentfulBrandConnection!
+  contentfulCategory(contentful_id: StringQueryOperatorInput, id: StringQueryOperatorInput, node_locale: StringQueryOperatorInput, icon: ContentfulAssetFilterInput, heroImage: ContentfulAssetFilterInput, product: ContentfulProductFilterListInput, title: contentfulCategoryTitleTextNodeFilterInput, categoryDescription: contentfulCategoryCategoryDescriptionTextNodeFilterInput, spaceId: StringQueryOperatorInput, createdAt: DateQueryOperatorInput, updatedAt: DateQueryOperatorInput, sys: ContentfulCategorySysFilterInput, childrenContentfulCategoryCategoryDescriptionTextNode: contentfulCategoryCategoryDescriptionTextNodeFilterListInput, childContentfulCategoryCategoryDescriptionTextNode: contentfulCategoryCategoryDescriptionTextNodeFilterInput, childrenContentfulCategoryTitleTextNode: contentfulCategoryTitleTextNodeFilterListInput, childContentfulCategoryTitleTextNode: contentfulCategoryTitleTextNodeFilterInput, parent: NodeFilterInput, children: NodeFilterListInput, internal: InternalFilterInput): ContentfulCategory
+  allContentfulCategory(filter: ContentfulCategoryFilterInput, sort: ContentfulCategorySortInput, skip: Int, limit: Int): ContentfulCategoryConnection!
   contentfulProduct(contentful_id: StringQueryOperatorInput, id: StringQueryOperatorInput, node_locale: StringQueryOperatorInput, slug: StringQueryOperatorInput, sizetypecolor: StringQueryOperatorInput, tags: StringQueryOperatorInput, price: IntQueryOperatorInput, quantity: IntQueryOperatorInput, sku: StringQueryOperatorInput, website: StringQueryOperatorInput, categories: ContentfulCategoryFilterListInput, brand: ContentfulBrandFilterInput, productName: contentfulProductProductNameTextNodeFilterInput, productDescription: contentfulProductProductDescriptionTextNodeFilterInput, spaceId: StringQueryOperatorInput, createdAt: DateQueryOperatorInput, updatedAt: DateQueryOperatorInput, sys: ContentfulProductSysFilterInput, childrenContentfulProductProductDescriptionTextNode: contentfulProductProductDescriptionTextNodeFilterListInput, childContentfulProductProductDescriptionTextNode: contentfulProductProductDescriptionTextNodeFilterInput, childrenContentfulProductProductNameTextNode: contentfulProductProductNameTextNodeFilterListInput, childContentfulProductProductNameTextNode: contentfulProductProductNameTextNodeFilterInput, parent: NodeFilterInput, children: NodeFilterListInput, internal: InternalFilterInput): ContentfulProduct
   allContentfulProduct(filter: ContentfulProductFilterInput, sort: ContentfulProductSortInput, skip: Int, limit: Int): ContentfulProductConnection!
   contentfulPage(contentful_id: StringQueryOperatorInput, id: StringQueryOperatorInput, node_locale: StringQueryOperatorInput, title: StringQueryOperatorInput, subheading: contentfulPageSubheadingTextNodeFilterInput, spaceId: StringQueryOperatorInput, createdAt: DateQueryOperatorInput, updatedAt: DateQueryOperatorInput, sys: ContentfulPageSysFilterInput, childrenContentfulPageSubheadingTextNode: contentfulPageSubheadingTextNodeFilterListInput, childContentfulPageSubheadingTextNode: contentfulPageSubheadingTextNodeFilterInput, parent: NodeFilterInput, children: NodeFilterListInput, internal: InternalFilterInput): ContentfulPage
@@ -2085,6 +2087,8 @@ enum SiteFieldsEnum {
   buildTime
   siteMetadata___title
   siteMetadata___description
+  port
+  host
   flags___FAST_DEV
   polyfill
   pathPrefix
@@ -2188,6 +2192,8 @@ type SiteGroupConnection {
 input SiteFilterInput {
   buildTime: DateQueryOperatorInput
   siteMetadata: SiteSiteMetadataFilterInput
+  port: IntQueryOperatorInput
+  host: StringQueryOperatorInput
   flags: SiteFlagsFilterInput
   polyfill: BooleanQueryOperatorInput
   pathPrefix: StringQueryOperatorInput
@@ -2219,15 +2225,6 @@ input SitePluginFilterInput {
 }
 
 input SitePluginPluginOptionsFilterInput {
-  accessToken: StringQueryOperatorInput
-  spaceId: StringQueryOperatorInput
-  host: StringQueryOperatorInput
-  environment: StringQueryOperatorInput
-  downloadLocal: BooleanQueryOperatorInput
-  forceFullSync: BooleanQueryOperatorInput
-  pageLimit: IntQueryOperatorInput
-  assetDownloadWorkers: IntQueryOperatorInput
-  useNameForId: BooleanQueryOperatorInput
   icon: StringQueryOperatorInput
   legacy: BooleanQueryOperatorInput
   theme_color_in_head: BooleanQueryOperatorInput
@@ -2247,6 +2244,15 @@ input SitePluginPluginOptionsFilterInput {
   allExtensions: BooleanQueryOperatorInput
   isTSX: BooleanQueryOperatorInput
   jsxPragma: StringQueryOperatorInput
+  accessToken: StringQueryOperatorInput
+  spaceId: StringQueryOperatorInput
+  host: StringQueryOperatorInput
+  environment: StringQueryOperatorInput
+  downloadLocal: BooleanQueryOperatorInput
+  forceFullSync: BooleanQueryOperatorInput
+  pageLimit: IntQueryOperatorInput
+  assetDownloadWorkers: IntQueryOperatorInput
+  useNameForId: BooleanQueryOperatorInput
 }
 
 input SitePluginPluginOptionsEmitSchemaFilterInput {
@@ -2441,15 +2447,6 @@ enum SitePageFieldsEnum {
   pluginCreator___resolve
   pluginCreator___name
   pluginCreator___version
-  pluginCreator___pluginOptions___accessToken
-  pluginCreator___pluginOptions___spaceId
-  pluginCreator___pluginOptions___host
-  pluginCreator___pluginOptions___environment
-  pluginCreator___pluginOptions___downloadLocal
-  pluginCreator___pluginOptions___forceFullSync
-  pluginCreator___pluginOptions___pageLimit
-  pluginCreator___pluginOptions___assetDownloadWorkers
-  pluginCreator___pluginOptions___useNameForId
   pluginCreator___pluginOptions___icon
   pluginCreator___pluginOptions___legacy
   pluginCreator___pluginOptions___theme_color_in_head
@@ -2469,6 +2466,15 @@ enum SitePageFieldsEnum {
   pluginCreator___pluginOptions___allExtensions
   pluginCreator___pluginOptions___isTSX
   pluginCreator___pluginOptions___jsxPragma
+  pluginCreator___pluginOptions___accessToken
+  pluginCreator___pluginOptions___spaceId
+  pluginCreator___pluginOptions___host
+  pluginCreator___pluginOptions___environment
+  pluginCreator___pluginOptions___downloadLocal
+  pluginCreator___pluginOptions___forceFullSync
+  pluginCreator___pluginOptions___pageLimit
+  pluginCreator___pluginOptions___assetDownloadWorkers
+  pluginCreator___pluginOptions___useNameForId
   pluginCreator___nodeAPIs
   pluginCreator___browserAPIs
   pluginCreator___ssrAPIs
@@ -3262,6 +3268,674 @@ input contentfulProductProductDescriptionTextNodeFilterListInput {
 
 input contentfulProductProductNameTextNodeFilterListInput {
   elemMatch: contentfulProductProductNameTextNodeFilterInput
+}
+
+type ContentfulBrandConnection {
+  totalCount: Int!
+  edges: [ContentfulBrandEdge!]!
+  nodes: [ContentfulBrand!]!
+  pageInfo: PageInfo!
+  distinct(field: ContentfulBrandFieldsEnum!): [String!]!
+  group(skip: Int, limit: Int, field: ContentfulBrandFieldsEnum!): [ContentfulBrandGroupConnection!]!
+}
+
+type ContentfulBrandEdge {
+  next: ContentfulBrand
+  node: ContentfulBrand!
+  previous: ContentfulBrand
+}
+
+enum ContentfulBrandFieldsEnum {
+  contentful_id
+  id
+  node_locale
+  website
+  product
+  product___contentful_id
+  product___id
+  product___node_locale
+  product___slug
+  product___sizetypecolor
+  product___tags
+  product___price
+  product___quantity
+  product___sku
+  product___website
+  product___categories
+  product___categories___contentful_id
+  product___categories___id
+  product___categories___node_locale
+  product___categories___icon___contentful_id
+  product___categories___icon___id
+  product___categories___icon___spaceId
+  product___categories___icon___createdAt
+  product___categories___icon___updatedAt
+  product___categories___icon___title
+  product___categories___icon___description
+  product___categories___icon___node_locale
+  product___categories___icon___gatsbyImageData @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  product___categories___icon___children @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  product___categories___heroImage___contentful_id
+  product___categories___heroImage___id
+  product___categories___heroImage___spaceId
+  product___categories___heroImage___createdAt
+  product___categories___heroImage___updatedAt
+  product___categories___heroImage___title
+  product___categories___heroImage___description
+  product___categories___heroImage___node_locale
+  product___categories___heroImage___gatsbyImageData @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  product___categories___heroImage___children @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
+  product___categories___product
+  product___categories___product___contentful_id
+  product___categories___product___id
+  product___categories___product___node_locale
+  product___categories___product___slug
+  product___categories___product___sizetypecolor
+  product___categories___product___tags
+  product___categories___product___price
+  product___categories___product___quantity
+  product___categories___product___sku
+  product___categories___product___website
+  product___categories___product___categories
+  product___categories___product___spaceId
+  product___categories___product___createdAt
+  product___categories___product___updatedAt
+  product___categories___product___childrenContentfulProductProductDescriptionTextNode
+  product___categories___product___childrenContentfulProductProductNameTextNode
+  product___categories___product___children
+  product___categories___title___id
+  product___categories___title___children
+  product___categories___title___title
+  product___categories___categoryDescription___id
+  product___categories___categoryDescription___children
+  product___categories___categoryDescription___categoryDescription
+  product___categories___spaceId
+  product___categories___createdAt
+  product___categories___updatedAt
+  product___categories___sys___type
+  product___categories___sys___revision
+  product___categories___childrenContentfulCategoryCategoryDescriptionTextNode
+  product___categories___childrenContentfulCategoryCategoryDescriptionTextNode___id
+  product___categories___childrenContentfulCategoryCategoryDescriptionTextNode___children
+  product___categories___childrenContentfulCategoryCategoryDescriptionTextNode___categoryDescription
+  product___categories___childContentfulCategoryCategoryDescriptionTextNode___id
+  product___categories___childContentfulCategoryCategoryDescriptionTextNode___children
+  product___categories___childContentfulCategoryCategoryDescriptionTextNode___categoryDescription
+  product___categories___childrenContentfulCategoryTitleTextNode
+  product___categories___childrenContentfulCategoryTitleTextNode___id
+  product___categories___childrenContentfulCategoryTitleTextNode___children
+  product___categories___childrenContentfulCategoryTitleTextNode___title
+  product___categories___childContentfulCategoryTitleTextNode___id
+  product___categories___childContentfulCategoryTitleTextNode___children
+  product___categories___childContentfulCategoryTitleTextNode___title
+  product___categories___parent___id
+  product___categories___parent___children
+  product___categories___children
+  product___categories___children___id
+  product___categories___children___children
+  product___categories___internal___content
+  product___categories___internal___contentDigest
+  product___categories___internal___description
+  product___categories___internal___fieldOwners
+  product___categories___internal___ignoreType
+  product___categories___internal___mediaType
+  product___categories___internal___owner
+  product___categories___internal___type
+  product___brand___contentful_id
+  product___brand___id
+  product___brand___node_locale
+  product___brand___website
+  product___brand___product
+  product___brand___product___contentful_id
+  product___brand___product___id
+  product___brand___product___node_locale
+  product___brand___product___slug
+  product___brand___product___sizetypecolor
+  product___brand___product___tags
+  product___brand___product___price
+  product___brand___product___quantity
+  product___brand___product___sku
+  product___brand___product___website
+  product___brand___product___categories
+  product___brand___product___spaceId
+  product___brand___product___createdAt
+  product___brand___product___updatedAt
+  product___brand___product___childrenContentfulProductProductDescriptionTextNode
+  product___brand___product___childrenContentfulProductProductNameTextNode
+  product___brand___product___children
+  product___brand___companyName___id
+  product___brand___companyName___children
+  product___brand___companyName___companyName
+  product___brand___companyDescription___id
+  product___brand___companyDescription___children
+  product___brand___companyDescription___companyDescription
+  product___brand___spaceId
+  product___brand___createdAt
+  product___brand___updatedAt
+  product___brand___sys___type
+  product___brand___sys___revision
+  product___brand___email
+  product___brand___phone
+  product___brand___twitter
+  product___brand___childrenContentfulBrandCompanyDescriptionTextNode
+  product___brand___childrenContentfulBrandCompanyDescriptionTextNode___id
+  product___brand___childrenContentfulBrandCompanyDescriptionTextNode___children
+  product___brand___childrenContentfulBrandCompanyDescriptionTextNode___companyDescription
+  product___brand___childContentfulBrandCompanyDescriptionTextNode___id
+  product___brand___childContentfulBrandCompanyDescriptionTextNode___children
+  product___brand___childContentfulBrandCompanyDescriptionTextNode___companyDescription
+  product___brand___childrenContentfulBrandCompanyNameTextNode
+  product___brand___childrenContentfulBrandCompanyNameTextNode___id
+  product___brand___childrenContentfulBrandCompanyNameTextNode___children
+  product___brand___childrenContentfulBrandCompanyNameTextNode___companyName
+  product___brand___childContentfulBrandCompanyNameTextNode___id
+  product___brand___childContentfulBrandCompanyNameTextNode___children
+  product___brand___childContentfulBrandCompanyNameTextNode___companyName
+  product___brand___parent___id
+  product___brand___parent___children
+  product___brand___children
+  product___brand___children___id
+  product___brand___children___children
+  product___brand___internal___content
+  product___brand___internal___contentDigest
+  product___brand___internal___description
+  product___brand___internal___fieldOwners
+  product___brand___internal___ignoreType
+  product___brand___internal___mediaType
+  product___brand___internal___owner
+  product___brand___internal___type
+  product___productName___id
+  product___productName___parent___id
+  product___productName___parent___children
+  product___productName___children
+  product___productName___children___id
+  product___productName___children___children
+  product___productName___internal___content
+  product___productName___internal___contentDigest
+  product___productName___internal___description
+  product___productName___internal___fieldOwners
+  product___productName___internal___ignoreType
+  product___productName___internal___mediaType
+  product___productName___internal___owner
+  product___productName___internal___type
+  product___productName___productName
+  product___productName___sys___type
+  product___productDescription___id
+  product___productDescription___parent___id
+  product___productDescription___parent___children
+  product___productDescription___children
+  product___productDescription___children___id
+  product___productDescription___children___children
+  product___productDescription___internal___content
+  product___productDescription___internal___contentDigest
+  product___productDescription___internal___description
+  product___productDescription___internal___fieldOwners
+  product___productDescription___internal___ignoreType
+  product___productDescription___internal___mediaType
+  product___productDescription___internal___owner
+  product___productDescription___internal___type
+  product___productDescription___productDescription
+  product___productDescription___sys___type
+  product___spaceId
+  product___createdAt
+  product___updatedAt
+  product___sys___type
+  product___sys___revision
+  product___childrenContentfulProductProductDescriptionTextNode
+  product___childrenContentfulProductProductDescriptionTextNode___id
+  product___childrenContentfulProductProductDescriptionTextNode___parent___id
+  product___childrenContentfulProductProductDescriptionTextNode___parent___children
+  product___childrenContentfulProductProductDescriptionTextNode___children
+  product___childrenContentfulProductProductDescriptionTextNode___children___id
+  product___childrenContentfulProductProductDescriptionTextNode___children___children
+  product___childrenContentfulProductProductDescriptionTextNode___internal___content
+  product___childrenContentfulProductProductDescriptionTextNode___internal___contentDigest
+  product___childrenContentfulProductProductDescriptionTextNode___internal___description
+  product___childrenContentfulProductProductDescriptionTextNode___internal___fieldOwners
+  product___childrenContentfulProductProductDescriptionTextNode___internal___ignoreType
+  product___childrenContentfulProductProductDescriptionTextNode___internal___mediaType
+  product___childrenContentfulProductProductDescriptionTextNode___internal___owner
+  product___childrenContentfulProductProductDescriptionTextNode___internal___type
+  product___childrenContentfulProductProductDescriptionTextNode___productDescription
+  product___childrenContentfulProductProductDescriptionTextNode___sys___type
+  product___childContentfulProductProductDescriptionTextNode___id
+  product___childContentfulProductProductDescriptionTextNode___parent___id
+  product___childContentfulProductProductDescriptionTextNode___parent___children
+  product___childContentfulProductProductDescriptionTextNode___children
+  product___childContentfulProductProductDescriptionTextNode___children___id
+  product___childContentfulProductProductDescriptionTextNode___children___children
+  product___childContentfulProductProductDescriptionTextNode___internal___content
+  product___childContentfulProductProductDescriptionTextNode___internal___contentDigest
+  product___childContentfulProductProductDescriptionTextNode___internal___description
+  product___childContentfulProductProductDescriptionTextNode___internal___fieldOwners
+  product___childContentfulProductProductDescriptionTextNode___internal___ignoreType
+  product___childContentfulProductProductDescriptionTextNode___internal___mediaType
+  product___childContentfulProductProductDescriptionTextNode___internal___owner
+  product___childContentfulProductProductDescriptionTextNode___internal___type
+  product___childContentfulProductProductDescriptionTextNode___productDescription
+  product___childContentfulProductProductDescriptionTextNode___sys___type
+  product___childrenContentfulProductProductNameTextNode
+  product___childrenContentfulProductProductNameTextNode___id
+  product___childrenContentfulProductProductNameTextNode___parent___id
+  product___childrenContentfulProductProductNameTextNode___parent___children
+  product___childrenContentfulProductProductNameTextNode___children
+  product___childrenContentfulProductProductNameTextNode___children___id
+  product___childrenContentfulProductProductNameTextNode___children___children
+  product___childrenContentfulProductProductNameTextNode___internal___content
+  product___childrenContentfulProductProductNameTextNode___internal___contentDigest
+  product___childrenContentfulProductProductNameTextNode___internal___description
+  product___childrenContentfulProductProductNameTextNode___internal___fieldOwners
+  product___childrenContentfulProductProductNameTextNode___internal___ignoreType
+  product___childrenContentfulProductProductNameTextNode___internal___mediaType
+  product___childrenContentfulProductProductNameTextNode___internal___owner
+  product___childrenContentfulProductProductNameTextNode___internal___type
+  product___childrenContentfulProductProductNameTextNode___productName
+  product___childrenContentfulProductProductNameTextNode___sys___type
+  product___childContentfulProductProductNameTextNode___id
+  product___childContentfulProductProductNameTextNode___parent___id
+  product___childContentfulProductProductNameTextNode___parent___children
+  product___childContentfulProductProductNameTextNode___children
+  product___childContentfulProductProductNameTextNode___children___id
+  product___childContentfulProductProductNameTextNode___children___children
+  product___childContentfulProductProductNameTextNode___internal___content
+  product___childContentfulProductProductNameTextNode___internal___contentDigest
+  product___childContentfulProductProductNameTextNode___internal___description
+  product___childContentfulProductProductNameTextNode___internal___fieldOwners
+  product___childContentfulProductProductNameTextNode___internal___ignoreType
+  product___childContentfulProductProductNameTextNode___internal___mediaType
+  product___childContentfulProductProductNameTextNode___internal___owner
+  product___childContentfulProductProductNameTextNode___internal___type
+  product___childContentfulProductProductNameTextNode___productName
+  product___childContentfulProductProductNameTextNode___sys___type
+  product___parent___id
+  product___parent___parent___id
+  product___parent___parent___children
+  product___parent___children
+  product___parent___children___id
+  product___parent___children___children
+  product___parent___internal___content
+  product___parent___internal___contentDigest
+  product___parent___internal___description
+  product___parent___internal___fieldOwners
+  product___parent___internal___ignoreType
+  product___parent___internal___mediaType
+  product___parent___internal___owner
+  product___parent___internal___type
+  product___children
+  product___children___id
+  product___children___parent___id
+  product___children___parent___children
+  product___children___children
+  product___children___children___id
+  product___children___children___children
+  product___children___internal___content
+  product___children___internal___contentDigest
+  product___children___internal___description
+  product___children___internal___fieldOwners
+  product___children___internal___ignoreType
+  product___children___internal___mediaType
+  product___children___internal___owner
+  product___children___internal___type
+  product___internal___content
+  product___internal___contentDigest
+  product___internal___description
+  product___internal___fieldOwners
+  product___internal___ignoreType
+  product___internal___mediaType
+  product___internal___owner
+  product___internal___type
+  companyName___id
+  companyName___parent___id
+  companyName___parent___parent___id
+  companyName___parent___parent___children
+  companyName___parent___children
+  companyName___parent___children___id
+  companyName___parent___children___children
+  companyName___parent___internal___content
+  companyName___parent___internal___contentDigest
+  companyName___parent___internal___description
+  companyName___parent___internal___fieldOwners
+  companyName___parent___internal___ignoreType
+  companyName___parent___internal___mediaType
+  companyName___parent___internal___owner
+  companyName___parent___internal___type
+  companyName___children
+  companyName___children___id
+  companyName___children___parent___id
+  companyName___children___parent___children
+  companyName___children___children
+  companyName___children___children___id
+  companyName___children___children___children
+  companyName___children___internal___content
+  companyName___children___internal___contentDigest
+  companyName___children___internal___description
+  companyName___children___internal___fieldOwners
+  companyName___children___internal___ignoreType
+  companyName___children___internal___mediaType
+  companyName___children___internal___owner
+  companyName___children___internal___type
+  companyName___internal___content
+  companyName___internal___contentDigest
+  companyName___internal___description
+  companyName___internal___fieldOwners
+  companyName___internal___ignoreType
+  companyName___internal___mediaType
+  companyName___internal___owner
+  companyName___internal___type
+  companyName___companyName
+  companyName___sys___type
+  companyDescription___id
+  companyDescription___parent___id
+  companyDescription___parent___parent___id
+  companyDescription___parent___parent___children
+  companyDescription___parent___children
+  companyDescription___parent___children___id
+  companyDescription___parent___children___children
+  companyDescription___parent___internal___content
+  companyDescription___parent___internal___contentDigest
+  companyDescription___parent___internal___description
+  companyDescription___parent___internal___fieldOwners
+  companyDescription___parent___internal___ignoreType
+  companyDescription___parent___internal___mediaType
+  companyDescription___parent___internal___owner
+  companyDescription___parent___internal___type
+  companyDescription___children
+  companyDescription___children___id
+  companyDescription___children___parent___id
+  companyDescription___children___parent___children
+  companyDescription___children___children
+  companyDescription___children___children___id
+  companyDescription___children___children___children
+  companyDescription___children___internal___content
+  companyDescription___children___internal___contentDigest
+  companyDescription___children___internal___description
+  companyDescription___children___internal___fieldOwners
+  companyDescription___children___internal___ignoreType
+  companyDescription___children___internal___mediaType
+  companyDescription___children___internal___owner
+  companyDescription___children___internal___type
+  companyDescription___internal___content
+  companyDescription___internal___contentDigest
+  companyDescription___internal___description
+  companyDescription___internal___fieldOwners
+  companyDescription___internal___ignoreType
+  companyDescription___internal___mediaType
+  companyDescription___internal___owner
+  companyDescription___internal___type
+  companyDescription___companyDescription
+  companyDescription___sys___type
+  spaceId
+  createdAt
+  updatedAt
+  sys___type
+  sys___revision
+  sys___contentType___sys___type
+  sys___contentType___sys___linkType
+  sys___contentType___sys___id
+  email
+  phone
+  twitter
+  childrenContentfulBrandCompanyDescriptionTextNode
+  childrenContentfulBrandCompanyDescriptionTextNode___id
+  childrenContentfulBrandCompanyDescriptionTextNode___parent___id
+  childrenContentfulBrandCompanyDescriptionTextNode___parent___parent___id
+  childrenContentfulBrandCompanyDescriptionTextNode___parent___parent___children
+  childrenContentfulBrandCompanyDescriptionTextNode___parent___children
+  childrenContentfulBrandCompanyDescriptionTextNode___parent___children___id
+  childrenContentfulBrandCompanyDescriptionTextNode___parent___children___children
+  childrenContentfulBrandCompanyDescriptionTextNode___parent___internal___content
+  childrenContentfulBrandCompanyDescriptionTextNode___parent___internal___contentDigest
+  childrenContentfulBrandCompanyDescriptionTextNode___parent___internal___description
+  childrenContentfulBrandCompanyDescriptionTextNode___parent___internal___fieldOwners
+  childrenContentfulBrandCompanyDescriptionTextNode___parent___internal___ignoreType
+  childrenContentfulBrandCompanyDescriptionTextNode___parent___internal___mediaType
+  childrenContentfulBrandCompanyDescriptionTextNode___parent___internal___owner
+  childrenContentfulBrandCompanyDescriptionTextNode___parent___internal___type
+  childrenContentfulBrandCompanyDescriptionTextNode___children
+  childrenContentfulBrandCompanyDescriptionTextNode___children___id
+  childrenContentfulBrandCompanyDescriptionTextNode___children___parent___id
+  childrenContentfulBrandCompanyDescriptionTextNode___children___parent___children
+  childrenContentfulBrandCompanyDescriptionTextNode___children___children
+  childrenContentfulBrandCompanyDescriptionTextNode___children___children___id
+  childrenContentfulBrandCompanyDescriptionTextNode___children___children___children
+  childrenContentfulBrandCompanyDescriptionTextNode___children___internal___content
+  childrenContentfulBrandCompanyDescriptionTextNode___children___internal___contentDigest
+  childrenContentfulBrandCompanyDescriptionTextNode___children___internal___description
+  childrenContentfulBrandCompanyDescriptionTextNode___children___internal___fieldOwners
+  childrenContentfulBrandCompanyDescriptionTextNode___children___internal___ignoreType
+  childrenContentfulBrandCompanyDescriptionTextNode___children___internal___mediaType
+  childrenContentfulBrandCompanyDescriptionTextNode___children___internal___owner
+  childrenContentfulBrandCompanyDescriptionTextNode___children___internal___type
+  childrenContentfulBrandCompanyDescriptionTextNode___internal___content
+  childrenContentfulBrandCompanyDescriptionTextNode___internal___contentDigest
+  childrenContentfulBrandCompanyDescriptionTextNode___internal___description
+  childrenContentfulBrandCompanyDescriptionTextNode___internal___fieldOwners
+  childrenContentfulBrandCompanyDescriptionTextNode___internal___ignoreType
+  childrenContentfulBrandCompanyDescriptionTextNode___internal___mediaType
+  childrenContentfulBrandCompanyDescriptionTextNode___internal___owner
+  childrenContentfulBrandCompanyDescriptionTextNode___internal___type
+  childrenContentfulBrandCompanyDescriptionTextNode___companyDescription
+  childrenContentfulBrandCompanyDescriptionTextNode___sys___type
+  childContentfulBrandCompanyDescriptionTextNode___id
+  childContentfulBrandCompanyDescriptionTextNode___parent___id
+  childContentfulBrandCompanyDescriptionTextNode___parent___parent___id
+  childContentfulBrandCompanyDescriptionTextNode___parent___parent___children
+  childContentfulBrandCompanyDescriptionTextNode___parent___children
+  childContentfulBrandCompanyDescriptionTextNode___parent___children___id
+  childContentfulBrandCompanyDescriptionTextNode___parent___children___children
+  childContentfulBrandCompanyDescriptionTextNode___parent___internal___content
+  childContentfulBrandCompanyDescriptionTextNode___parent___internal___contentDigest
+  childContentfulBrandCompanyDescriptionTextNode___parent___internal___description
+  childContentfulBrandCompanyDescriptionTextNode___parent___internal___fieldOwners
+  childContentfulBrandCompanyDescriptionTextNode___parent___internal___ignoreType
+  childContentfulBrandCompanyDescriptionTextNode___parent___internal___mediaType
+  childContentfulBrandCompanyDescriptionTextNode___parent___internal___owner
+  childContentfulBrandCompanyDescriptionTextNode___parent___internal___type
+  childContentfulBrandCompanyDescriptionTextNode___children
+  childContentfulBrandCompanyDescriptionTextNode___children___id
+  childContentfulBrandCompanyDescriptionTextNode___children___parent___id
+  childContentfulBrandCompanyDescriptionTextNode___children___parent___children
+  childContentfulBrandCompanyDescriptionTextNode___children___children
+  childContentfulBrandCompanyDescriptionTextNode___children___children___id
+  childContentfulBrandCompanyDescriptionTextNode___children___children___children
+  childContentfulBrandCompanyDescriptionTextNode___children___internal___content
+  childContentfulBrandCompanyDescriptionTextNode___children___internal___contentDigest
+  childContentfulBrandCompanyDescriptionTextNode___children___internal___description
+  childContentfulBrandCompanyDescriptionTextNode___children___internal___fieldOwners
+  childContentfulBrandCompanyDescriptionTextNode___children___internal___ignoreType
+  childContentfulBrandCompanyDescriptionTextNode___children___internal___mediaType
+  childContentfulBrandCompanyDescriptionTextNode___children___internal___owner
+  childContentfulBrandCompanyDescriptionTextNode___children___internal___type
+  childContentfulBrandCompanyDescriptionTextNode___internal___content
+  childContentfulBrandCompanyDescriptionTextNode___internal___contentDigest
+  childContentfulBrandCompanyDescriptionTextNode___internal___description
+  childContentfulBrandCompanyDescriptionTextNode___internal___fieldOwners
+  childContentfulBrandCompanyDescriptionTextNode___internal___ignoreType
+  childContentfulBrandCompanyDescriptionTextNode___internal___mediaType
+  childContentfulBrandCompanyDescriptionTextNode___internal___owner
+  childContentfulBrandCompanyDescriptionTextNode___internal___type
+  childContentfulBrandCompanyDescriptionTextNode___companyDescription
+  childContentfulBrandCompanyDescriptionTextNode___sys___type
+  childrenContentfulBrandCompanyNameTextNode
+  childrenContentfulBrandCompanyNameTextNode___id
+  childrenContentfulBrandCompanyNameTextNode___parent___id
+  childrenContentfulBrandCompanyNameTextNode___parent___parent___id
+  childrenContentfulBrandCompanyNameTextNode___parent___parent___children
+  childrenContentfulBrandCompanyNameTextNode___parent___children
+  childrenContentfulBrandCompanyNameTextNode___parent___children___id
+  childrenContentfulBrandCompanyNameTextNode___parent___children___children
+  childrenContentfulBrandCompanyNameTextNode___parent___internal___content
+  childrenContentfulBrandCompanyNameTextNode___parent___internal___contentDigest
+  childrenContentfulBrandCompanyNameTextNode___parent___internal___description
+  childrenContentfulBrandCompanyNameTextNode___parent___internal___fieldOwners
+  childrenContentfulBrandCompanyNameTextNode___parent___internal___ignoreType
+  childrenContentfulBrandCompanyNameTextNode___parent___internal___mediaType
+  childrenContentfulBrandCompanyNameTextNode___parent___internal___owner
+  childrenContentfulBrandCompanyNameTextNode___parent___internal___type
+  childrenContentfulBrandCompanyNameTextNode___children
+  childrenContentfulBrandCompanyNameTextNode___children___id
+  childrenContentfulBrandCompanyNameTextNode___children___parent___id
+  childrenContentfulBrandCompanyNameTextNode___children___parent___children
+  childrenContentfulBrandCompanyNameTextNode___children___children
+  childrenContentfulBrandCompanyNameTextNode___children___children___id
+  childrenContentfulBrandCompanyNameTextNode___children___children___children
+  childrenContentfulBrandCompanyNameTextNode___children___internal___content
+  childrenContentfulBrandCompanyNameTextNode___children___internal___contentDigest
+  childrenContentfulBrandCompanyNameTextNode___children___internal___description
+  childrenContentfulBrandCompanyNameTextNode___children___internal___fieldOwners
+  childrenContentfulBrandCompanyNameTextNode___children___internal___ignoreType
+  childrenContentfulBrandCompanyNameTextNode___children___internal___mediaType
+  childrenContentfulBrandCompanyNameTextNode___children___internal___owner
+  childrenContentfulBrandCompanyNameTextNode___children___internal___type
+  childrenContentfulBrandCompanyNameTextNode___internal___content
+  childrenContentfulBrandCompanyNameTextNode___internal___contentDigest
+  childrenContentfulBrandCompanyNameTextNode___internal___description
+  childrenContentfulBrandCompanyNameTextNode___internal___fieldOwners
+  childrenContentfulBrandCompanyNameTextNode___internal___ignoreType
+  childrenContentfulBrandCompanyNameTextNode___internal___mediaType
+  childrenContentfulBrandCompanyNameTextNode___internal___owner
+  childrenContentfulBrandCompanyNameTextNode___internal___type
+  childrenContentfulBrandCompanyNameTextNode___companyName
+  childrenContentfulBrandCompanyNameTextNode___sys___type
+  childContentfulBrandCompanyNameTextNode___id
+  childContentfulBrandCompanyNameTextNode___parent___id
+  childContentfulBrandCompanyNameTextNode___parent___parent___id
+  childContentfulBrandCompanyNameTextNode___parent___parent___children
+  childContentfulBrandCompanyNameTextNode___parent___children
+  childContentfulBrandCompanyNameTextNode___parent___children___id
+  childContentfulBrandCompanyNameTextNode___parent___children___children
+  childContentfulBrandCompanyNameTextNode___parent___internal___content
+  childContentfulBrandCompanyNameTextNode___parent___internal___contentDigest
+  childContentfulBrandCompanyNameTextNode___parent___internal___description
+  childContentfulBrandCompanyNameTextNode___parent___internal___fieldOwners
+  childContentfulBrandCompanyNameTextNode___parent___internal___ignoreType
+  childContentfulBrandCompanyNameTextNode___parent___internal___mediaType
+  childContentfulBrandCompanyNameTextNode___parent___internal___owner
+  childContentfulBrandCompanyNameTextNode___parent___internal___type
+  childContentfulBrandCompanyNameTextNode___children
+  childContentfulBrandCompanyNameTextNode___children___id
+  childContentfulBrandCompanyNameTextNode___children___parent___id
+  childContentfulBrandCompanyNameTextNode___children___parent___children
+  childContentfulBrandCompanyNameTextNode___children___children
+  childContentfulBrandCompanyNameTextNode___children___children___id
+  childContentfulBrandCompanyNameTextNode___children___children___children
+  childContentfulBrandCompanyNameTextNode___children___internal___content
+  childContentfulBrandCompanyNameTextNode___children___internal___contentDigest
+  childContentfulBrandCompanyNameTextNode___children___internal___description
+  childContentfulBrandCompanyNameTextNode___children___internal___fieldOwners
+  childContentfulBrandCompanyNameTextNode___children___internal___ignoreType
+  childContentfulBrandCompanyNameTextNode___children___internal___mediaType
+  childContentfulBrandCompanyNameTextNode___children___internal___owner
+  childContentfulBrandCompanyNameTextNode___children___internal___type
+  childContentfulBrandCompanyNameTextNode___internal___content
+  childContentfulBrandCompanyNameTextNode___internal___contentDigest
+  childContentfulBrandCompanyNameTextNode___internal___description
+  childContentfulBrandCompanyNameTextNode___internal___fieldOwners
+  childContentfulBrandCompanyNameTextNode___internal___ignoreType
+  childContentfulBrandCompanyNameTextNode___internal___mediaType
+  childContentfulBrandCompanyNameTextNode___internal___owner
+  childContentfulBrandCompanyNameTextNode___internal___type
+  childContentfulBrandCompanyNameTextNode___companyName
+  childContentfulBrandCompanyNameTextNode___sys___type
+  parent___id
+  parent___parent___id
+  parent___parent___parent___id
+  parent___parent___parent___children
+  parent___parent___children
+  parent___parent___children___id
+  parent___parent___children___children
+  parent___parent___internal___content
+  parent___parent___internal___contentDigest
+  parent___parent___internal___description
+  parent___parent___internal___fieldOwners
+  parent___parent___internal___ignoreType
+  parent___parent___internal___mediaType
+  parent___parent___internal___owner
+  parent___parent___internal___type
+  parent___children
+  parent___children___id
+  parent___children___parent___id
+  parent___children___parent___children
+  parent___children___children
+  parent___children___children___id
+  parent___children___children___children
+  parent___children___internal___content
+  parent___children___internal___contentDigest
+  parent___children___internal___description
+  parent___children___internal___fieldOwners
+  parent___children___internal___ignoreType
+  parent___children___internal___mediaType
+  parent___children___internal___owner
+  parent___children___internal___type
+  parent___internal___content
+  parent___internal___contentDigest
+  parent___internal___description
+  parent___internal___fieldOwners
+  parent___internal___ignoreType
+  parent___internal___mediaType
+  parent___internal___owner
+  parent___internal___type
+  children
+  children___id
+  children___parent___id
+  children___parent___parent___id
+  children___parent___parent___children
+  children___parent___children
+  children___parent___children___id
+  children___parent___children___children
+  children___parent___internal___content
+  children___parent___internal___contentDigest
+  children___parent___internal___description
+  children___parent___internal___fieldOwners
+  children___parent___internal___ignoreType
+  children___parent___internal___mediaType
+  children___parent___internal___owner
+  children___parent___internal___type
+  children___children
+  children___children___id
+  children___children___parent___id
+  children___children___parent___children
+  children___children___children
+  children___children___children___id
+  children___children___children___children
+  children___children___internal___content
+  children___children___internal___contentDigest
+  children___children___internal___description
+  children___children___internal___fieldOwners
+  children___children___internal___ignoreType
+  children___children___internal___mediaType
+  children___children___internal___owner
+  children___children___internal___type
+  children___internal___content
+  children___internal___contentDigest
+  children___internal___description
+  children___internal___fieldOwners
+  children___internal___ignoreType
+  children___internal___mediaType
+  children___internal___owner
+  children___internal___type
+  internal___content
+  internal___contentDigest
+  internal___description
+  internal___fieldOwners
+  internal___ignoreType
+  internal___mediaType
+  internal___owner
+  internal___type
+}
+
+type ContentfulBrandGroupConnection {
+  totalCount: Int!
+  edges: [ContentfulBrandEdge!]!
+  nodes: [ContentfulBrand!]!
+  pageInfo: PageInfo!
+  field: String!
+  fieldValue: String
+}
+
+input ContentfulBrandSortInput {
+  fields: [ContentfulBrandFieldsEnum]
+  order: [SortOrderEnum] = [ASC]
 }
 
 type ContentfulCategoryConnection {
@@ -4075,674 +4749,6 @@ type ContentfulCategoryGroupConnection {
 
 input ContentfulCategorySortInput {
   fields: [ContentfulCategoryFieldsEnum]
-  order: [SortOrderEnum] = [ASC]
-}
-
-type ContentfulBrandConnection {
-  totalCount: Int!
-  edges: [ContentfulBrandEdge!]!
-  nodes: [ContentfulBrand!]!
-  pageInfo: PageInfo!
-  distinct(field: ContentfulBrandFieldsEnum!): [String!]!
-  group(skip: Int, limit: Int, field: ContentfulBrandFieldsEnum!): [ContentfulBrandGroupConnection!]!
-}
-
-type ContentfulBrandEdge {
-  next: ContentfulBrand
-  node: ContentfulBrand!
-  previous: ContentfulBrand
-}
-
-enum ContentfulBrandFieldsEnum {
-  contentful_id
-  id
-  node_locale
-  website
-  product
-  product___contentful_id
-  product___id
-  product___node_locale
-  product___slug
-  product___sizetypecolor
-  product___tags
-  product___price
-  product___quantity
-  product___sku
-  product___website
-  product___categories
-  product___categories___contentful_id
-  product___categories___id
-  product___categories___node_locale
-  product___categories___icon___contentful_id
-  product___categories___icon___id
-  product___categories___icon___spaceId
-  product___categories___icon___createdAt
-  product___categories___icon___updatedAt
-  product___categories___icon___title
-  product___categories___icon___description
-  product___categories___icon___node_locale
-  product___categories___icon___gatsbyImageData @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
-  product___categories___icon___children @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
-  product___categories___heroImage___contentful_id
-  product___categories___heroImage___id
-  product___categories___heroImage___spaceId
-  product___categories___heroImage___createdAt
-  product___categories___heroImage___updatedAt
-  product___categories___heroImage___title
-  product___categories___heroImage___description
-  product___categories___heroImage___node_locale
-  product___categories___heroImage___gatsbyImageData @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
-  product___categories___heroImage___children @deprecated(reason: "Sorting on fields that need arguments to resolve is deprecated.")
-  product___categories___product
-  product___categories___product___contentful_id
-  product___categories___product___id
-  product___categories___product___node_locale
-  product___categories___product___slug
-  product___categories___product___sizetypecolor
-  product___categories___product___tags
-  product___categories___product___price
-  product___categories___product___quantity
-  product___categories___product___sku
-  product___categories___product___website
-  product___categories___product___categories
-  product___categories___product___spaceId
-  product___categories___product___createdAt
-  product___categories___product___updatedAt
-  product___categories___product___childrenContentfulProductProductDescriptionTextNode
-  product___categories___product___childrenContentfulProductProductNameTextNode
-  product___categories___product___children
-  product___categories___title___id
-  product___categories___title___children
-  product___categories___title___title
-  product___categories___categoryDescription___id
-  product___categories___categoryDescription___children
-  product___categories___categoryDescription___categoryDescription
-  product___categories___spaceId
-  product___categories___createdAt
-  product___categories___updatedAt
-  product___categories___sys___type
-  product___categories___sys___revision
-  product___categories___childrenContentfulCategoryCategoryDescriptionTextNode
-  product___categories___childrenContentfulCategoryCategoryDescriptionTextNode___id
-  product___categories___childrenContentfulCategoryCategoryDescriptionTextNode___children
-  product___categories___childrenContentfulCategoryCategoryDescriptionTextNode___categoryDescription
-  product___categories___childContentfulCategoryCategoryDescriptionTextNode___id
-  product___categories___childContentfulCategoryCategoryDescriptionTextNode___children
-  product___categories___childContentfulCategoryCategoryDescriptionTextNode___categoryDescription
-  product___categories___childrenContentfulCategoryTitleTextNode
-  product___categories___childrenContentfulCategoryTitleTextNode___id
-  product___categories___childrenContentfulCategoryTitleTextNode___children
-  product___categories___childrenContentfulCategoryTitleTextNode___title
-  product___categories___childContentfulCategoryTitleTextNode___id
-  product___categories___childContentfulCategoryTitleTextNode___children
-  product___categories___childContentfulCategoryTitleTextNode___title
-  product___categories___parent___id
-  product___categories___parent___children
-  product___categories___children
-  product___categories___children___id
-  product___categories___children___children
-  product___categories___internal___content
-  product___categories___internal___contentDigest
-  product___categories___internal___description
-  product___categories___internal___fieldOwners
-  product___categories___internal___ignoreType
-  product___categories___internal___mediaType
-  product___categories___internal___owner
-  product___categories___internal___type
-  product___brand___contentful_id
-  product___brand___id
-  product___brand___node_locale
-  product___brand___website
-  product___brand___product
-  product___brand___product___contentful_id
-  product___brand___product___id
-  product___brand___product___node_locale
-  product___brand___product___slug
-  product___brand___product___sizetypecolor
-  product___brand___product___tags
-  product___brand___product___price
-  product___brand___product___quantity
-  product___brand___product___sku
-  product___brand___product___website
-  product___brand___product___categories
-  product___brand___product___spaceId
-  product___brand___product___createdAt
-  product___brand___product___updatedAt
-  product___brand___product___childrenContentfulProductProductDescriptionTextNode
-  product___brand___product___childrenContentfulProductProductNameTextNode
-  product___brand___product___children
-  product___brand___companyName___id
-  product___brand___companyName___children
-  product___brand___companyName___companyName
-  product___brand___companyDescription___id
-  product___brand___companyDescription___children
-  product___brand___companyDescription___companyDescription
-  product___brand___spaceId
-  product___brand___createdAt
-  product___brand___updatedAt
-  product___brand___sys___type
-  product___brand___sys___revision
-  product___brand___email
-  product___brand___phone
-  product___brand___twitter
-  product___brand___childrenContentfulBrandCompanyDescriptionTextNode
-  product___brand___childrenContentfulBrandCompanyDescriptionTextNode___id
-  product___brand___childrenContentfulBrandCompanyDescriptionTextNode___children
-  product___brand___childrenContentfulBrandCompanyDescriptionTextNode___companyDescription
-  product___brand___childContentfulBrandCompanyDescriptionTextNode___id
-  product___brand___childContentfulBrandCompanyDescriptionTextNode___children
-  product___brand___childContentfulBrandCompanyDescriptionTextNode___companyDescription
-  product___brand___childrenContentfulBrandCompanyNameTextNode
-  product___brand___childrenContentfulBrandCompanyNameTextNode___id
-  product___brand___childrenContentfulBrandCompanyNameTextNode___children
-  product___brand___childrenContentfulBrandCompanyNameTextNode___companyName
-  product___brand___childContentfulBrandCompanyNameTextNode___id
-  product___brand___childContentfulBrandCompanyNameTextNode___children
-  product___brand___childContentfulBrandCompanyNameTextNode___companyName
-  product___brand___parent___id
-  product___brand___parent___children
-  product___brand___children
-  product___brand___children___id
-  product___brand___children___children
-  product___brand___internal___content
-  product___brand___internal___contentDigest
-  product___brand___internal___description
-  product___brand___internal___fieldOwners
-  product___brand___internal___ignoreType
-  product___brand___internal___mediaType
-  product___brand___internal___owner
-  product___brand___internal___type
-  product___productName___id
-  product___productName___parent___id
-  product___productName___parent___children
-  product___productName___children
-  product___productName___children___id
-  product___productName___children___children
-  product___productName___internal___content
-  product___productName___internal___contentDigest
-  product___productName___internal___description
-  product___productName___internal___fieldOwners
-  product___productName___internal___ignoreType
-  product___productName___internal___mediaType
-  product___productName___internal___owner
-  product___productName___internal___type
-  product___productName___productName
-  product___productName___sys___type
-  product___productDescription___id
-  product___productDescription___parent___id
-  product___productDescription___parent___children
-  product___productDescription___children
-  product___productDescription___children___id
-  product___productDescription___children___children
-  product___productDescription___internal___content
-  product___productDescription___internal___contentDigest
-  product___productDescription___internal___description
-  product___productDescription___internal___fieldOwners
-  product___productDescription___internal___ignoreType
-  product___productDescription___internal___mediaType
-  product___productDescription___internal___owner
-  product___productDescription___internal___type
-  product___productDescription___productDescription
-  product___productDescription___sys___type
-  product___spaceId
-  product___createdAt
-  product___updatedAt
-  product___sys___type
-  product___sys___revision
-  product___childrenContentfulProductProductDescriptionTextNode
-  product___childrenContentfulProductProductDescriptionTextNode___id
-  product___childrenContentfulProductProductDescriptionTextNode___parent___id
-  product___childrenContentfulProductProductDescriptionTextNode___parent___children
-  product___childrenContentfulProductProductDescriptionTextNode___children
-  product___childrenContentfulProductProductDescriptionTextNode___children___id
-  product___childrenContentfulProductProductDescriptionTextNode___children___children
-  product___childrenContentfulProductProductDescriptionTextNode___internal___content
-  product___childrenContentfulProductProductDescriptionTextNode___internal___contentDigest
-  product___childrenContentfulProductProductDescriptionTextNode___internal___description
-  product___childrenContentfulProductProductDescriptionTextNode___internal___fieldOwners
-  product___childrenContentfulProductProductDescriptionTextNode___internal___ignoreType
-  product___childrenContentfulProductProductDescriptionTextNode___internal___mediaType
-  product___childrenContentfulProductProductDescriptionTextNode___internal___owner
-  product___childrenContentfulProductProductDescriptionTextNode___internal___type
-  product___childrenContentfulProductProductDescriptionTextNode___productDescription
-  product___childrenContentfulProductProductDescriptionTextNode___sys___type
-  product___childContentfulProductProductDescriptionTextNode___id
-  product___childContentfulProductProductDescriptionTextNode___parent___id
-  product___childContentfulProductProductDescriptionTextNode___parent___children
-  product___childContentfulProductProductDescriptionTextNode___children
-  product___childContentfulProductProductDescriptionTextNode___children___id
-  product___childContentfulProductProductDescriptionTextNode___children___children
-  product___childContentfulProductProductDescriptionTextNode___internal___content
-  product___childContentfulProductProductDescriptionTextNode___internal___contentDigest
-  product___childContentfulProductProductDescriptionTextNode___internal___description
-  product___childContentfulProductProductDescriptionTextNode___internal___fieldOwners
-  product___childContentfulProductProductDescriptionTextNode___internal___ignoreType
-  product___childContentfulProductProductDescriptionTextNode___internal___mediaType
-  product___childContentfulProductProductDescriptionTextNode___internal___owner
-  product___childContentfulProductProductDescriptionTextNode___internal___type
-  product___childContentfulProductProductDescriptionTextNode___productDescription
-  product___childContentfulProductProductDescriptionTextNode___sys___type
-  product___childrenContentfulProductProductNameTextNode
-  product___childrenContentfulProductProductNameTextNode___id
-  product___childrenContentfulProductProductNameTextNode___parent___id
-  product___childrenContentfulProductProductNameTextNode___parent___children
-  product___childrenContentfulProductProductNameTextNode___children
-  product___childrenContentfulProductProductNameTextNode___children___id
-  product___childrenContentfulProductProductNameTextNode___children___children
-  product___childrenContentfulProductProductNameTextNode___internal___content
-  product___childrenContentfulProductProductNameTextNode___internal___contentDigest
-  product___childrenContentfulProductProductNameTextNode___internal___description
-  product___childrenContentfulProductProductNameTextNode___internal___fieldOwners
-  product___childrenContentfulProductProductNameTextNode___internal___ignoreType
-  product___childrenContentfulProductProductNameTextNode___internal___mediaType
-  product___childrenContentfulProductProductNameTextNode___internal___owner
-  product___childrenContentfulProductProductNameTextNode___internal___type
-  product___childrenContentfulProductProductNameTextNode___productName
-  product___childrenContentfulProductProductNameTextNode___sys___type
-  product___childContentfulProductProductNameTextNode___id
-  product___childContentfulProductProductNameTextNode___parent___id
-  product___childContentfulProductProductNameTextNode___parent___children
-  product___childContentfulProductProductNameTextNode___children
-  product___childContentfulProductProductNameTextNode___children___id
-  product___childContentfulProductProductNameTextNode___children___children
-  product___childContentfulProductProductNameTextNode___internal___content
-  product___childContentfulProductProductNameTextNode___internal___contentDigest
-  product___childContentfulProductProductNameTextNode___internal___description
-  product___childContentfulProductProductNameTextNode___internal___fieldOwners
-  product___childContentfulProductProductNameTextNode___internal___ignoreType
-  product___childContentfulProductProductNameTextNode___internal___mediaType
-  product___childContentfulProductProductNameTextNode___internal___owner
-  product___childContentfulProductProductNameTextNode___internal___type
-  product___childContentfulProductProductNameTextNode___productName
-  product___childContentfulProductProductNameTextNode___sys___type
-  product___parent___id
-  product___parent___parent___id
-  product___parent___parent___children
-  product___parent___children
-  product___parent___children___id
-  product___parent___children___children
-  product___parent___internal___content
-  product___parent___internal___contentDigest
-  product___parent___internal___description
-  product___parent___internal___fieldOwners
-  product___parent___internal___ignoreType
-  product___parent___internal___mediaType
-  product___parent___internal___owner
-  product___parent___internal___type
-  product___children
-  product___children___id
-  product___children___parent___id
-  product___children___parent___children
-  product___children___children
-  product___children___children___id
-  product___children___children___children
-  product___children___internal___content
-  product___children___internal___contentDigest
-  product___children___internal___description
-  product___children___internal___fieldOwners
-  product___children___internal___ignoreType
-  product___children___internal___mediaType
-  product___children___internal___owner
-  product___children___internal___type
-  product___internal___content
-  product___internal___contentDigest
-  product___internal___description
-  product___internal___fieldOwners
-  product___internal___ignoreType
-  product___internal___mediaType
-  product___internal___owner
-  product___internal___type
-  companyName___id
-  companyName___parent___id
-  companyName___parent___parent___id
-  companyName___parent___parent___children
-  companyName___parent___children
-  companyName___parent___children___id
-  companyName___parent___children___children
-  companyName___parent___internal___content
-  companyName___parent___internal___contentDigest
-  companyName___parent___internal___description
-  companyName___parent___internal___fieldOwners
-  companyName___parent___internal___ignoreType
-  companyName___parent___internal___mediaType
-  companyName___parent___internal___owner
-  companyName___parent___internal___type
-  companyName___children
-  companyName___children___id
-  companyName___children___parent___id
-  companyName___children___parent___children
-  companyName___children___children
-  companyName___children___children___id
-  companyName___children___children___children
-  companyName___children___internal___content
-  companyName___children___internal___contentDigest
-  companyName___children___internal___description
-  companyName___children___internal___fieldOwners
-  companyName___children___internal___ignoreType
-  companyName___children___internal___mediaType
-  companyName___children___internal___owner
-  companyName___children___internal___type
-  companyName___internal___content
-  companyName___internal___contentDigest
-  companyName___internal___description
-  companyName___internal___fieldOwners
-  companyName___internal___ignoreType
-  companyName___internal___mediaType
-  companyName___internal___owner
-  companyName___internal___type
-  companyName___companyName
-  companyName___sys___type
-  companyDescription___id
-  companyDescription___parent___id
-  companyDescription___parent___parent___id
-  companyDescription___parent___parent___children
-  companyDescription___parent___children
-  companyDescription___parent___children___id
-  companyDescription___parent___children___children
-  companyDescription___parent___internal___content
-  companyDescription___parent___internal___contentDigest
-  companyDescription___parent___internal___description
-  companyDescription___parent___internal___fieldOwners
-  companyDescription___parent___internal___ignoreType
-  companyDescription___parent___internal___mediaType
-  companyDescription___parent___internal___owner
-  companyDescription___parent___internal___type
-  companyDescription___children
-  companyDescription___children___id
-  companyDescription___children___parent___id
-  companyDescription___children___parent___children
-  companyDescription___children___children
-  companyDescription___children___children___id
-  companyDescription___children___children___children
-  companyDescription___children___internal___content
-  companyDescription___children___internal___contentDigest
-  companyDescription___children___internal___description
-  companyDescription___children___internal___fieldOwners
-  companyDescription___children___internal___ignoreType
-  companyDescription___children___internal___mediaType
-  companyDescription___children___internal___owner
-  companyDescription___children___internal___type
-  companyDescription___internal___content
-  companyDescription___internal___contentDigest
-  companyDescription___internal___description
-  companyDescription___internal___fieldOwners
-  companyDescription___internal___ignoreType
-  companyDescription___internal___mediaType
-  companyDescription___internal___owner
-  companyDescription___internal___type
-  companyDescription___companyDescription
-  companyDescription___sys___type
-  spaceId
-  createdAt
-  updatedAt
-  sys___type
-  sys___revision
-  sys___contentType___sys___type
-  sys___contentType___sys___linkType
-  sys___contentType___sys___id
-  email
-  phone
-  twitter
-  childrenContentfulBrandCompanyDescriptionTextNode
-  childrenContentfulBrandCompanyDescriptionTextNode___id
-  childrenContentfulBrandCompanyDescriptionTextNode___parent___id
-  childrenContentfulBrandCompanyDescriptionTextNode___parent___parent___id
-  childrenContentfulBrandCompanyDescriptionTextNode___parent___parent___children
-  childrenContentfulBrandCompanyDescriptionTextNode___parent___children
-  childrenContentfulBrandCompanyDescriptionTextNode___parent___children___id
-  childrenContentfulBrandCompanyDescriptionTextNode___parent___children___children
-  childrenContentfulBrandCompanyDescriptionTextNode___parent___internal___content
-  childrenContentfulBrandCompanyDescriptionTextNode___parent___internal___contentDigest
-  childrenContentfulBrandCompanyDescriptionTextNode___parent___internal___description
-  childrenContentfulBrandCompanyDescriptionTextNode___parent___internal___fieldOwners
-  childrenContentfulBrandCompanyDescriptionTextNode___parent___internal___ignoreType
-  childrenContentfulBrandCompanyDescriptionTextNode___parent___internal___mediaType
-  childrenContentfulBrandCompanyDescriptionTextNode___parent___internal___owner
-  childrenContentfulBrandCompanyDescriptionTextNode___parent___internal___type
-  childrenContentfulBrandCompanyDescriptionTextNode___children
-  childrenContentfulBrandCompanyDescriptionTextNode___children___id
-  childrenContentfulBrandCompanyDescriptionTextNode___children___parent___id
-  childrenContentfulBrandCompanyDescriptionTextNode___children___parent___children
-  childrenContentfulBrandCompanyDescriptionTextNode___children___children
-  childrenContentfulBrandCompanyDescriptionTextNode___children___children___id
-  childrenContentfulBrandCompanyDescriptionTextNode___children___children___children
-  childrenContentfulBrandCompanyDescriptionTextNode___children___internal___content
-  childrenContentfulBrandCompanyDescriptionTextNode___children___internal___contentDigest
-  childrenContentfulBrandCompanyDescriptionTextNode___children___internal___description
-  childrenContentfulBrandCompanyDescriptionTextNode___children___internal___fieldOwners
-  childrenContentfulBrandCompanyDescriptionTextNode___children___internal___ignoreType
-  childrenContentfulBrandCompanyDescriptionTextNode___children___internal___mediaType
-  childrenContentfulBrandCompanyDescriptionTextNode___children___internal___owner
-  childrenContentfulBrandCompanyDescriptionTextNode___children___internal___type
-  childrenContentfulBrandCompanyDescriptionTextNode___internal___content
-  childrenContentfulBrandCompanyDescriptionTextNode___internal___contentDigest
-  childrenContentfulBrandCompanyDescriptionTextNode___internal___description
-  childrenContentfulBrandCompanyDescriptionTextNode___internal___fieldOwners
-  childrenContentfulBrandCompanyDescriptionTextNode___internal___ignoreType
-  childrenContentfulBrandCompanyDescriptionTextNode___internal___mediaType
-  childrenContentfulBrandCompanyDescriptionTextNode___internal___owner
-  childrenContentfulBrandCompanyDescriptionTextNode___internal___type
-  childrenContentfulBrandCompanyDescriptionTextNode___companyDescription
-  childrenContentfulBrandCompanyDescriptionTextNode___sys___type
-  childContentfulBrandCompanyDescriptionTextNode___id
-  childContentfulBrandCompanyDescriptionTextNode___parent___id
-  childContentfulBrandCompanyDescriptionTextNode___parent___parent___id
-  childContentfulBrandCompanyDescriptionTextNode___parent___parent___children
-  childContentfulBrandCompanyDescriptionTextNode___parent___children
-  childContentfulBrandCompanyDescriptionTextNode___parent___children___id
-  childContentfulBrandCompanyDescriptionTextNode___parent___children___children
-  childContentfulBrandCompanyDescriptionTextNode___parent___internal___content
-  childContentfulBrandCompanyDescriptionTextNode___parent___internal___contentDigest
-  childContentfulBrandCompanyDescriptionTextNode___parent___internal___description
-  childContentfulBrandCompanyDescriptionTextNode___parent___internal___fieldOwners
-  childContentfulBrandCompanyDescriptionTextNode___parent___internal___ignoreType
-  childContentfulBrandCompanyDescriptionTextNode___parent___internal___mediaType
-  childContentfulBrandCompanyDescriptionTextNode___parent___internal___owner
-  childContentfulBrandCompanyDescriptionTextNode___parent___internal___type
-  childContentfulBrandCompanyDescriptionTextNode___children
-  childContentfulBrandCompanyDescriptionTextNode___children___id
-  childContentfulBrandCompanyDescriptionTextNode___children___parent___id
-  childContentfulBrandCompanyDescriptionTextNode___children___parent___children
-  childContentfulBrandCompanyDescriptionTextNode___children___children
-  childContentfulBrandCompanyDescriptionTextNode___children___children___id
-  childContentfulBrandCompanyDescriptionTextNode___children___children___children
-  childContentfulBrandCompanyDescriptionTextNode___children___internal___content
-  childContentfulBrandCompanyDescriptionTextNode___children___internal___contentDigest
-  childContentfulBrandCompanyDescriptionTextNode___children___internal___description
-  childContentfulBrandCompanyDescriptionTextNode___children___internal___fieldOwners
-  childContentfulBrandCompanyDescriptionTextNode___children___internal___ignoreType
-  childContentfulBrandCompanyDescriptionTextNode___children___internal___mediaType
-  childContentfulBrandCompanyDescriptionTextNode___children___internal___owner
-  childContentfulBrandCompanyDescriptionTextNode___children___internal___type
-  childContentfulBrandCompanyDescriptionTextNode___internal___content
-  childContentfulBrandCompanyDescriptionTextNode___internal___contentDigest
-  childContentfulBrandCompanyDescriptionTextNode___internal___description
-  childContentfulBrandCompanyDescriptionTextNode___internal___fieldOwners
-  childContentfulBrandCompanyDescriptionTextNode___internal___ignoreType
-  childContentfulBrandCompanyDescriptionTextNode___internal___mediaType
-  childContentfulBrandCompanyDescriptionTextNode___internal___owner
-  childContentfulBrandCompanyDescriptionTextNode___internal___type
-  childContentfulBrandCompanyDescriptionTextNode___companyDescription
-  childContentfulBrandCompanyDescriptionTextNode___sys___type
-  childrenContentfulBrandCompanyNameTextNode
-  childrenContentfulBrandCompanyNameTextNode___id
-  childrenContentfulBrandCompanyNameTextNode___parent___id
-  childrenContentfulBrandCompanyNameTextNode___parent___parent___id
-  childrenContentfulBrandCompanyNameTextNode___parent___parent___children
-  childrenContentfulBrandCompanyNameTextNode___parent___children
-  childrenContentfulBrandCompanyNameTextNode___parent___children___id
-  childrenContentfulBrandCompanyNameTextNode___parent___children___children
-  childrenContentfulBrandCompanyNameTextNode___parent___internal___content
-  childrenContentfulBrandCompanyNameTextNode___parent___internal___contentDigest
-  childrenContentfulBrandCompanyNameTextNode___parent___internal___description
-  childrenContentfulBrandCompanyNameTextNode___parent___internal___fieldOwners
-  childrenContentfulBrandCompanyNameTextNode___parent___internal___ignoreType
-  childrenContentfulBrandCompanyNameTextNode___parent___internal___mediaType
-  childrenContentfulBrandCompanyNameTextNode___parent___internal___owner
-  childrenContentfulBrandCompanyNameTextNode___parent___internal___type
-  childrenContentfulBrandCompanyNameTextNode___children
-  childrenContentfulBrandCompanyNameTextNode___children___id
-  childrenContentfulBrandCompanyNameTextNode___children___parent___id
-  childrenContentfulBrandCompanyNameTextNode___children___parent___children
-  childrenContentfulBrandCompanyNameTextNode___children___children
-  childrenContentfulBrandCompanyNameTextNode___children___children___id
-  childrenContentfulBrandCompanyNameTextNode___children___children___children
-  childrenContentfulBrandCompanyNameTextNode___children___internal___content
-  childrenContentfulBrandCompanyNameTextNode___children___internal___contentDigest
-  childrenContentfulBrandCompanyNameTextNode___children___internal___description
-  childrenContentfulBrandCompanyNameTextNode___children___internal___fieldOwners
-  childrenContentfulBrandCompanyNameTextNode___children___internal___ignoreType
-  childrenContentfulBrandCompanyNameTextNode___children___internal___mediaType
-  childrenContentfulBrandCompanyNameTextNode___children___internal___owner
-  childrenContentfulBrandCompanyNameTextNode___children___internal___type
-  childrenContentfulBrandCompanyNameTextNode___internal___content
-  childrenContentfulBrandCompanyNameTextNode___internal___contentDigest
-  childrenContentfulBrandCompanyNameTextNode___internal___description
-  childrenContentfulBrandCompanyNameTextNode___internal___fieldOwners
-  childrenContentfulBrandCompanyNameTextNode___internal___ignoreType
-  childrenContentfulBrandCompanyNameTextNode___internal___mediaType
-  childrenContentfulBrandCompanyNameTextNode___internal___owner
-  childrenContentfulBrandCompanyNameTextNode___internal___type
-  childrenContentfulBrandCompanyNameTextNode___companyName
-  childrenContentfulBrandCompanyNameTextNode___sys___type
-  childContentfulBrandCompanyNameTextNode___id
-  childContentfulBrandCompanyNameTextNode___parent___id
-  childContentfulBrandCompanyNameTextNode___parent___parent___id
-  childContentfulBrandCompanyNameTextNode___parent___parent___children
-  childContentfulBrandCompanyNameTextNode___parent___children
-  childContentfulBrandCompanyNameTextNode___parent___children___id
-  childContentfulBrandCompanyNameTextNode___parent___children___children
-  childContentfulBrandCompanyNameTextNode___parent___internal___content
-  childContentfulBrandCompanyNameTextNode___parent___internal___contentDigest
-  childContentfulBrandCompanyNameTextNode___parent___internal___description
-  childContentfulBrandCompanyNameTextNode___parent___internal___fieldOwners
-  childContentfulBrandCompanyNameTextNode___parent___internal___ignoreType
-  childContentfulBrandCompanyNameTextNode___parent___internal___mediaType
-  childContentfulBrandCompanyNameTextNode___parent___internal___owner
-  childContentfulBrandCompanyNameTextNode___parent___internal___type
-  childContentfulBrandCompanyNameTextNode___children
-  childContentfulBrandCompanyNameTextNode___children___id
-  childContentfulBrandCompanyNameTextNode___children___parent___id
-  childContentfulBrandCompanyNameTextNode___children___parent___children
-  childContentfulBrandCompanyNameTextNode___children___children
-  childContentfulBrandCompanyNameTextNode___children___children___id
-  childContentfulBrandCompanyNameTextNode___children___children___children
-  childContentfulBrandCompanyNameTextNode___children___internal___content
-  childContentfulBrandCompanyNameTextNode___children___internal___contentDigest
-  childContentfulBrandCompanyNameTextNode___children___internal___description
-  childContentfulBrandCompanyNameTextNode___children___internal___fieldOwners
-  childContentfulBrandCompanyNameTextNode___children___internal___ignoreType
-  childContentfulBrandCompanyNameTextNode___children___internal___mediaType
-  childContentfulBrandCompanyNameTextNode___children___internal___owner
-  childContentfulBrandCompanyNameTextNode___children___internal___type
-  childContentfulBrandCompanyNameTextNode___internal___content
-  childContentfulBrandCompanyNameTextNode___internal___contentDigest
-  childContentfulBrandCompanyNameTextNode___internal___description
-  childContentfulBrandCompanyNameTextNode___internal___fieldOwners
-  childContentfulBrandCompanyNameTextNode___internal___ignoreType
-  childContentfulBrandCompanyNameTextNode___internal___mediaType
-  childContentfulBrandCompanyNameTextNode___internal___owner
-  childContentfulBrandCompanyNameTextNode___internal___type
-  childContentfulBrandCompanyNameTextNode___companyName
-  childContentfulBrandCompanyNameTextNode___sys___type
-  parent___id
-  parent___parent___id
-  parent___parent___parent___id
-  parent___parent___parent___children
-  parent___parent___children
-  parent___parent___children___id
-  parent___parent___children___children
-  parent___parent___internal___content
-  parent___parent___internal___contentDigest
-  parent___parent___internal___description
-  parent___parent___internal___fieldOwners
-  parent___parent___internal___ignoreType
-  parent___parent___internal___mediaType
-  parent___parent___internal___owner
-  parent___parent___internal___type
-  parent___children
-  parent___children___id
-  parent___children___parent___id
-  parent___children___parent___children
-  parent___children___children
-  parent___children___children___id
-  parent___children___children___children
-  parent___children___internal___content
-  parent___children___internal___contentDigest
-  parent___children___internal___description
-  parent___children___internal___fieldOwners
-  parent___children___internal___ignoreType
-  parent___children___internal___mediaType
-  parent___children___internal___owner
-  parent___children___internal___type
-  parent___internal___content
-  parent___internal___contentDigest
-  parent___internal___description
-  parent___internal___fieldOwners
-  parent___internal___ignoreType
-  parent___internal___mediaType
-  parent___internal___owner
-  parent___internal___type
-  children
-  children___id
-  children___parent___id
-  children___parent___parent___id
-  children___parent___parent___children
-  children___parent___children
-  children___parent___children___id
-  children___parent___children___children
-  children___parent___internal___content
-  children___parent___internal___contentDigest
-  children___parent___internal___description
-  children___parent___internal___fieldOwners
-  children___parent___internal___ignoreType
-  children___parent___internal___mediaType
-  children___parent___internal___owner
-  children___parent___internal___type
-  children___children
-  children___children___id
-  children___children___parent___id
-  children___children___parent___children
-  children___children___children
-  children___children___children___id
-  children___children___children___children
-  children___children___internal___content
-  children___children___internal___contentDigest
-  children___children___internal___description
-  children___children___internal___fieldOwners
-  children___children___internal___ignoreType
-  children___children___internal___mediaType
-  children___children___internal___owner
-  children___children___internal___type
-  children___internal___content
-  children___internal___contentDigest
-  children___internal___description
-  children___internal___fieldOwners
-  children___internal___ignoreType
-  children___internal___mediaType
-  children___internal___owner
-  children___internal___type
-  internal___content
-  internal___contentDigest
-  internal___description
-  internal___fieldOwners
-  internal___ignoreType
-  internal___mediaType
-  internal___owner
-  internal___type
-}
-
-type ContentfulBrandGroupConnection {
-  totalCount: Int!
-  edges: [ContentfulBrandEdge!]!
-  nodes: [ContentfulBrand!]!
-  pageInfo: PageInfo!
-  field: String!
-  fieldValue: String
-}
-
-input ContentfulBrandSortInput {
-  fields: [ContentfulBrandFieldsEnum]
   order: [SortOrderEnum] = [ASC]
 }
 
@@ -7171,15 +7177,6 @@ enum SitePluginFieldsEnum {
   resolve
   name
   version
-  pluginOptions___accessToken
-  pluginOptions___spaceId
-  pluginOptions___host
-  pluginOptions___environment
-  pluginOptions___downloadLocal
-  pluginOptions___forceFullSync
-  pluginOptions___pageLimit
-  pluginOptions___assetDownloadWorkers
-  pluginOptions___useNameForId
   pluginOptions___icon
   pluginOptions___legacy
   pluginOptions___theme_color_in_head
@@ -7199,6 +7196,15 @@ enum SitePluginFieldsEnum {
   pluginOptions___allExtensions
   pluginOptions___isTSX
   pluginOptions___jsxPragma
+  pluginOptions___accessToken
+  pluginOptions___spaceId
+  pluginOptions___host
+  pluginOptions___environment
+  pluginOptions___downloadLocal
+  pluginOptions___forceFullSync
+  pluginOptions___pageLimit
+  pluginOptions___assetDownloadWorkers
+  pluginOptions___useNameForId
   nodeAPIs
   browserAPIs
   ssrAPIs
