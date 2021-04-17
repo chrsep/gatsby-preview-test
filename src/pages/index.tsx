@@ -3,6 +3,7 @@ import { FC } from "react"
 import { graphql, PageProps } from "gatsby"
 import { Carousel } from "react-responsive-carousel"
 import "react-responsive-carousel/lib/styles/carousel.min.css"
+import { StaticImage } from "gatsby-plugin-image"
 
 type Props = PageProps<GatsbyTypes.IndexPageQuery>
 
@@ -11,9 +12,24 @@ const IndexPage: FC<Props> = ({ data }) => {
     <>
       {/*@ts-ignore*/}
       <Carousel>
-        <img src="https://berkatgemilangperkasa.co.id/wp-content/uploads/2020/12/Establishment-banner.png" />
-        <img src="https://berkatgemilangperkasa.co.id/wp-content/uploads/2020/12/employment-stats-banner.png" />
-        <img src="https://berkatgemilangperkasa.co.id/wp-content/uploads/2020/12/business-focus-banner.png" />
+        <StaticImage
+          src="https://berkatgemilangperkasa.co.id/wp-content/uploads/2020/12/Establishment-banner.png"
+          alt={"first"}
+          placeholder={"blurred"}
+          loading={"lazy"}
+        />
+        <StaticImage
+          src="https://berkatgemilangperkasa.co.id/wp-content/uploads/2020/12/employment-stats-banner.png"
+          alt={"second"}
+          placeholder={"blurred"}
+          loading={"lazy"}
+        />
+        <StaticImage
+          src="https://berkatgemilangperkasa.co.id/wp-content/uploads/2020/12/business-focus-banner.png"
+          alt={"third"}
+          placeholder={"blurred"}
+          loading={"lazy"}
+        />
       </Carousel>
 
       <main className={"mx-auto max-w-7xl"}>
