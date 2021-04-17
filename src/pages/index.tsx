@@ -58,6 +58,12 @@ const IndexPage: FC<Props> = ({ data }) => {
 
 export const query = graphql`
   query IndexPage {
+    contentfulPage {
+      title
+      subheading {
+        subheading
+      }
+    }
     allContentfulCategory {
       nodes {
         title {
