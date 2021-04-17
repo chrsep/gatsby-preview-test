@@ -5,7 +5,7 @@ import { StaticImage } from "gatsby-plugin-image"
 
 const Navbar: FC = () => {
   return (
-    <nav className={"p-5 max-w-7xl mx-auto flex items-center"}>
+    <nav className={"p-5 mx-auto flex items-center bg-white w-full fixed top-0 z-10"}>
       <Link to={"/"}>
         <StaticImage
           src={"../images/BGP-Logo.webp"}

@@ -9,15 +9,15 @@ type Props = PageProps<GatsbyTypes.IndexPageQuery>
 
 const IndexPage: FC<Props> = ({ data }) => {
   return (
-    <>
-      {/*@ts-ignore*/}
-      <Carousel autoPlay={true} intiniteLoop={true}>
+      <main>
+      <Carousel autoPlay={true} intiniteLoop={true} showStatus={false} showThumbs={false}>
         <StaticImage
           src="https://berkatgemilangperkasa.co.id/wp-content/uploads/2020/12/Establishment-banner.png"
           alt={"first"}
           placeholder={"blurred"}
           loading={"lazy"}
           formats={["auto", "webp", "avif"]}
+          className={"carousel-height"}
         />
         <StaticImage
           src="https://berkatgemilangperkasa.co.id/wp-content/uploads/2020/12/employment-stats-banner.png"
@@ -25,6 +25,8 @@ const IndexPage: FC<Props> = ({ data }) => {
           placeholder={"blurred"}
           loading={"lazy"}
           formats={["auto", "webp", "avif"]}
+          className={"carousel-height"}
+
         />
         <StaticImage
           src="https://berkatgemilangperkasa.co.id/wp-content/uploads/2020/12/business-focus-banner.png"
@@ -32,14 +34,13 @@ const IndexPage: FC<Props> = ({ data }) => {
           placeholder={"blurred"}
           loading={"lazy"}
           formats={["auto", "webp", "avif"]}
+          className={"carousel-height"}
         />
       </Carousel>
-
-      <main className={"mx-auto max-w-7xl"}>
-        <div className="prose p-4 py-16">
+        <div className="prose p-4 mx-auto text-center">
           <h1>{data.contentfulPage?.title}</h1>
           <p>{data.contentfulPage?.subheading?.subheading}</p>
-          <div>
+          <div className={"mt-5"}>
             <h1>KOLEKSI TERBARU</h1>
             <div className={"flex"}>
               {data.allContentfulCategory.nodes.map(({ title }) => (
@@ -51,7 +52,6 @@ const IndexPage: FC<Props> = ({ data }) => {
           </div>
         </div>
       </main>
-    </>
   )
 }
 
