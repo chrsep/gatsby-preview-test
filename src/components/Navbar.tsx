@@ -7,7 +7,12 @@ const Navbar: FC = () => {
   return (
     <nav className={"p-5 max-w-7xl mx-auto flex items-center"}>
       <Link to={"/"}>
-        <StaticImage src={"../images/BGP-Logo.webp"} alt={"logo"} width={216} />
+        <StaticImage
+          src={"../images/BGP-Logo.webp"}
+          alt={"logo"}
+          width={216}
+          formats={["auto", "webp", "avif"]}
+        />
       </Link>
       <Navlinks to={"/"} text={"Home"} className={"ml-auto"} />
       <Navlinks to={"/products"} text={"Our Products"} />

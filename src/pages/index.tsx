@@ -17,18 +17,21 @@ const IndexPage: FC<Props> = ({ data }) => {
           alt={"first"}
           placeholder={"blurred"}
           loading={"lazy"}
+          formats={["auto", "webp", "avif"]}
         />
         <StaticImage
           src="https://berkatgemilangperkasa.co.id/wp-content/uploads/2020/12/employment-stats-banner.png"
           alt={"second"}
           placeholder={"blurred"}
           loading={"lazy"}
+          formats={["auto", "webp", "avif"]}
         />
         <StaticImage
           src="https://berkatgemilangperkasa.co.id/wp-content/uploads/2020/12/business-focus-banner.png"
           alt={"third"}
           placeholder={"blurred"}
           loading={"lazy"}
+          formats={["auto", "webp", "avif"]}
         />
       </Carousel>
 
