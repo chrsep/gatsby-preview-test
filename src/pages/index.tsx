@@ -16,17 +16,9 @@ const IndexPage: FC<Props> = ({ data }) => {
         ))}
       </div>
 
-      <div className="prose">
-        <h1>SELAMAT DATANG</h1>
-
-        <p>
-          Selamat datang dan terima kasih telah mengunjungi website PT. Berkat
-          Gemilang Perkasa, perusahaan dengan misi dan motivasi untuk menjadi
-          perusahaan terdepan dan utama dalam pengadaan barang dan jasa untuk
-          berbagai kepentingan proyek pemerintah, baik dari tingkat daerah dan
-          tingkat nasional, hingga tingkat internasional.
-        </p>
-
+      <div className="prose p-4 py-16">
+        <h1>{data.contentfulPage?.title}</h1>
+        <p>{data.contentfulPage?.subheading?.subheading}</p>
         <div>
           <h1>KOLEKSI TERBARU</h1>
         </div>
@@ -37,6 +29,12 @@ const IndexPage: FC<Props> = ({ data }) => {
 
 export const query = graphql`
   query IndexPage {
+    contentfulPage {
+      title
+      subheading {
+        subheading
+      }
+    }
     allContentfulCategory {
       nodes {
         title {
