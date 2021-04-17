@@ -11,7 +11,7 @@ const IndexPage: FC<Props> = ({ data }) => {
   return (
     <>
       {/*@ts-ignore*/}
-      <Carousel>
+      <Carousel autoPlay={true} intiniteLoop={true}>
         <StaticImage
           src="https://berkatgemilangperkasa.co.id/wp-content/uploads/2020/12/Establishment-banner.png"
           alt={"first"}
