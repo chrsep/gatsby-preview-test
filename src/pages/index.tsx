@@ -1,19 +1,20 @@
 import * as React from "react"
 import { FC } from "react"
 import { graphql, PageProps } from "gatsby"
-import "@brainhubeu/react-carousel/lib/style.css"
-import SSRFriendlyCarousel from "../components/SSRFriendlyCarousel"
-// markup
+import { Carousel } from "react-responsive-carousel"
+import "react-responsive-carousel/lib/styles/carousel.min.css"
+
 type Props = PageProps<GatsbyTypes.IndexPageQuery>
 
 const IndexPage: FC<Props> = ({ data }) => {
   return (
     <>
-      <SSRFriendlyCarousel>
+      {/*@ts-ignore*/}
+      <Carousel>
         <img src="https://berkatgemilangperkasa.co.id/wp-content/uploads/2020/12/Establishment-banner.png" />
         <img src="https://berkatgemilangperkasa.co.id/wp-content/uploads/2020/12/employment-stats-banner.png" />
         <img src="https://berkatgemilangperkasa.co.id/wp-content/uploads/2020/12/business-focus-banner.png" />
-      </SSRFriendlyCarousel>
+      </Carousel>
 
       <main className={"mx-auto max-w-7xl"}>
         <div className="prose p-4 py-16">
