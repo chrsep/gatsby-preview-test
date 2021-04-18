@@ -8259,6 +8259,17 @@ type GatsbyImageSharpFluid_noBase64Fragment = Pick<ImageSharpFluid, 'aspectRatio
 
 type GatsbyImageSharpFluid_withWebp_noBase64Fragment = Pick<ImageSharpFluid, 'aspectRatio' | 'src' | 'srcSet' | 'srcWebp' | 'srcSetWebp' | 'sizes'>;
 
+type ProductPageQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type ProductPageQuery = { readonly contentfulPage: Maybe<(
+    Pick<ContentfulPage, 'title'>
+    & { readonly subheading: Maybe<Pick<contentfulPageSubheadingTextNode, 'subheading'>> }
+  )>, readonly allContentfulCategory: { readonly nodes: ReadonlyArray<{ readonly title: Maybe<Pick<contentfulCategoryTitleTextNode, 'title'>> }> }, readonly allContentfulProduct: { readonly nodes: ReadonlyArray<(
+      Pick<ContentfulProduct, 'slug'>
+      & { readonly productName: Maybe<Pick<contentfulProductProductNameTextNode, 'id' | 'productName'>> }
+    )> } };
+
 type PagesQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 

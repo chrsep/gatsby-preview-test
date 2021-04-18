@@ -5,8 +5,8 @@ import { StaticImage } from "gatsby-plugin-image"
 
 const Footer: FC = () => {
   return (
-    <footer className={"flex py-5 bg-gray-700 text-center text-white"}>
-      <div className={"flex-1 p-4"}>
+    <footer className={"flex flex-wrap py-5 bg-gray-700 max-w-full text-white align-center"}>
+      <div className={"lg:flex-1 p-4 w-full text-center"}>
         <Link to={"/"}>
           <StaticImage
             src={"../images/BGP-Logo.webp"}
@@ -16,7 +16,7 @@ const Footer: FC = () => {
           />
         </Link>
       </div>
-      <div className={"flex-1 text-white p-4 text-left"}>
+      <div className={"lg:flex-1 text-white p-4 text-left w-full"}>
         <h1 className={"text-2xl mb-1"}>Hubungi Kami</h1>
         <p className="text-xs text-left leading-6">
           Kantor : Grand Puri Niaga, Jl. Puri Kencana Blok K6 No 5J, Kembangan, Jakarta Barat 11610<br></br>
@@ -25,7 +25,7 @@ Telephone: 021-22345893<br></br>
 Email: administrator@berkatgemilangperkasa.co.id
           </p>
       </div>
-      <div className={"flex-1 p-4 text-white text-left"}>
+      <div className={"lg:flex-1 p-4 text-white text-left w-full"}>
         <label className="block">
           <span className="text-white text-sm">Full name</span>
           <input type="text" className="mt-1 block max-w-sm border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="" />
