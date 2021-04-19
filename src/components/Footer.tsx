@@ -28,15 +28,15 @@ Email: administrator@berkatgemilangperkasa.co.id
       <div className={"lg:flex-1 p-4 text-white text-left w-full"}>
         <label className="block">
           <span className="text-white text-sm">Full name</span>
-          <input type="text" className="mt-1 block max-w-sm border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="" />
+          <input type="text" className="mt-1 block w-full lg:w-1/2 border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="" />
         </label>
         <label className="block">
           <span className="text-white text-sm">Phone</span>
-          <input type="text" className="mt-1 block max-w-sm border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="" />
+          <input type="text" className="mt-1 block w-full lg:w-1/2 border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="" />
         </label>
         <button className="mt-2 mb-2 bg-black hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
           Send
-</button>
+        </button>
         <p className="text-sm text-left font-bold">
           <span className="text-xs font-light">Powered By :</span> Ant Digital
           </p>
